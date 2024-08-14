@@ -9,3 +9,5 @@ $router->post('/login', 'LoginController@entrarAction');
 $router->get('/cadastro', 'CadastroController@cadastro');
 $router->post('/cadastro', 'CadastroController@cadastroAction');
 
+//$router->get('/sair');
+

@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?=$base;?>/css/styles.css">
-    <link rel="stylesheet" href="<?= $base;?>/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= $base; ?>/css/styles.css">
+    <link rel="stylesheet" href="<?= $base; ?>/bootstrap/css/bootstrap.min.css">
 
-    <title>Login Security System</title> 
+    <title>Login Security System</title>
     <style>
         .flash {
             margin-top: 20px;
@@ -24,7 +24,7 @@
         <div class="container sist-container-centralizado">
             <div class="row">
                 <div class="col-6 conteiner-logo">
-                    <img class="logoTipoDPW" src="<?= $base;?>/assets/fotos/logo.gif" alt="">
+                    <img class="logoTipoDPW" src="<?= $base; ?>/assets/fotos/logo.gif" alt="">
                 </div>
                 <div class="col-6">
 
@@ -33,7 +33,7 @@
                             <h1 class="text-center titulo-login">SISTEMA DE CONTROLE DE OCORRÊNCIAS</h1>
                         </div>
                         <div class="col-sm-12">
-                            <form method="POST" class="conteiner-formLogin" action="<?= $base;?>/login">
+                            <form method="POST" class="conteiner-formLogin" action="<?= $base; ?>/login">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Endereço de email</label>
                                     <input type="email" class="form-control" id="exampleInputEmail1"
@@ -43,10 +43,10 @@
                                     <label for="exampleInputPassword1">Senha</label>
                                     <input type="password" class="form-control" id="exampleInputPassword1"
                                         placeholder="Senha" name="senha">
-                                        <small id="emailHelp" class="form-text text-muted">Não compartilhe a sua senha com ninguem.</small>
-                                        <?php if(!empty($flash)): ?>
-                                           <div class="flash"><?php echo $flash;?></div>
-                                        <?php endif; ?>
+                                    <small id="emailHelp" class="form-text text-muted">Não compartilhe a sua senha com ninguem.</small>
+                                    <?php if (!empty($flash)): ?>
+                                        <div class="flash"><?php echo $flash; ?></div>
+                                    <?php endif; ?>
                                 </div>
                                 <button type="submit" class="btn btn-primary button-login">Enviar</button>
                             </form>
@@ -57,7 +57,7 @@
 
             </div>
         </div>
-        <script src="<?= $base;?>/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="<?= $base; ?>/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
