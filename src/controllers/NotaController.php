@@ -4,7 +4,7 @@ namespace src\controllers;
 use \core\Controller;
 use \src\handlers\LoginHandler;
 
-class LoginController extends Controller {
+class NotaController extends Controller {
 
     public function entrar() {
         $flash= "";
@@ -35,11 +35,6 @@ class LoginController extends Controller {
             $_SESSION['flash']="Digite os campos de email e senha!";
             $this->redirect('/login');
         }
-    }
-
-    public function sair () {
-        $_SESSION['token']="";
-        $this->redirect('/login');
     }
 
 

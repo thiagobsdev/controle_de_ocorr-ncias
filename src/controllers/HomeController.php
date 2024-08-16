@@ -9,17 +9,20 @@ class HomeController extends Controller {
 
     private $usuarioLogado;
 
+
     public function __construct(){
         $this->setUsuarioLogado(LoginHandler::checkLogin());
         if($this->usuarioLogado=== false) {
             $this->redirect('/login');
+        }else{
+            $this->usuarioLogado = Usuario::select()->where('token', $_SESSION['token'])->one();
         }
         
     }
 
     public function index() {
 
-        $this->usuarioLogado = Usuario::select()->where('token', $_SESSION['token'])->one();
+       
         $this->render('home',['usuariologado'=> $this->usuarioLogado]);
     }
 
@@ -31,5 +34,7 @@ class HomeController extends Controller {
         $this->usuarioLogado = $usuario;
     }
 
+
+    
 
 }

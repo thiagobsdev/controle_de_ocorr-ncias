@@ -5,6 +5,7 @@ use \src\models\Usuario;
 
 
 class CadastroHandler  {
+    
 
     public static function emailExiste($email) {
 

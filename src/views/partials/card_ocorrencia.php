@@ -4,7 +4,7 @@
             <strong>ID:</strong> 001 | <strong>Data:</strong> 12/08/2024 | <strong>Hora:</strong> 14:30
         </div>
         <div>
-            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button>
+            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal">Adicionar nota</button>
             <button class="btn btn-sm btn-secondary print-btn" data-id="001" data-data="12/08/2024" data-hora="14:30" data-bs-toggle="modal" data-bs-target="#printModal">Imprimir PDF</button>
         </div>
     </div>
@@ -16,20 +16,25 @@
             <strong>Tipo:</strong> Roubo<br>
             <strong>Natureza:</strong> Criminoso
         </p>
-        <!-- Descrição da Ocorrência -->
-        <h6>Descrição:</h6>
-        <p class="card-text">Descrição detalhada da ocorrência, explicando o que aconteceu e como foi o incidente.</p>
-
-        <!-- Ações Tomadas -->
-        <h6>Ações Tomadas:</h6>
-        <p class="card-text">Descrição das ações tomadas após o incidente, como medidas de segurança implementadas ou ações de resposta.</p>
 
         <!-- Informações do Ativo -->
-        <h6>Informações do Ativo:</h6>
-        <p class="card-text">
-            <strong>Tipo de Ativo:</strong> Veículo<br>
-            <strong>Identificação do Ativo:</strong> ABC-1234
-        </p>
+
+        <h6>Ativos:</h6>
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th>Tipo de ativo</th>
+                    <th>Identificação do ativo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Veículo</td>
+                    <td>ABC-1234</td>
+
+                </tr>
+            </tbody>
+        </table>
 
         <!-- Se houver envolvidos -->
         <h6>Envolvidos:</h6>
@@ -57,15 +62,32 @@
                 </tr>
             </tbody>
         </table>
+
+        <!-- Descrição da Ocorrência -->
+        <h6>Descrição da ocorrência:</h6>
+        <p class="card-text">Descrição detalhada da ocorrência, explicando o que aconteceu e como foi o incidente.</p>
+
+        <!-- Ações Tomadas -->
+        <h6 class="">Ações Tomadas:</h6>
+        <p class="card-text">Descrição das ações tomadas após o incidente, como medidas de segurança implementadas ou ações de resposta.</p>
+
+        <strong>Observações:</strong>
+        <p class="card-text mt-3"> Thiago Barbosa dos Santos escreveu em 14/08/2024 às 00:00 <br> Observações da ocorrência.</p>
+        <p class="card-text"></p>
+
+        <p class="card-text mt-3"> Thiago Barbosa dos Santos escreveu em 14/08/2024 às 00:00 <br> Observações da ocorrência.</p>
+        <p class="card-text"></p>
+
+
         <!-- Fotos -->
         <h6>Fotos:</h6>
         <div id="carouselExample1" class="carousel slide bg-black bg-opacity-75" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="<?=$base;?>/assets/fotos/DP-WORLD-SANTOS-TERMINAL-BRASIL.jpg" class="d-block img-fluid imgCarrossel" alt="Foto 1">
+                <img style="max-height:500px; width: 100%;" src="<?= $base; ?>/assets/fotos/DP-WORLD-SANTOS-TERMINAL-BRASIL.jpg" class="d-block imgCarrossel" alt="Foto 1">
                 </div>
                 <div class="carousel-item">
-                    <img src="<?=$base;?>/assets/fotos/DP-WORLD-SANTOS-TERMINAL-BRASIL.jpg" class="d-block imgCarrossel" alt="Foto 1">
+                    <img style="max-height:500px; width: 100%;" src="<?= $base; ?>/assets/fotos/DP-WORLD-SANTOS-TERMINAL-BRASIL.jpg" class="d-block imgCarrossel" alt="Foto 1">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
