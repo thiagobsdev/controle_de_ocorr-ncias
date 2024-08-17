@@ -1,12 +1,12 @@
 <?= $render('header', ['usuariologado' => $usuariologado]) ?>
 
-<main style="background-color: rgba(211, 204, 204, 1)"> 
+<main style="background-color: rgba(211, 204, 204, 1)">
     <div class="container" style="background-color:  white">
-        <h1 class="" style="text-align:center;margin-bottom: 30px;padding-top:10px" >Registro de ocorrência</h1>
-        <form class="row g-3" method="POST" action="<?= $base; ?>/nova_ocorrencia">
+        <h1 class="" style="text-align:center;margin-bottom: 30px;padding-top:10px">Registros de Ocorrências</h1>
+        <form class="row g-3" class="formOcorrencia" method="POST" id="formOriginal" action="<?= $base; ?>/nova_ocorrencia">
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Equipe Operacional</label>
-                <select class="form-select" aria-label="Default select example" name="equipe">
+                <select class="form-select" aria-label="Default select example" name="equipe" id="equipe">
                     <option selected></option>
                     <option value="Apoio ao Motorista">Dragão
                     <option value="Armazém da Receita Federal">Falcão</option>
@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Forma de conhecimento</label>
-                <select class="form-select" aria-label="Default select example" name="forma_conhecimento">
+                <select class="form-select" aria-label="Default select example" name="forma_conhecimento" id="forma_conhecimento">
                     <option selected></option>
                     <option value="Denúncia">Denúncia</option>
                     <option value="Flagrante">Flagrante</option>
@@ -187,12 +187,13 @@
 
                     <!-- Tabela de envolvidos -->
                     <h3 class="mt-4">Lista de Envolvidos</h3>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="tabelaEnvolvidos ">
                         <thead>
                             <tr>
                                 <th>Nome</th>
                                 <th>Tipo de Documento</th>
                                 <th>Número do Documento</th>
+                                <th>Envolvimento</th>
                                 <th>Vínculo</th>
                                 <th>Tipo de Veículo</th>
                                 <th>Placa</th>
@@ -203,6 +204,8 @@
                             <!-- Linhas adicionadas dinamicamente -->
                         </tbody>
                     </table>
+                    <!-- Campos ocultos para os dados da tabela -->
+                    <div id="envolvidosHiddenInputs"></div>
                 </div>
             </div>
             <div class="container mt-5">
@@ -217,6 +220,7 @@
                         <option value="sim">Sim</option>
                     </select>
                 </div>
+
 
                 <!-- Formulário e tabela de ativos (escondidos por padrão) -->
                 <div id="ativoContainer" style="display: none;">
@@ -291,7 +295,7 @@
             </div>
             <div class="form-floating">
                 <textarea class="form-control" style="min-height: 200px;" placeholder="Leave a comment here"
-                    id="floatingTextarea" name="descricao" ></textarea>
+                    id="floatingTextarea" name="descricao"></textarea>
                 <label for="floatingTextarea">Descrição da ocorrência</label>
             </div>
             <div class="form-floating">
@@ -305,7 +309,7 @@
                     <button class="btn btn-danger w-75 fw-bold" type="submit">Cancelar</button>
                 </div>
                 <div class="col-4 d-flex justify-content-center">
-                    <button class="btn btn-success w-75 fw-bold " type="submit">Gravar</button>
+                    <button class="btn btn-success w-75 fw-bold" class="botao-enviar" type="submit" onclick="submeterFormulario()">Gravar</button>
                 </div>
             </div>
         </form>
@@ -313,6 +317,44 @@
 </main>
 <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function submeterFormulario() {
+
+
+        const formOriginal = document.querySelector('formOriginal');
+
+
+        formOriginal.forEach((value, key) => {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = key;
+            input.value = value;
+            formOriginal.appendChild(input);
+        })
+
+        for (let i = 0; i < envolvidosList.rows.length; i++) {
+            const cells = envolvidosList.rows[i].cells;
+
+            adicionarHiddenInput(formOriginal, `envolvidos[${i}][nome]`, cells[0].textContent);
+            adicionarHiddenInput(formOriginal, `envolvidos[${i}][tipoDocumento]`, cells[1].textContent);
+            adicionarHiddenInput(formOriginal, `envolvidos[${i}][numeroDocumento]`, cells[2].textContent);
+            adicionarHiddenInput(formOriginal, `envolvidos[${i}][envolvimento]`, cells[3].textContent);
+            adicionarHiddenInput(formOriginal, `envolvidos[${i}][vinculo]`, cells[4].textContent);
+            adicionarHiddenInput(formOriginal, `envolvidos[${i}][tipoVeiculo]`, cells[5].textContent);
+            adicionarHiddenInput(formOriginal, `envolvidos[${i}][placa]`, cells[6].textContent);
+        }
+        tempForm.submit()
+    }
+
+    function adicionarHiddenInput(form, name, value) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+    }
+</script>
+
 <script>
     function previewFotos() {
         const fotos = document.getElementById('fotoInput').files;
@@ -346,16 +388,19 @@
         veiuloPlaca.style.display = temVeiculo === 'sim' ? 'block' : 'none';
     }
 
-    function addEnvolvido() {
+    let index = 0;  function addEnvolvido() {
+
+
         const nome = document.getElementById('nome').value;
         const tipoDocumento = document.getElementById('tipoDocumento').value;
         const numeroDocumento = document.getElementById('numeroDocumento').value;
         const vinculo = document.getElementById('vinculo').value;
+        const envolvimento = document.getElementById('envolvimento').value
         const temVeiculo = document.getElementById('temVeiculo').value;
         const tipoVeiculo = temVeiculo === 'sim' ? document.getElementById('tipoVeiculo').value : '';
         const placa = temVeiculo === 'sim' ? document.getElementById('placa').value : '';
 
-        if (!nome || !tipoDocumento || !numeroDocumento || !vinculo || (temVeiculo === 'sim' && (!tipoVeiculo || !placa))) {
+        if (!nome || !tipoDocumento || !envolvimento || !numeroDocumento || !vinculo || (temVeiculo === 'sim' && (!tipoVeiculo || !placa))) {
             alert("Por favor, preencha todos os campos obrigatórios antes de adicionar.");
             return;
         }
@@ -364,15 +409,14 @@
         const row = document.createElement('tr');
 
         row.innerHTML = `
-                <td>${nome}</td>
-                <td>${tipoDocumento}</td>
-                <td>${numeroDocumento}</td>
-                <td>${vinculo}</td>
-                <td>${tipoVeiculo}</td>
-                <td>${placa}</td>
-                <td>
-                    <button type="button" class="btn btn-danger" onclick="removeEnvolvido(this)">Remover</button>
-                </td>
+               <td><input type="hidden" name="envolvidos[${index}][nome]" value="${nome}">${nome}</td>
+                <td><input type="hidden" name="envolvidos[${index}][tipo_documento]" value="${tipoDocumento}">${tipoDocumento}</td>
+                <td><input type="hidden" name="envolvidos[${index}][numero_documento]" value="${numeroDocumento}">${numeroDocumento}</td>
+                <td><input type="hidden" name="envolvidos[${index}][envolvimento]" value="${envolvimento}">${envolvimento}</td>
+                <td><input type="hidden" name="envolvidos[${index}][vinculo]" value="${vinculo}">${vinculo}</td>
+                <td><input type="hidden" name="envolvidos[${index}][tipo_veiculo]" value="${tipoVeiculo}">${tipoVeiculo}</td>
+                <td><input type="hidden" name="envolvidos[${index}][placa]" value="${placa}">${placa}</td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removerEnvolvido(this)">Remover</button></td>
             `;
 
         envolvidosList.appendChild(row);
@@ -386,6 +430,12 @@
         toggleVeiculoFields();
         document.getElementById('tipoVeiculo').value = '';
         document.getElementById('placa').value = '';
+
+        // Adiciona a nova linha na tabela
+        envolvidosList.appendChild(row);
+
+        // Incrementa o índice
+        index++;
     }
 
     function removeEnvolvido(button) {
@@ -393,6 +443,7 @@
         row.parentNode.removeChild(row);
     }
 </script>
+
 <script>
     function toggleEnvolvidosFields() {
         const temEnvolvido = document.getElementById('temEnvolvido').value;

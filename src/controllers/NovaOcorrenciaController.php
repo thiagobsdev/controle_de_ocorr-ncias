@@ -3,8 +3,11 @@
 namespace src\controllers;
 
 use \core\Controller;
+use DateTime;
 use \src\handlers\LoginHandler;
 use \src\handlers\NovaOcorrenciaHandler;
+use \src\handlers\EnvolvidoHandler;
+use src\models\Envolvido;
 use \src\models\Usuario;
 
 class NovaOcorrenciaController extends Controller
@@ -49,14 +52,16 @@ class NovaOcorrenciaController extends Controller
         $forma_conhecimento =  filter_input(INPUT_POST, 'forma_conhecimento', FILTER_SANITIZE_SPECIAL_CHARS);
         $data_ocorrencia =  filter_input(INPUT_POST, 'data_ocorrencia');
         $hora_ocorrencia =  filter_input(INPUT_POST, 'hora_ocorrencia');
-        $titulo =  filter_input(INPUT_POST, 'area');
-        $area =  filter_input(INPUT_POST, 'equipe');
+        $titulo =  filter_input(INPUT_POST, 'titulo');
+        $area =  filter_input(INPUT_POST, 'area');
         $local =  filter_input(INPUT_POST, 'local');
         $tipo_natureza =  filter_input(INPUT_POST, 'tipo_natureza');
         $natureza =  filter_input(INPUT_POST, 'natureza');
         $descricao =  filter_input(INPUT_POST, 'descricao');
         $acoes =  filter_input(INPUT_POST, 'acoes');
         $id_usuario = $this->usuarioLogado;
+        $envolvidos = $_POST['envolvidos'];
+
 
         if (
             $equipe &&
@@ -70,7 +75,7 @@ class NovaOcorrenciaController extends Controller
             $natureza &&
             $descricao
         ) {
-            NovaOcorrenciaHandler::addOcorrencia(
+            $id_ocorrencia = NovaOcorrenciaHandler::addOcorrencia(
                 $equipe,
                 $forma_conhecimento,
                 $data_ocorrencia,
@@ -83,7 +88,10 @@ class NovaOcorrenciaController extends Controller
                 $descricao,
                 $acoes,
                 $id_usuario['id']
+                
+
             );
+            EnvolvidoHandler::addEnvolvidos( $id_ocorrencia, $envolvidos);
             $_SESSION['flash'] = "Ocorrencia cadastrada com sucesso!";
             $this->redirect('/nova_ocorrencia');
         } else {
@@ -91,7 +99,6 @@ class NovaOcorrenciaController extends Controller
             $this->redirect('/nova_ocorrencia');
         }
     }
-
 
 
     public function getUsuarioLogado()

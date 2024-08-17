@@ -2,14 +2,19 @@
 
 namespace src\handlers;
 
+use PDO;
 use \src\models\Ocorrencia;
+use \src\models\Envolvido;
 
 
 class NovaOcorrenciaHandler
 {
 
 
+
     public static function addOcorrencia(
+
+
         $equipe,
         $forma_conhecimento,
         $data_ocorrencia,
@@ -21,10 +26,14 @@ class NovaOcorrenciaHandler
         $natureza,
         $descricao,
         $acoes,
-        $id_usuario
+        $id_usuario,
+       
     ) {
 
-        Ocorrencia::insert([
+        
+        
+    
+        $insertQuery = Ocorrencia::insert([
             'equipe' => $equipe,
             'forma_conhecimento' => $forma_conhecimento,
             'data_ocorrencia' => $data_ocorrencia,
@@ -38,5 +47,10 @@ class NovaOcorrenciaHandler
             'acoes' => $acoes,
             'id_usuario' => $id_usuario,
         ])->execute();
+
+        return $insertQuery;
+        
+
+        
     }
 }
