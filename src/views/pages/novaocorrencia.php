@@ -256,6 +256,8 @@
                             <!-- Linhas adicionadas dinamicamente -->
                         </tbody>
                     </table>
+                    <!-- Campos ocultos para os dados da tabela -->
+                    <div id="AtivosHiddenInputs"></div>
                 </div>
             </div>
             <div class="container mt-5">
@@ -343,6 +345,14 @@
             adicionarHiddenInput(formOriginal, `envolvidos[${i}][tipoVeiculo]`, cells[5].textContent);
             adicionarHiddenInput(formOriginal, `envolvidos[${i}][placa]`, cells[6].textContent);
         }
+
+        for (let i = 0; i < ativosList.rows.length; i++) {
+            const cells = ativosList.rows[i].cells;
+
+            adicionarHiddenInput(formOriginal, `ativos[${i}][tipoAtivo]`, cells[0].textContent);
+            adicionarHiddenInput(formOriginal, `ativos[${i}][idAtivo]`, cells[1].textContent);
+           
+        }
         tempForm.submit()
     }
 
@@ -355,30 +365,7 @@
     }
 </script>
 
-<script>
-    function previewFotos() {
-        const fotos = document.getElementById('fotoInput').files;
-        const carrosselFotos = document.getElementById('carrosselFotos');
-        carrosselFotos.innerHTML = ''; // Limpa o carrossel existente
 
-        if (fotos.length > 0) {
-            document.getElementById('fotoCarrosselContainer').style.display = 'block';
-
-            for (let i = 0; i < fotos.length; i++) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const imgElement = document.createElement('div');
-                    imgElement.className = 'carousel-item' + (i === 0 ? ' active' : '');
-                    imgElement.innerHTML = `<img src="${event.target.result}" class="d-block w-100" alt="Foto ${i + 1}">`;
-                    carrosselFotos.appendChild(imgElement);
-                }
-                reader.readAsDataURL(fotos[i]);
-            }
-        } else {
-            document.getElementById('fotoCarrosselContainer').style.display = 'none';
-        }
-    }
-</script>
 <script>
     function toggleVeiculoFields() {
         const temVeiculo = document.getElementById('temVeiculo').value;
@@ -388,7 +375,9 @@
         veiuloPlaca.style.display = temVeiculo === 'sim' ? 'block' : 'none';
     }
 
-    let index = 0;  function addEnvolvido() {
+    let indexEnvolvido = 0;
+
+    function addEnvolvido() {
 
 
         const nome = document.getElementById('nome').value;
@@ -409,13 +398,13 @@
         const row = document.createElement('tr');
 
         row.innerHTML = `
-               <td><input type="hidden" name="envolvidos[${index}][nome]" value="${nome}">${nome}</td>
-                <td><input type="hidden" name="envolvidos[${index}][tipo_documento]" value="${tipoDocumento}">${tipoDocumento}</td>
-                <td><input type="hidden" name="envolvidos[${index}][numero_documento]" value="${numeroDocumento}">${numeroDocumento}</td>
-                <td><input type="hidden" name="envolvidos[${index}][envolvimento]" value="${envolvimento}">${envolvimento}</td>
-                <td><input type="hidden" name="envolvidos[${index}][vinculo]" value="${vinculo}">${vinculo}</td>
-                <td><input type="hidden" name="envolvidos[${index}][tipo_veiculo]" value="${tipoVeiculo}">${tipoVeiculo}</td>
-                <td><input type="hidden" name="envolvidos[${index}][placa]" value="${placa}">${placa}</td>
+               <td><input type="hidden" name="envolvidos[${indexEnvolvido}][nome]" value="${nome}">${nome}</td>
+                <td><input type="hidden" name="envolvidos[${indexEnvolvido}][tipo_documento]" value="${tipoDocumento}">${tipoDocumento}</td>
+                <td><input type="hidden" name="envolvidos[${indexEnvolvido}][numero_documento]" value="${numeroDocumento}">${numeroDocumento}</td>
+                <td><input type="hidden" name="envolvidos[${indexEnvolvido}][envolvimento]" value="${envolvimento}">${envolvimento}</td>
+                <td><input type="hidden" name="envolvidos[${indexEnvolvido}][vinculo]" value="${vinculo}">${vinculo}</td>
+                <td><input type="hidden" name="envolvidos[${indexEnvolvido}][tipo_veiculo]" value="${tipoVeiculo}">${tipoVeiculo}</td>
+                <td><input type="hidden" name="envolvidos[${indexEnvolvido}][placa]" value="${placa}">${placa}</td>
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="removerEnvolvido(this)">Remover</button></td>
             `;
 
@@ -435,7 +424,7 @@
         envolvidosList.appendChild(row);
 
         // Incrementa o índice
-        index++;
+        indexEnvolvido++;
     }
 
     function removeEnvolvido(button) {
@@ -445,17 +434,7 @@
 </script>
 
 <script>
-    function toggleEnvolvidosFields() {
-        const temEnvolvido = document.getElementById('temEnvolvido').value;
-        const envolvidoContainer = document.getElementById('envolvidoContainer');
-        envolvidoContainer.style.display = temEnvolvido === 'sim' ? 'block' : 'none';
-    }
-
-    function toggleAtivoFields() {
-        const temAtivo = document.getElementById('temAtivo').value;
-        const ativoContainer = document.getElementById('ativoContainer');
-        ativoContainer.style.display = temAtivo === 'sim' ? 'block' : 'none';
-    }
+    let indexAtivo = 0;
 
     function addAtivo() {
         const tipoAtivo = document.getElementById('tipoAtivo').value;
@@ -470,8 +449,8 @@
         const row = document.createElement('tr');
 
         row.innerHTML = `
-                <td>${tipoAtivo}</td>
-                <td>${idAtivo}</td>
+                <td><input type="hidden" name="ativos[${indexAtivo}][tipoAtivo]" value="${tipoAtivo}">${tipoAtivo}</td>
+                <td><input type="hidden" name="ativos[${indexAtivo}][idAtivo]" value="${idAtivo}">${idAtivo}</td>
                 <td>
                     <button type="button" class="btn btn-danger" onclick="removeAtivo(this)">Remover</button>
                 </td>
@@ -482,7 +461,24 @@
         // Limpa os campos após adicionar
         document.getElementById('tipoAtivo').value = '';
         document.getElementById('idAtivo').value = '';
+
+        // Incrementa o índice
+        indexAtivo++;
     }
+
+    function toggleEnvolvidosFields() {
+        const temEnvolvido = document.getElementById('temEnvolvido').value;
+        const envolvidoContainer = document.getElementById('envolvidoContainer');
+        envolvidoContainer.style.display = temEnvolvido === 'sim' ? 'block' : 'none';
+    }
+
+    function toggleAtivoFields() {
+        const temAtivo = document.getElementById('temAtivo').value;
+        const ativoContainer = document.getElementById('ativoContainer');
+        ativoContainer.style.display = temAtivo === 'sim' ? 'block' : 'none';
+    }
+
+
 
     function removeAtivo(button) {
         const row = button.parentNode.parentNode;
@@ -548,6 +544,31 @@
 
         // Atualiza o contador de arquivos após remoção
         document.getElementById('fileCount').textContent = items.length;
+    }
+</script>
+
+<script>
+    function previewFotos() {
+        const fotos = document.getElementById('fotoInput').files;
+        const carrosselFotos = document.getElementById('carrosselFotos');
+        carrosselFotos.innerHTML = ''; // Limpa o carrossel existente
+
+        if (fotos.length > 0) {
+            document.getElementById('fotoCarrosselContainer').style.display = 'block';
+
+            for (let i = 0; i < fotos.length; i++) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imgElement = document.createElement('div');
+                    imgElement.className = 'carousel-item' + (i === 0 ? ' active' : '');
+                    imgElement.innerHTML = `<img src="${event.target.result}" class="d-block w-100" alt="Foto ${i + 1}">`;
+                    carrosselFotos.appendChild(imgElement);
+                }
+                reader.readAsDataURL(fotos[i]);
+            }
+        } else {
+            document.getElementById('fotoCarrosselContainer').style.display = 'none';
+        }
     }
 </script>
 

@@ -4,6 +4,7 @@ namespace src\controllers;
 
 use \core\Controller;
 use DateTime;
+use src\handlers\AtivosHandler;
 use \src\handlers\LoginHandler;
 use \src\handlers\NovaOcorrenciaHandler;
 use \src\handlers\EnvolvidoHandler;
@@ -61,9 +62,11 @@ class NovaOcorrenciaController extends Controller
         $acoes =  filter_input(INPUT_POST, 'acoes');
         $id_usuario = $this->usuarioLogado;
         $envolvidos = $_POST['envolvidos'];
+        $ativos = $_POST['ativos'];
 
+       
 
-        if (
+       if (
             $equipe &&
             $forma_conhecimento &&
             $data_ocorrencia &&
@@ -88,16 +91,22 @@ class NovaOcorrenciaController extends Controller
                 $descricao,
                 $acoes,
                 $id_usuario['id']
-                
+
 
             );
-            EnvolvidoHandler::addEnvolvidos( $id_ocorrencia, $envolvidos);
+            if ($id_ocorrencia && !empty($envolvidos)) {
+                EnvolvidoHandler::addEnvolvidos($id_ocorrencia, $envolvidos);
+            }
+            if ($id_ocorrencia && !empty($ativos)) {
+                AtivosHandler::addAtivos($id_ocorrencia, $ativos);
+            }
+
             $_SESSION['flash'] = "Ocorrencia cadastrada com sucesso!";
             $this->redirect('/nova_ocorrencia');
         } else {
             $_SESSION['flash'] = "Preencha os campos!";
             $this->redirect('/nova_ocorrencia');
-        }
+        } 
     }
 
 

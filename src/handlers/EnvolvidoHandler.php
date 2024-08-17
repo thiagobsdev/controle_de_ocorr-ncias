@@ -10,8 +10,6 @@ use \src\models\Envolvido;
 class EnvolvidoHandler
 {
 
-
-
     public static function addEnvolvidos( $id_ocorrencia, $envolvidos) {
 
         foreach ($envolvidos as $envolvido) {
