@@ -13,8 +13,8 @@ $router->get('/cadastro', 'CadastroController@cadastro');
 $router->post('/cadastro', 'CadastroController@cadastroAction');
 $router->get('/alterar_senha', 'CadastroController@alterarSenha');
 
-$router->get('/nova_ocorrencia', 'NovaOcorrenciaController@cadastrarOcorrencia');
-$router->post('/nova_ocorrencia', 'NovaOcorrenciaController@cadastrarOcorrenciaAction');
+$router->get('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrencia');
+$router->post('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrenciaAction');
 
 
 

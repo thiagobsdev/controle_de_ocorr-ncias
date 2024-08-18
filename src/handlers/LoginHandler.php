@@ -14,13 +14,13 @@ class LoginHandler  {
             if(count($data) > 0) {
 
                 $usuarioLogado = new Usuario();
-                $usuarioLogado->setId($data['id']);
-                $usuarioLogado->setId($data['nome']);
-                $usuarioLogado->setId($data['email']);
-                $usuarioLogado->setId($data['senha']);
-                $usuarioLogado->setId($data['nivel']);
-                $usuarioLogado->setId($data['token']);
-                $usuarioLogado->setId($data['status']);
+                $usuarioLogado->id = $data['id'];
+                $usuarioLogado->nome = $data['nome'];
+                $usuarioLogado->email = $data['email'];
+                $usuarioLogado->senha = $data['senha'];
+                $usuarioLogado->nivel = $data['nivel'];
+                $usuarioLogado->token = $data['token'];
+                $usuarioLogado->status = $data['status'];
 
                 return $usuarioLogado; 
             }

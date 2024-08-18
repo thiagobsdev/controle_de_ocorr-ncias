@@ -6,12 +6,11 @@ use \core\Controller;
 use DateTime;
 use src\handlers\AtivosHandler;
 use \src\handlers\LoginHandler;
-use \src\handlers\NovaOcorrenciaHandler;
+use \src\handlers\OcorrenciaHandler;
 use \src\handlers\EnvolvidoHandler;
-use src\models\Envolvido;
 use \src\models\Usuario;
 
-class NovaOcorrenciaController extends Controller
+class OcorrenciaController extends Controller
 {
 
     private $usuarioLogado;
@@ -64,9 +63,9 @@ class NovaOcorrenciaController extends Controller
         $envolvidos = $_POST['envolvidos'];
         $ativos = $_POST['ativos'];
 
-       
 
-       if (
+
+        if (
             $equipe &&
             $forma_conhecimento &&
             $data_ocorrencia &&
@@ -78,7 +77,7 @@ class NovaOcorrenciaController extends Controller
             $natureza &&
             $descricao
         ) {
-            $id_ocorrencia = NovaOcorrenciaHandler::addOcorrencia(
+            $id_ocorrencia = OcorrenciaHandler::addOcorrencia(
                 $equipe,
                 $forma_conhecimento,
                 $data_ocorrencia,
@@ -106,8 +105,10 @@ class NovaOcorrenciaController extends Controller
         } else {
             $_SESSION['flash'] = "Preencha os campos!";
             $this->redirect('/nova_ocorrencia');
-        } 
+        }
     }
+
+   
 
 
     public function getUsuarioLogado()

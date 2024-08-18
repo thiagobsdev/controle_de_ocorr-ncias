@@ -4,6 +4,7 @@ namespace src\controllers;
 use \core\Controller;
 use \src\models\Usuario;
 use \src\handlers\LoginHandler;
+use \src\handlers\OcorrenciaHandler;
 
 class HomeController extends Controller {
 
@@ -21,9 +22,13 @@ class HomeController extends Controller {
     }
 
     public function index() {
-
+        $page = intval(filter_input(INPUT_GET, 'page'));
+        $ocorrencias = OcorrenciaHandler::getAllOcorrencias( $page);
        
-        $this->render('home',['usuariologado'=> $this->usuarioLogado]);
+        $this->render('home',[
+            'usuariologado'=> $this->usuarioLogado,
+            'ocorrencias' => $ocorrencias
+    ]);
     }
 
     public function getUsuarioLogado(){

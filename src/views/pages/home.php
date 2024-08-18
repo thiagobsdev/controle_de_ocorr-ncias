@@ -9,22 +9,44 @@
         <h1 class="text-center mt-xxl-5 mt-xl-5 mt-md-5 mt-lg-5 mt-md-4 mt-5">OCORRÊNCIAS SEGURANÇA PATRIMONIAL</h1>
         <!-- Toggle para o Card de Filtros -->
         <?= $render('card_filtro_pessoas'); ?>
-        <!-- Card Ocorrências -->
-        <?= $render('card_ocorrencia'); ?>
-        <!-- Fim de card ocorrências -->
-        <?= $render('card_ocorrencia'); ?>
-        <?= $render('card_ocorrencia'); ?>
-        <?= $render('card_ocorrencia'); ?>
-        <?= $render('card_ocorrencia'); ?>
+
+        <?php foreach ($ocorrencias['ocorrencias'] as $ocorrencia): ?>
+
+            <!-- Card Ocorrências -->
+            <?= $render('card_ocorrencia', [
+                'dados' => $ocorrencia,
+            ]) ?>
+
+        <?php endforeach; ?>
+
+
+
 
         <!-- Paginação -->
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-                <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Próximo</a></li>
+                <!-- Link para a página anterior -->
+                <li class="page-item <?php if ( $ocorrencias['paginaAtual']  <= 1) {
+                                            echo 'disabled';
+                                        } ?>">
+                    <a class="page-link" href="<?=$base; ?>/?page=<?php $ocorrencias['paginaAtual'] - 1; ?>">Anterior</a>
+                </li>
+
+                <!-- Links para as páginas dentro do intervalo definido -->
+                <?php for ($i = 0; $i < $ocorrencias['totalDePaginas']; $i++): ?>
+                    <li class="page-item <?php if ($i == $ocorrencias['paginaAtual']) {
+                                                echo 'active';
+                                            } ?>">
+                        <a class="page-link" href="<?=$base; ?>/?page=<?=$i;?>"><?php echo $i+1; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <!-- Link para a próxima página -->
+                <li class="page-item <?php if ($ocorrencias['paginaAtual'] >= $ocorrencias['totalDePaginas'] ) {
+                                            echo 'disabled';
+                                        } ?>">
+                    <a class="page-link" href="<?=$base; ?>/?page=<?php echo $ocorrencias['paginaAtual'] + 1; ?>">Próximo</a>
+                </li>
             </ul>
         </nav>
         <!-- Modal de Visualização PDF -->
@@ -47,7 +69,7 @@
         </div>
 
         <!-- Modal de Edição -->
-       <?=$render('modal_nota') ?>
+        <?= $render('modal_nota') ?>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -100,19 +122,19 @@
             }
         });
     </script>
-    
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.getElementById('toggleSidebar').addEventListener('click', function() {
-        document.getElementById('sidebar').classList.toggle('collapsed');
-        document.getElementById('content').classList.toggle('collapsed');
-    });
-</script>
-<script>
-    
-</script>
-</body>
 
-</html>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('content').classList.toggle('collapsed');
+        });
+    </script>
+    <script>
+
+    </script>
+    </body>
+
+    </html>
