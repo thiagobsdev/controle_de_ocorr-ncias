@@ -98,8 +98,8 @@
         <div id="<?= $dados->id ;?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php foreach($dados->fotosOcorrencias as $foto ): ?>
-                <div class="carousel-item active">
-                    <img src="<?= $foto->url ;?>" class="d-block w-100" alt="...">
+                <div class="carousel-item active d-flex justify-content-center" style = "background-color: rgb(202,198,202);">
+                    <img src="<?= $foto->url ;?>" class="d-block " alt="<?= $foto->nome ;?>" style = "max-height: 700px; object-fit: cover;">
                 </div>
                 <?php endforeach; ;?>    
             </div>

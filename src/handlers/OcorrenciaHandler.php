@@ -54,7 +54,7 @@ class OcorrenciaHandler
     {
         $porPagina = 30;
         $ocorrenciasLista = Ocorrencia::select()
-            ->orderBy('hora_ocorrencia', 'desc', 'data_ocorrencia', 'desc')
+            ->orderBy('data_ocorrencia', 'desc', 'hora_ocorrencia', 'desc')
             ->page($page, $porPagina)
             ->get();
 
