@@ -95,33 +95,23 @@
 
         <!-- Fotos -->
         <h6>Fotos:</h6>
-        <?php if (!empty($dados->fotosOcorrencias)) : ?>
-
-            <div id="<?= $dados->id; ?>" class="carousel slide bg-black bg-opacity-75" data-bs-ride="carousel">
-
-                <div class="carousel-inner">
-                    <?php $primeiraImagem = true; ?>
-                    <?php foreach ($dados->fotosOcorrencias as $foto):
-                        $activeClass = $primeiraImagem ? 'active' : '';
-                        $primeiraImagem = false; ?>
-                        <div class="carousel-item <?= " " . $activeClass ?>">
-                            <img style="max-height:500px; width: 100%;" src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->url; ?>">
-                        </div>
-                    <?php endforeach; ?>
+        <div id="<?= $dados->id ;?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php foreach($dados->fotosOcorrencias as $foto ): ?>
+                <div class="carousel-item active">
+                    <img src="<?= $foto->url ;?>" class="d-block w-100" alt="...">
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="<?= $dados->id; ?>" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="<?= $dados->id; ?>" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                <?php endforeach; ;?>    
             </div>
-
-        <?php else : ?>
-            <p>Sem fotos anexadas nesta ocorrencia.</p>
-        <?php endif; ?>
+            <button class="carousel-control-prev" type="button" data-bs-target="#<?= $dados->id ;?>"  data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#<?= $dados->id ;?>" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
 
 
     </div>
