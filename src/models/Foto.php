@@ -2,12 +2,13 @@
 namespace src\models;
 use \core\Model;
 
-class Ativo extends Model {
+class Foto extends Model {
 
     public $id;
-    public $tipo_ativo;
-    public $id_ativo;
+    public $nome;
+    public $url;
     public $id_ocorrencia;
+    public $id_usuario;
 
     
    

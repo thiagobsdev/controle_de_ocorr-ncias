@@ -18,5 +18,7 @@ $router->post('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrenciaActio
 
 
 
+
+
 //$router->get('/sair');
 

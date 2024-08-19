@@ -2,7 +2,6 @@
 
 namespace src\handlers;
 
-use PDO;
 
 use \src\models\Ativo;
 

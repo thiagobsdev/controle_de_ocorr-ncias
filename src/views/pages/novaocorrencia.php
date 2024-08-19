@@ -3,7 +3,7 @@
 <main style="background-color: rgba(211, 204, 204, 1)">
     <div class="container" style="background-color:  white">
         <h1 class="" style="text-align:center;margin-bottom: 30px;padding-top:10px">Registros de Ocorrências</h1>
-        <form class="row g-3" class="formOcorrencia" method="POST" id="formOriginal" action="<?= $base; ?>/nova_ocorrencia">
+        <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formOriginal" action="<?= $base; ?>/nova_ocorrencia">
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Equipe Operacional</label>
                 <select class="form-select" aria-label="Default select example" name="equipe" id="equipe">
@@ -267,7 +267,7 @@
                 <div class="mb-3">
                     <label for="fotoInput" class="form-label">Selecione as fotos (JPG, JPEG ou PNG)</label>
                     <input type="file" class="form-control" id="fotoInput" multiple onchange="previewFotos()"
-                        accept=".jpg, .jpeg, .png" placeholder="">
+                        accept=".jpg, .jpeg, .png" placeholder="" name="fotos[]">
                 </div>
 
                 <!-- Exibe o número de arquivos selecionados -->
@@ -325,7 +325,6 @@
 
         const formOriginal = document.querySelector('formOriginal');
 
-
         formOriginal.forEach((value, key) => {
             const input = document.createElement("input");
             input.type = "hidden";
@@ -351,9 +350,10 @@
 
             adicionarHiddenInput(formOriginal, `ativos[${i}][tipoAtivo]`, cells[0].textContent);
             adicionarHiddenInput(formOriginal, `ativos[${i}][idAtivo]`, cells[1].textContent);
-           
+
         }
-        tempForm.submit()
+
+        formOriginal.submit()
     }
 
     function adicionarHiddenInput(form, name, value) {
@@ -508,6 +508,7 @@
                     carrosselFotos.appendChild(imgElement);
                 }
                 reader.readAsDataURL(fotos[i]);
+
             }
         } else {
             document.getElementById('fotoCarrosselContainer').style.display = 'none';
@@ -547,30 +548,7 @@
     }
 </script>
 
-<script>
-    function previewFotos() {
-        const fotos = document.getElementById('fotoInput').files;
-        const carrosselFotos = document.getElementById('carrosselFotos');
-        carrosselFotos.innerHTML = ''; // Limpa o carrossel existente
 
-        if (fotos.length > 0) {
-            document.getElementById('fotoCarrosselContainer').style.display = 'block';
-
-            for (let i = 0; i < fotos.length; i++) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const imgElement = document.createElement('div');
-                    imgElement.className = 'carousel-item' + (i === 0 ? ' active' : '');
-                    imgElement.innerHTML = `<img src="${event.target.result}" class="d-block w-100" alt="Foto ${i + 1}">`;
-                    carrosselFotos.appendChild(imgElement);
-                }
-                reader.readAsDataURL(fotos[i]);
-            }
-        } else {
-            document.getElementById('fotoCarrosselContainer').style.display = 'none';
-        }
-    }
-</script>
 
 
 

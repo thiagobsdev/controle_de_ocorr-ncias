@@ -3,11 +3,12 @@
 namespace src\controllers;
 
 use \core\Controller;
-use DateTime;
+
 use src\handlers\AtivosHandler;
 use \src\handlers\LoginHandler;
 use \src\handlers\OcorrenciaHandler;
 use \src\handlers\EnvolvidoHandler;
+use \src\handlers\FotosHandler;
 use \src\models\Usuario;
 
 class OcorrenciaController extends Controller
@@ -62,6 +63,7 @@ class OcorrenciaController extends Controller
         $id_usuario = $this->usuarioLogado;
         $envolvidos = $_POST['envolvidos'];
         $ativos = $_POST['ativos'];
+        $arquivosFotos = $_FILES['fotos'];
 
 
 
@@ -99,8 +101,11 @@ class OcorrenciaController extends Controller
             if ($id_ocorrencia && !empty($ativos)) {
                 AtivosHandler::addAtivos($id_ocorrencia, $ativos);
             }
+            if (count($arquivosFotos['name']) > 0 && $id_ocorrencia ) {
+                FotosHandler::addFotos($arquivosFotos,  $data_ocorrencia, $id_ocorrencia, $id_usuario['id'] ) ;       
+            }
 
-            $_SESSION['flash'] = "Ocorrencia cadastrada com sucesso!";
+                $_SESSION['flash'] = "Ocorrencia cadastrada com sucesso!";
             $this->redirect('/nova_ocorrencia');
         } else {
             $_SESSION['flash'] = "Preencha os campos!";
@@ -108,7 +113,7 @@ class OcorrenciaController extends Controller
         }
     }
 
-   
+
 
 
     public function getUsuarioLogado()

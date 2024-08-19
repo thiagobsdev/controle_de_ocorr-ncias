@@ -21,52 +21,65 @@
         <!-- Informações do Ativo -->
 
         <h6>Ativos:</h6>
-        <table class="table table-bordered ">
-            <thead>
-                <tr>
-                    <th>Tipo de ativo</th>
-                    <th>Identificação do ativo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Veículo</td>
-                    <td>ABC-1234</td>
 
-                </tr>
-            </tbody>
-        </table>
+        <?php if (!empty($dados->ativosLista)) : ?>
+            <table class="table table-dark table-striped ">
+                <thead>
+                    <tr>
+                        <th>Tipo de ativo</th>
+                        <th>Identificação do ativo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($dados->ativosLista as $ativo): ?>
+                        <tr>
+                            <td><?= $ativo->tipo_ativo; ?></td>
+                            <td><?= $ativo->id_ativo; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else : ?>
+            <p>A lista de ativos está vazia.</p>
+        <?php endif; ?>
+
+
 
         <!-- Se houver envolvidos -->
         <h6>Envolvidos:</h6>
-        <table class="table table-bordered ">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Tipo de Documento</th>
-                    <th>Número do Documento</th>
-                    <th>Vínculo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>João da Silva</td>
-                    <td>RG</td>
-                    <td>123456789</td>
-                    <td>Funcionário</td>
-                </tr>
-                <tr>
-                    <td>Maria Oliveira</td>
-                    <td>CPF</td>
-                    <td>987654321</td>
-                    <td>Testemunha</td>
-                </tr>
-            </tbody>
-        </table>
+
+        <?php if (!empty($dados->envolvidosLista)) : ?>
+            <table class="table table-primary table-striped ">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tipo de Documento</th>
+                        <th>Número do Documento</th>
+                        <th>Vínculo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($dados->envolvidosLista as $envolvido): ?>
+                        <tr>
+                            <td><?= $envolvido->nome; ?></td>
+                            <td><?= $envolvido->tipo_de_documento; ?></td>
+                            <td><?= $envolvido->numero_documento; ?></td>
+                            <td><?= $envolvido->vinculo; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else : ?>
+            <p>A lista de envolvidos está vazia.</p>
+        <?php endif; ?>
+
+
+
 
         <!-- Descrição da Ocorrência -->
         <h6>Descrição da ocorrência:</h6>
-        <p class="card-text"><?=nl2br($dados->descricao) . " "; ?>.</p>
+        <p class="card-text"><?= nl2br($dados->descricao) . " "; ?>.</p>
 
         <!-- Ações Tomadas -->
         <h6 class="">Ações Tomadas:</h6>
@@ -82,23 +95,34 @@
 
         <!-- Fotos -->
         <h6>Fotos:</h6>
-        <div id="carouselExample1" class="carousel slide bg-black bg-opacity-75" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img style="max-height:500px; width: 100%;" src="<?= $base; ?>/assets/fotos/DP-WORLD-SANTOS-TERMINAL-BRASIL.jpg" class="d-block imgCarrossel" alt="Foto 1">
+        <?php if (!empty($dados->fotosOcorrencias)) : ?>
+
+            <div id="<?= $dados->id; ?>" class="carousel slide bg-black bg-opacity-75" data-bs-ride="carousel">
+
+                <div class="carousel-inner">
+                    <?php $primeiraImagem = true; ?>
+                    <?php foreach ($dados->fotosOcorrencias as $foto):
+                        $activeClass = $primeiraImagem ? 'active' : '';
+                        $primeiraImagem = false; ?>
+                        <div class="carousel-item <?= " " . $activeClass ?>">
+                            <img style="max-height:500px; width: 100%;" src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->url; ?>">
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-                <div class="carousel-item">
-                    <img style="max-height:500px; width: 100%;" src="<?= $base; ?>/assets/fotos/DP-WORLD-SANTOS-TERMINAL-BRASIL.jpg" class="d-block imgCarrossel" alt="Foto 1">
-                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="<?= $dados->id; ?>" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="<?= $dados->id; ?>" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample1" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
+
+        <?php else : ?>
+            <p>Sem fotos anexadas nesta ocorrencia.</p>
+        <?php endif; ?>
+
+
     </div>
 </div>

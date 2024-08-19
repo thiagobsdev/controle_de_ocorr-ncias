@@ -4,32 +4,35 @@
 
 <div class="d-flex">
 
-    <div class="container my-5">
+    <div class="container-xxl my-5">
+
 
         <h1 class="text-center mt-xxl-5 mt-xl-5 mt-md-5 mt-lg-5 mt-md-4 mt-5">OCORRÊNCIAS SEGURANÇA PATRIMONIAL</h1>
         <!-- Toggle para o Card de Filtros -->
         <?= $render('card_filtro_pessoas'); ?>
 
-        <?php foreach ($ocorrencias['ocorrencias'] as $ocorrencia): ?>
+        <div class="row">
+            <div class="col">
+                <?php foreach ($ocorrencias['ocorrencias'] as $ocorrencia): ?>
 
-            <!-- Card Ocorrências -->
-            <?= $render('card_ocorrencia', [
-                'dados' => $ocorrencia,
-            ]) ?>
+                    <!-- Card Ocorrências -->
+                    <?= $render('card_ocorrencia', [
+                        'dados' => $ocorrencia,
+                    ]) ?>
 
-        <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
 
-
-
+        </div>
 
         <!-- Paginação -->
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <!-- Link para a página anterior -->
-                <li class="page-item <?php if ( $ocorrencias['paginaAtual']  <= 1) {
+                <li class="page-item <?php if ($ocorrencias['paginaAtual']  <= 1) {
                                             echo 'disabled';
                                         } ?>">
-                    <a class="page-link" href="<?=$base; ?>/?page=<?php $ocorrencias['paginaAtual'] - 1; ?>">Anterior</a>
+                    <a class="page-link" href="<?= $base; ?>/?page=<?php $ocorrencias['paginaAtual'] - 1; ?>">Anterior</a>
                 </li>
 
                 <!-- Links para as páginas dentro do intervalo definido -->
@@ -37,15 +40,15 @@
                     <li class="page-item <?php if ($i == $ocorrencias['paginaAtual']) {
                                                 echo 'active';
                                             } ?>">
-                        <a class="page-link" href="<?=$base; ?>/?page=<?=$i;?>"><?php echo $i+1; ?></a>
+                        <a class="page-link" href="<?= $base; ?>/?page=<?= $i; ?>"><?php echo $i + 1; ?></a>
                     </li>
                 <?php endfor; ?>
 
                 <!-- Link para a próxima página -->
-                <li class="page-item <?php if ($ocorrencias['paginaAtual'] >= $ocorrencias['totalDePaginas'] ) {
+                <li class="page-item <?php if ($ocorrencias['paginaAtual'] >= $ocorrencias['totalDePaginas']) {
                                             echo 'disabled';
                                         } ?>">
-                    <a class="page-link" href="<?=$base; ?>/?page=<?php echo $ocorrencias['paginaAtual'] + 1; ?>">Próximo</a>
+                    <a class="page-link" href="<?= $base; ?>/?page=<?php echo $ocorrencias['paginaAtual'] + 1; ?>">Próximo</a>
                 </li>
             </ul>
         </nav>
