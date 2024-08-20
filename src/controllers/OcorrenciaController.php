@@ -28,6 +28,9 @@ class OcorrenciaController extends Controller
     }
 
 
+
+
+
     public function cadastrarOcorrencia()
     {
 
@@ -101,11 +104,11 @@ class OcorrenciaController extends Controller
             if ($id_ocorrencia && !empty($ativos)) {
                 AtivosHandler::addAtivos($id_ocorrencia, $ativos);
             }
-            if (count($arquivosFotos['name']) > 0 && $id_ocorrencia ) {
-                FotosHandler::addFotos($arquivosFotos,  $data_ocorrencia, $id_ocorrencia, $id_usuario['id'] ) ;       
+            if (count($arquivosFotos['name']) > 0 && $id_ocorrencia) {
+                FotosHandler::addFotos($arquivosFotos,  $data_ocorrencia, $id_ocorrencia, $id_usuario['id']);
             }
 
-                $_SESSION['flash'] = "Ocorrencia cadastrada com sucesso!";
+            $_SESSION['flash'] = "Ocorrencia cadastrada com sucesso!";
             $this->redirect('/nova_ocorrencia');
         } else {
             $_SESSION['flash'] = "Preencha os campos!";

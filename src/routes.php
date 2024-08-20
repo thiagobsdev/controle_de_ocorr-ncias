@@ -13,8 +13,14 @@ $router->get('/cadastro', 'CadastroController@cadastro');
 $router->post('/cadastro', 'CadastroController@cadastroAction');
 $router->get('/alterar_senha', 'CadastroController@alterarSenha');
 
+
+
 $router->get('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrencia');
 $router->post('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrenciaAction');
+
+$router->get('/imprimir/{id}','HomeController@imprimirOcorrencia');
+
+
 
 
 

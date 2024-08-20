@@ -21,6 +21,7 @@ class Ocorrencia extends Model {
      public $envolvidosLista;
      public $ativosLista;
      public $fotosOcorrencias;
+     public $comentarios;
      
 
 

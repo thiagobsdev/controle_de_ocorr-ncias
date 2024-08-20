@@ -5,8 +5,12 @@
             <strong>Registrado por:</strong> <?= " " . $dados->usuario->nome . " "; ?>
         </div>
         <div>
-            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal">Adicionar nota</button>
-            <button class="btn btn-sm btn-secondary print-btn" data-id="001" data-data="12/08/2024" data-hora="14:30" data-bs-toggle="modal" data-bs-target="#printModal">Imprimir PDF</button>
+            <?php if ($usuarioLogado['nivel'] === "Administrador") :  ?>
+                
+                <a href="<?= $base; ?>/excluir/<?= $dados->id; ?>" class="btn btn-danger">Excluir</a>
+                <a href="<?= $base; ?>/editar/<?= $dados->id; ?>" class="btn btn-sm btn-warning">editar</a>
+            <?php endif; ?>
+            <a href="<?= $base;?>/imprimir/<?= $dados->id;?>" class="btn btn-sm btn-secondary print-btn">Imprimir PDF</a>
         </div>
     </div>
     <div class="card-body ocorrencia-content" id="ocorrencia-001">
@@ -44,8 +48,6 @@
             <p>A lista de ativos está vazia.</p>
         <?php endif; ?>
 
-
-
         <!-- Se houver envolvidos -->
         <h6>Envolvidos:</h6>
 
@@ -74,9 +76,6 @@
             <p>A lista de envolvidos está vazia.</p>
         <?php endif; ?>
 
-
-
-
         <!-- Descrição da Ocorrência -->
         <h6>Descrição da ocorrência:</h6>
         <p class="card-text"><?= nl2br($dados->descricao) . " "; ?>.</p>
@@ -85,34 +84,24 @@
         <h6 class="">Ações Tomadas:</h6>
         <p class="card-text"><?= nl2br($dados->acoes) . " "; ?>.</p>
 
-        <strong>Observações:</strong>
-        <p class="card-text mt-3"> Thiago Barbosa dos Santos escreveu em 14/08/2024 às 00:00 <br> Observações da ocorrência.</p>
-        <p class="card-text"></p>
-
-        <p class="card-text mt-3"> Thiago Barbosa dos Santos escreveu em 14/08/2024 às 00:00 <br> Observações da ocorrência.</p>
-        <p class="card-text"></p>
-
-
         <!-- Fotos -->
         <h6>Fotos:</h6>
-        <div id="<?= $dados->id ;?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div id="<?= $dados->id; ?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <?php foreach($dados->fotosOcorrencias as $foto ): ?>
-                <div class="carousel-item active d-flex justify-content-center" style = "background-color: rgb(202,198,202);">
-                    <img src="<?= $foto->url ;?>" class="d-block " alt="<?= $foto->nome ;?>" style = "max-height: 700px; object-fit: cover;">
-                </div>
-                <?php endforeach; ;?>    
+                <?php foreach ($dados->fotosOcorrencias as $foto): ?>
+                    <div class="carousel-item active d-flex justify-content-center" style="background-color: rgb(202,198,202);">
+                        <img src="<?= $foto->url; ?>" class="d-block " alt="<?= $foto->nome; ?>" style="max-height: 500px; object-fit: cover;">
+                    </div>
+                <?php endforeach;; ?>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#<?= $dados->id ;?>"  data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#<?= $dados->id; ?>" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#<?= $dados->id ;?>" data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#<?= $dados->id; ?>" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-
-
     </div>
 </div>

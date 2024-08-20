@@ -65,42 +65,16 @@ class OcorrenciaHandler
 
         $ocorrencias = [];
         foreach ($ocorrenciasLista as $ocorrenciaItem) {
-            $novaOcorrencia = new Ocorrencia();
-            $novaOcorrencia->id = $ocorrenciaItem['id'];
-            $novaOcorrencia->equipe = $ocorrenciaItem['equipe'];
-            $novaOcorrencia->forma_conhecimento = $ocorrenciaItem['forma_conhecimento'];
-            $novaOcorrencia->data_ocorrencia = $ocorrenciaItem['data_ocorrencia'];
-            $novaOcorrencia->hora_ocorrencia = $ocorrenciaItem['hora_ocorrencia'];
-            $novaOcorrencia->titulo = $ocorrenciaItem['titulo'];
-            $novaOcorrencia->area = $ocorrenciaItem['area'];
-            $novaOcorrencia->local = $ocorrenciaItem['local'];
-            $novaOcorrencia->tipo_natureza = $ocorrenciaItem['tipo_natureza'];
-            $novaOcorrencia->natureza = $ocorrenciaItem['natureza'];
-            $novaOcorrencia->descricao = $ocorrenciaItem['descricao'];
-            $novaOcorrencia->acoes = $ocorrenciaItem['acoes'];
+            $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrenciaItem);
 
             $novoUsuario = Usuario::select()->where('id', $ocorrenciaItem['id_usuario'])->one();
-            $novaOcorrencia->usuario = new Usuario();
-            $novaOcorrencia->usuario->id = $novoUsuario['id'];
-            $novaOcorrencia->usuario->nome = $novoUsuario['nome'];
+            $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
             if (count($envolvidosLista) > 0) {
                 $novaOcorrencia->envolvidosLista = [];
                 foreach ($envolvidosLista as $envolvido) {
-
-
-
-                    $novoEnvolvido = new Envolvido();
-                    $novoEnvolvido->nome = $envolvido['nome'];
-                    $novoEnvolvido->tipo_de_documento = $envolvido['tipo_de_documento'];
-                    $novoEnvolvido->numero_documento = $envolvido['numero_documento'];
-                    $novoEnvolvido->envolvimento = $envolvido['envolvimento'];
-                    $novoEnvolvido->vinculo = $envolvido['vinculo'];
-                    $novoEnvolvido->tipo_veiculo = $envolvido['tipo_veiculo'];
-                    $novoEnvolvido->placa = $envolvido['placa'];
-
-                    $novaOcorrencia->envolvidosLista[] = $novoEnvolvido;
+                    $novaOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
                 }
             }
 
@@ -108,23 +82,15 @@ class OcorrenciaHandler
             if (count($ativosLista) > 0) {
                 $novaOcorrencia->ativosLista = [];
                 foreach ($ativosLista as $ativo) {
-                    $novoAtivo = new Ativo();
-                    $novoAtivo->id = $ativo['id'];
-                    $novoAtivo->tipo_ativo = $ativo['tipo_ativo'];
-                    $novoAtivo->id_ativo = $ativo['id_ativo'];
-                    $novaOcorrencia->ativosLista[] = $novoAtivo;
+                    $novaOcorrencia->ativosLista[] = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
                 }
             }
 
             $fotosLista = Foto::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
             if (count($fotosLista) > 0) {
                 $novaOcorrencia->fotosOcorrencias = [];
-                foreach ($fotosLista as $foto){
-                    $novaFoto = new Foto();
-                    $novaFoto->id = $foto['id'];
-                    $novaFoto->nome = $foto['nome'];
-                    $novaFoto->url = $foto['url'];
-                    $novaOcorrencia->fotosOcorrencias[] = $novaFoto;
+                foreach ($fotosLista as $foto) {
+                    $novaOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
                 }
             }
 
@@ -139,5 +105,108 @@ class OcorrenciaHandler
             'totalDePaginas' => $contagemPaginas
 
         ];
+    }
+
+    public static function getOcorrenciaById($id_ocorrencia)
+    {
+
+        $ocorrencia = Ocorrencia::select()->where('id', $id_ocorrencia)->one();
+
+        $imprimirOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrencia);
+
+        $novoUsuario = Usuario::select()->where('id', $ocorrencia['id_usuario'])->one();
+        $imprimirOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+
+        $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
+        if (count($envolvidosLista) > 0) {
+            $imprimirOcorrencia->envolvidosLista = [];
+            foreach ($envolvidosLista as $envolvido) {
+                $imprimirOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
+            }
+        }
+
+        $ativosLista = Ativo::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
+        if (count($ativosLista) > 0) {
+            $imprimirOcorrencia->ativosLista = [];
+            foreach ($ativosLista as $ativo) {
+                $imprimirOcorrencia->ativosLista[]  = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
+            }
+        }
+
+        $fotosLista = Foto::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
+        if (count($fotosLista) > 0) {
+            $imprimirOcorrencia->fotosOcorrencias = [];
+            foreach ($fotosLista as $foto) {
+                $imprimirOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
+            }
+        }
+
+        return $imprimirOcorrencia;
+    }
+
+
+    public static function arrayFotosparaObjetoFotos($arrayFotos)
+    {
+        $novaFoto = new Foto();
+        $novaFoto->id = $arrayFotos['id'];
+        $novaFoto->nome = $arrayFotos['nome'];
+        $novaFoto->url = $arrayFotos['url'];
+
+        return $novaFoto;
+    }
+
+
+
+    public static function arrayOcorrenciaParaObjetoOcorrencia($arrayOcorrencia)
+    {
+        $objetoOcorrencia = new Ocorrencia();
+        $objetoOcorrencia->id = $arrayOcorrencia['id'];
+        $objetoOcorrencia->equipe = $arrayOcorrencia['equipe'];
+        $objetoOcorrencia->forma_conhecimento = $arrayOcorrencia['forma_conhecimento'];
+        $objetoOcorrencia->data_ocorrencia = $arrayOcorrencia['data_ocorrencia'];
+        $objetoOcorrencia->hora_ocorrencia = $arrayOcorrencia['hora_ocorrencia'];
+        $objetoOcorrencia->titulo = $arrayOcorrencia['titulo'];
+        $objetoOcorrencia->area = $arrayOcorrencia['area'];
+        $objetoOcorrencia->local = $arrayOcorrencia['local'];
+        $objetoOcorrencia->tipo_natureza = $arrayOcorrencia['tipo_natureza'];
+        $objetoOcorrencia->natureza = $arrayOcorrencia['natureza'];
+        $objetoOcorrencia->descricao = $arrayOcorrencia['descricao'];
+        $objetoOcorrencia->acoes = $arrayOcorrencia['acoes'];
+
+        return $objetoOcorrencia;
+    }
+
+    public static function arrayUsuarioParaObjetoUsuario($arrayUsuario)
+    {
+        $novoUsuario = new Usuario();
+        $novoUsuario->id = $arrayUsuario['id'];
+        $novoUsuario->nome = $arrayUsuario['nome'];
+        $novoUsuario->nivel = $arrayUsuario['nivel'];
+
+        return  $novoUsuario;
+    }
+
+    public static function arrayEnvolvidoparaObjetoEnvolvido($arrayEnvolvido)
+    {
+
+        $novoEnvolvido = new Envolvido();
+        $novoEnvolvido->nome = $arrayEnvolvido['nome'];
+        $novoEnvolvido->tipo_de_documento = $arrayEnvolvido['tipo_de_documento'];
+        $novoEnvolvido->numero_documento = $arrayEnvolvido['numero_documento'];
+        $novoEnvolvido->envolvimento = $arrayEnvolvido['envolvimento'];
+        $novoEnvolvido->vinculo = $arrayEnvolvido['vinculo'];
+        $novoEnvolvido->tipo_veiculo = $arrayEnvolvido['tipo_veiculo'];
+        $novoEnvolvido->placa = $arrayEnvolvido['placa'];
+
+        return $novoEnvolvido;
+    }
+
+    public static function arrayAtivoParaObjetoAtivo($arrayAtivo)
+    {
+        $novoAtivo = new Ativo();
+        $novoAtivo->id = $arrayAtivo['id'];
+        $novoAtivo->tipo_ativo = $arrayAtivo['tipo_ativo'];
+        $novoAtivo->id_ativo = $arrayAtivo['id_ativo'];
+        return  $novoAtivo;
     }
 }

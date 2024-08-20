@@ -10,16 +10,17 @@
     <link rel="stylesheet" href="<?= $base; ?>/styles.css">
     <link rel="stylesheet" href="<?= $base; ?>/ocorrencia-css.css">
     <link rel="shortcut icon" href="<?= $base; ?>/assets/fotos/logoDP-World.ico" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    <style>
-
-    </style>
+    <script type="text/javascript">
+        const BASE = "<?= $base; ?>"
+    </script>
 </head>
 
 <body>
+
     <header class="bg-dark text-white cabecalho">
         <div class="container d-flex justify-content-center align-items-center">
             <div class="cabecalho-conteiner container-fluid">
@@ -40,12 +41,24 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Administrador
+                                    Pesquisas
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="<?= $base; ?>/cadastro">Adicionar usuário</a>
+                                    <a class="dropdown-item" href="<?= $base; ?>/cadastro">Pesquisa por envolvido</a>
+                                    <a class="dropdown-item" href="<?= $base; ?>/cadastro">Pesquisa por tipo e natureza</a>
+                                    <a class="dropdown-item" href="<?= $base; ?>/cadastro">Pesquisa por área e local</a>
                                 </div>
                             </li>
+                            <?php if ($usuariologado['nivel'] === "Administrador"): ?>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Administrador
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item" href="<?= $base; ?>/cadastro">Adicionar usuário</a>
+                                    </div>
+                                </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </nav>

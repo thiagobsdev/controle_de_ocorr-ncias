@@ -1,7 +1,6 @@
 <?= $render('header', ['usuariologado' => $usuariologado]) ?>
 
 
-
 <div class="d-flex">
 
     <div class="container-xxl my-5">
@@ -9,7 +8,7 @@
 
         <h1 class="text-center mt-xxl-5 mt-xl-5 mt-md-5 mt-lg-5 mt-md-4 mt-5">OCORRÊNCIAS SEGURANÇA PATRIMONIAL</h1>
         <!-- Toggle para o Card de Filtros -->
-        <?= $render('card_filtro_pessoas'); ?>
+        <?= $render('card_filtro_datas'); ?>
 
         <div class="row">
             <div class="col">
@@ -18,12 +17,17 @@
                     <!-- Card Ocorrências -->
                     <?= $render('card_ocorrencia', [
                         'dados' => $ocorrencia,
+                        'usuarioLogado' => $usuariologado
                     ]) ?>
+                    
 
                 <?php endforeach; ?>
             </div>
 
         </div>
+
+        <!-- Modal de Edição -->
+        <?= $render('modal_nota') ?>
 
         <!-- Paginação -->
         <nav aria-label="Page navigation example">
@@ -71,8 +75,7 @@
             </div>
         </div>
 
-        <!-- Modal de Edição -->
-        <?= $render('modal_nota') ?>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -85,30 +88,7 @@
     <script src=" jspdf.min.js "> </script>
     <script src=" html2canvas.min.js "> </script>
     <script src=" html2pdf.bundle.min.js "> </script>
-    <script>
-        document.getElementById('printBtn').addEventListener('click', function() {
-            var ocorrenciaContent = document.getElementById('ocorrenciaContent');
 
-            // Usa html2canvas para capturar a seção da ocorrência
-            html2canvas(ocorrenciaContent).then(function(canvas) {
-                var imgData = canvas.toDataURL('image/png');
-                var doc = new jspdf.jsPDF();
-
-                doc.addImage(imgData, 'PNG', 10, 10);
-                var pdfBlob = doc.output('blob');
-
-                // Mostra o PDF no modal
-                var pdfUrl = URL.createObjectURL(pdfBlob);
-                var pdfViewer = document.getElementById('pdfViewer');
-                pdfViewer.src = pdfUrl;
-
-                // Baixar o PDF
-                document.getElementById('downloadPdf').addEventListener('click', function() {
-                    doc.save('ocorrencia.pdf');
-                });
-            });
-        });
-    </script>
     <script>
         document.getElementById('toggleButton').addEventListener('click', function() {
             if (element.classList.contains('collapse')) {
