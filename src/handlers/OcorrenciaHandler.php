@@ -209,4 +209,12 @@ class OcorrenciaHandler
         $novoAtivo->id_ativo = $arrayAtivo['id_ativo'];
         return  $novoAtivo;
     }
+
+    public static function excluirOcorrencia( $id) {
+        Ocorrencia::delete()->where('id', $id)->execute();
+        Envolvido::delete()->where('id_ocorrencia', $id)->execute();
+        Ativo::delete()->where('id_ocorrencia', $id)->execute();
+        Foto::delete()->where('id_ocorrencia', $id)->execute();
+        
+    }
 }

@@ -13,9 +13,7 @@ use \src\models\Usuario;
 
 class OcorrenciaController extends Controller
 {
-
     private $usuarioLogado;
-
 
     public function __construct()
     {
@@ -26,10 +24,6 @@ class OcorrenciaController extends Controller
             $this->usuarioLogado = Usuario::select()->where('token', $_SESSION['token'])->one();
         }
     }
-
-
-
-
 
     public function cadastrarOcorrencia()
     {
@@ -116,6 +110,19 @@ class OcorrenciaController extends Controller
         }
     }
 
+    public function excluirOcorrenciaAction() {
+        $array = ['error'=> ''];
+
+        $id = intval(filter_input(INPUT_POST, 'id'));
+
+        if( $id) {
+            OcorrenciaHandler::excluirOcorrencia($id);
+            echo json_encode(['status' => 'success']);
+        }else {
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao excluir a ocorrência']);
+        }
+        
+    }
 
 
 

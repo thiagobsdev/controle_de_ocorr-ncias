@@ -130,14 +130,11 @@
                                 <select class="form-select" aria-label="Default select example" class="form-control"
                                     id="envolvimento">
                                     <option selected></option>
-                                    <option value="Integrante">Integrante</option>
-                                    <option value="Prestador de Serviço">Prestador de Serviço</option>
-                                    <option value="Visitante">Visitante
+                                    <option value="Indefinido">Indefinido</option>
+                                    <option value="Causador">Causador</option>
+                                    <option value="Testemunha">Testemunha
                                     </option>
-                                    <option value="Autoridade">Autoridade</option>
-                                    <option value="Tripulante">Tripulante</option>
-                                    <option value="Motorista">Motorista</option>
-                                    <option value="Trabalhador Avulso (OGMO)">Trabalhador Avulso (OGMO)</option>
+                                    <option value="Vitima">Vitima</option>
                                 </select>
                             </div>
                             <div class="col-md-2 mt-2">
@@ -229,7 +226,12 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="tipoAtivo" class="form-label">Tipo de Ativo</label>
-                                <input type="text" class="form-control" id="tipoAtivo" placeholder="Tipo de Ativo">
+                                <select class="form-select" id="tipoAtivo" name="tipoAtivo">
+                                    <option selected>Escolher...</option>
+                                    <option value="QC">QC</option>
+                                    <option value="RTG">RTG</option>
+                                    <option value="ITV">ITV</option>
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="idAtivo" class="form-label">ID do Ativo</label>
