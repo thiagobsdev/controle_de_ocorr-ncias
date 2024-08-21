@@ -8,9 +8,10 @@
             <?php if ($usuarioLogado['nivel'] === "Administrador") :  ?>
 
                 <button data-id="<?= $dados->id; ?>" href="<?= $base; ?>/excluir/<?= $dados->id; ?>" class="btn-excluir btn btn-danger">Excluir</button>
-                <a href="<?= $base; ?>/editar/<?= $dados->id; ?>" class="btn btn-sm btn-warning">editar</a>
+                <button style="margin-left: 10px; margin-right: 10px" class="btn btn-warning" onclick="window.location.href='<?= $base; ?>/editar/<?= $dados->id; ?>'">Editar</button>
+
             <?php endif; ?>
-            <a href="<?= $base; ?>/imprimir/<?= $dados->id; ?>" class="btn btn-sm btn-secondary print-btn">Imprimir PDF</a>
+            <button class="btn btn-secondary print-btn" onclick="window.location.href='<?= $base; ?>/imprimir/<?= $dados->id; ?>'">Imprimir PDF</button>
         </div>
     </div>
     <div class="card-body ocorrencia-content" id="ocorrencia-001">
