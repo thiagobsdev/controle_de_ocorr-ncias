@@ -19,6 +19,7 @@ $router->get('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrencia');
 $router->post('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrenciaAction');
 $router->post('/excluir', 'OcorrenciaController@excluirOcorrenciaAction');
 $router->get('/editar/{id}','OcorrenciaController@editarOcorrencia');
+$router->post('/editar','OcorrenciaController@editarOcorrenciaAction');
 
 $router->get('/imprimir/{id}','HomeController@imprimirOcorrencia');
 

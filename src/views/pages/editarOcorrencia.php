@@ -2,13 +2,13 @@
 
 <main style="background-color: rgba(211, 204, 204, 1)">
     <div class="container" style="background-color:  white">
-        <h1 class="" style="text-align:center;margin-top: 0px;margin-bottom: 40px;padding-top:10px">Edição da Ocorrência Numero: <?=$ocorrencia->id; ?></h1>
-        <input type="hidden" name="id_ocorrencia" value="<?=$ocorrencia->id;?>">
-        <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formOriginal" action="<?= $base; ?>/nova_ocorrencia">
+        <h1 class="" style="text-align:center;margin-bottom: 40px;padding-top:10px">Edição da Ocorrência Numero: <?= $ocorrencia->id; ?></h1>
+        <input type="hidden" name="id_ocorrencia" value="<?= $ocorrencia->id; ?>">
+        <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formEdit" action="<?= $base; ?>/editar">
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Equipe Operacional</label>
                 <select class="form-select" aria-label="Default select example" name="equipe" id="equipe">
-                    <option selected><?=$ocorrencia->equipe;?></option>
+                    <option selected><?= $ocorrencia->equipe; ?></option>
                     <option value="Apoio ao Motorista">Dragão
                     <option value="Armazém da Receita Federal">Falcão</option>
                     <option value="Armazém Geral 1">Leão</option>
@@ -20,7 +20,7 @@
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Forma de conhecimento</label>
                 <select class="form-select" aria-label="Default select example" name="forma_conhecimento" id="forma_conhecimento">
-                    <option selected><?=$ocorrencia->forma_conhecimento;?></option>
+                    <option selected><?= $ocorrencia->forma_conhecimento; ?></option>
                     <option value="Denúncia">Denúncia</option>
                     <option value="Flagrante">Flagrante</option>
                     <option value="Prevenção">Prevenção</option>
@@ -31,26 +31,26 @@
             <div class="d-flex row g-3">
                 <div class="col-md-6">
                     <label for="validationServer02" class="form-label">Data da ocorrência</label>
-                    <input type="date" class="form-control " id="validationServer02" value="<?=$ocorrencia->data_ocorrencia;?>" required name="data_ocorrencia">
+                    <input type="date" class="form-control " id="validationServer02" value="<?= $ocorrencia->data_ocorrencia; ?>" required name="data_ocorrencia">
                 </div>
                 <div class="col-md-6">
                     <label for="validationServerUsername" class="form-label">Hora da ocorrência</label>
                     <div class="input-group has-validation">
                         <input type="time" class="form-control " id="validationServerUsername"
                             aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required name="hora_ocorrencia"
-                            value="<?=$ocorrencia->hora_ocorrencia;?>">
+                            value="<?= $ocorrencia->hora_ocorrencia; ?>">
                     </div>
                 </div>
             </div>
             <div class="col-md-12">
                 <label for="validationServer01" class="form-label">Título</label>
-                <input type="text" class="form-control  text-break" id="validationServer01" value="<?=$ocorrencia->titulo;?>" required name="titulo">
+                <input type="text" class="form-control  text-break" id="validationServer01" value="<?= $ocorrencia->titulo; ?>" required name="titulo">
             </div>
 
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Informe a Área</label>
                 <select class="form-select" aria-label="Default select example" name="area">
-                    <option selected><?=$ocorrencia->area;?></option>
+                    <option selected><?= $ocorrencia->area; ?></option>
                     <option value="Área 1">Área 1</option>
                     <option value="Área 2">Área 2</option>
                     <option value="Área 3">Área 3</option>
@@ -62,7 +62,7 @@
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Informe o local da ocorrência</label>
                 <select class="form-select" aria-label="Default select example" name="local">
-                    <option selected><?=$ocorrencia->local;?></option>
+                    <option selected><?= $ocorrencia->local; ?></option>
                     <option value="Apoio ao Motorista">Apoio ao Motorista
                     <option value="Armazém da Receita Federal">Armazém da Receita Federal</option>
                     <option value="Armazém Geral 1">Armazém Geral 1</option>
@@ -74,7 +74,7 @@
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Tipo de natureza</label>
                 <select class="form-select" aria-label="Default select example" name="tipo_natureza">
-                    <option selected><?=$ocorrencia->tipo_natureza;?></option>
+                    <option selected><?= $ocorrencia->tipo_natureza; ?></option>
                     <option value="Falhas de tecnologia">Falhas de tecnologia</option>
                     <option value="Container">Container</option>
                     <option value="Interrupção da Operação">Interrupção da Operação</option>
@@ -86,7 +86,7 @@
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Natureza</label>
                 <select class="form-select" aria-label="Default select example" name="natureza">
-                    <option selected><?=$ocorrencia->natureza;?></option>
+                    <option selected><?= $ocorrencia->natureza; ?></option>
                     <option value="CFTV">CFTV</option>
                     <option value="Controle de acesso">Controle de acesso</option>
                     <option value="Sistema de detecção de intrusão">Sistema de detecção de intrusão</option>
@@ -98,15 +98,15 @@
             <div class="container mt-5">
                 <h2>Envolvidos</h2>
 
-                <!-- Pergunta se tem ativo -->
+                <!-- Pergunta se tem Envolvido -->
                 <div class="mb-3">
                     <label for="temEnvolvido" class="form-label">Existem pessoas envolvidas na ocorrência?</label>
                     <select class="form-select" id="temEnvolvido" onchange="toggleEnvolvidosFields()">
-                        <option value="não" selected>Não</option>
-                        <option value="sim">Sim</option>
+                        <option value="não" <?= (count($ocorrencia->envolvidosLista) > 0) ?  '' : 'selected' ?>>Não</option>
+                        <option value="sim" <?= (count($ocorrencia->envolvidosLista) > 0) ?  'selected' : '' ?>>Sim</option>
                     </select>
                 </div>
-                <div id="envolvidoContainer" style="display: none;">
+                <div id="envolvidoContainer" style="<?= (count($ocorrencia->envolvidosLista) > 0) ?  'block' : 'none' ?>">
                     <!-- Formulário para adicionar envolvido -->
                     <div class="mb-3">
                         <div class="row">
@@ -186,7 +186,7 @@
 
                     <!-- Tabela de envolvidos -->
                     <h3 class="mt-4">Lista de Envolvidos</h3>
-                    <table class="table table-bordered" id="tabelaEnvolvidos ">
+                    <table class="table table-bordered" id="tabelaEnvolvidosEdit ">
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -199,12 +199,23 @@
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="envolvidosList">
-                            <!-- Linhas adicionadas dinamicamente -->
+                        <tbody id="envolvidosListEdit">
+                            <?php if (count($ocorrencia->envolvidosLista) > 0) : ?>
+                                <?php foreach ($ocorrencia->envolvidosLista as $index => $envolvido) : ?>
+                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][nome]" value="<?= $envolvido->nome; ?>"><?= $envolvido->nome; ?></td>
+                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][tipo_documento]" value="<?= $envolvido->tipo_de_documento; ?>"><?= $envolvido->tipo_de_documento; ?></td>
+                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][numero_documento]" value="<?= $envolvido->numero_documento; ?>"><?= $envolvido->numero_documento; ?></td>
+                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][envolvimento]" value="<?= $envolvido->envolvimento; ?>"><?= $envolvido->envolvimento; ?></td>
+                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][vinculo]" value="<?= $envolvido->vinculo; ?>"><?= $envolvido->vinculo; ?></td>
+                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][tipo_veiculo]" value="<?= $envolvido->tipo_veiculo; ?>"><?= $envolvido->tipo_veiculo; ?></td>
+                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][placa]" value="<?= $envolvido->placa; ?>"><?= $envolvido->placa; ?></td>
+                                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removerEnvolvido(this)">Remover</button></td>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                     <!-- Campos ocultos para os dados da tabela -->
-                    <div id="envolvidosHiddenInputs"></div>
+                    <div id="envolvidosHiddenInputsEdit"></div>
                 </div>
             </div>
             <div class="container mt-5">
@@ -301,12 +312,12 @@
             </div>
             <div class="form-floating">
                 <textarea class="form-control" style="min-height: 200px;" placeholder="Leave a comment here"
-                    id="floatingTextarea" name="descricao" ><?=$ocorrencia->descricao?></textarea>
+                    id="floatingTextarea" name="descricao"><?= $ocorrencia->descricao ?></textarea>
                 <label for="floatingTextarea">Descrição da ocorrência</label>
             </div>
             <div class="form-floating">
                 <textarea class="form-control" style="min-height: 200px;" placeholder="Leave a comment here"
-                    id="floatingTextarea" name="acoes"><?=$ocorrencia->acoes?></textarea>
+                    id="floatingTextarea" name="acoes"><?= $ocorrencia->acoes ?></textarea>
                 <label for="floatingTextarea">Ações imediatas</label>
             </div>
 
@@ -327,37 +338,39 @@
     function submeterFormulario() {
 
 
-        const formOriginal = document.querySelector('formOriginal');
+        const formEdit = document.querySelector('formEdit');
 
-        formOriginal.forEach((value, key) => {
+        formEdit.forEach((value, key) => {
             const input = document.createElement("input");
             input.type = "hidden";
             input.name = key;
             input.value = value;
-            formOriginal.appendChild(input);
+            formEdit.appendChild(input);
         })
 
-        for (let i = 0; i < envolvidosList.rows.length; i++) {
-            const cells = envolvidosList.rows[i].cells;
+        for (let i = 0; i < envolvidosListEdit.rows.length; i++) {
+            const cells = envolvidosListEdit.rows[i].cells;
 
-            adicionarHiddenInput(formOriginal, `envolvidos[${i}][nome]`, cells[0].textContent);
-            adicionarHiddenInput(formOriginal, `envolvidos[${i}][tipoDocumento]`, cells[1].textContent);
-            adicionarHiddenInput(formOriginal, `envolvidos[${i}][numeroDocumento]`, cells[2].textContent);
-            adicionarHiddenInput(formOriginal, `envolvidos[${i}][envolvimento]`, cells[3].textContent);
-            adicionarHiddenInput(formOriginal, `envolvidos[${i}][vinculo]`, cells[4].textContent);
-            adicionarHiddenInput(formOriginal, `envolvidos[${i}][tipoVeiculo]`, cells[5].textContent);
-            adicionarHiddenInput(formOriginal, `envolvidos[${i}][placa]`, cells[6].textContent);
+            console.log(envolvidosListEdit.rows.length)
+
+            adicionarHiddenInput(formEdit, `envolvidos[${i}][nome]`, cells[0].textContent);
+            adicionarHiddenInput(formEdit, `envolvidos[${i}][tipoDocumento]`, cells[1].textContent);
+            adicionarHiddenInput(formEdit, `envolvidos[${i}][numeroDocumento]`, cells[2].textContent);
+            adicionarHiddenInput(formEdit, `envolvidos[${i}][envolvimento]`, cells[3].textContent);
+            adicionarHiddenInput(formEdit, `envolvidos[${i}][vinculo]`, cells[4].textContent);
+            adicionarHiddenInput(formEdit, `envolvidos[${i}][tipoVeiculo]`, cells[5].textContent);
+            adicionarHiddenInput(formEdit, `envolvidos[${i}][placa]`, cells[6].textContent);
         }
 
         for (let i = 0; i < ativosList.rows.length; i++) {
             const cells = ativosList.rows[i].cells;
 
-            adicionarHiddenInput(formOriginal, `ativos[${i}][tipoAtivo]`, cells[0].textContent);
-            adicionarHiddenInput(formOriginal, `ativos[${i}][idAtivo]`, cells[1].textContent);
+            adicionarHiddenInput(formEdit, `ativos[${i}][tipoAtivo]`, cells[0].textContent);
+            adicionarHiddenInput(formEdit, `ativos[${i}][idAtivo]`, cells[1].textContent);
 
         }
 
-        formOriginal.submit()
+        formEdit.submit()
     }
 
     function adicionarHiddenInput(form, name, value) {
@@ -379,7 +392,7 @@
         veiuloPlaca.style.display = temVeiculo === 'sim' ? 'block' : 'none';
     }
 
-    let indexEnvolvido = 0;
+    let indexEnvolvido = envolvidosListEdit.rows.length;
 
     function addEnvolvido() {
 
@@ -398,10 +411,10 @@
             return;
         }
 
-        const envolvidosList = document.getElementById('envolvidosList');
+        const envolvidosListEdit = document.getElementById('envolvidosListEdit');
         const row = document.createElement('tr');
 
-        row.innerHTML = `
+        row.innerHTML += `
                <td><input type="hidden" name="envolvidos[${indexEnvolvido}][nome]" value="${nome}">${nome}</td>
                 <td><input type="hidden" name="envolvidos[${indexEnvolvido}][tipo_documento]" value="${tipoDocumento}">${tipoDocumento}</td>
                 <td><input type="hidden" name="envolvidos[${indexEnvolvido}][numero_documento]" value="${numeroDocumento}">${numeroDocumento}</td>
@@ -412,7 +425,7 @@
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="removerEnvolvido(this)">Remover</button></td>
             `;
 
-        envolvidosList.appendChild(row);
+        envolvidosListEdit.appendChild(row);
 
         // Limpa os campos após adicionar
         document.getElementById('nome').value = '';
@@ -425,7 +438,7 @@
         document.getElementById('placa').value = '';
 
         // Adiciona a nova linha na tabela
-        envolvidosList.appendChild(row);
+        envolvidosListEdit.appendChild(row);
 
         // Incrementa o índice
         indexEnvolvido++;

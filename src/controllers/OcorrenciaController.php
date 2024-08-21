@@ -136,6 +136,13 @@ class OcorrenciaController extends Controller
 
     }
 
+    public function editarOcorrenciaAction( ) {
+        $envolvidos = $_POST['envolvidos'];
+
+        print_r($envolvidos );
+
+    }
+
 
 
     public function getUsuarioLogado()
