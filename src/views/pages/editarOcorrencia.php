@@ -2,12 +2,13 @@
 
 <main style="background-color: rgba(211, 204, 204, 1)">
     <div class="container" style="background-color:  white">
-        <h1 class="" style="text-align:center;margin-bottom: 30px;padding-top:10px">Registros de Ocorrências</h1>
+        <h1 class="" style="text-align:center;margin-top: 0px;margin-bottom: 40px;padding-top:10px">Edição da Ocorrência Numero: <?=$ocorrencia->id; ?></h1>
+        <input type="hidden" name="id_ocorrencia" value="<?=$ocorrencia->id;?>">
         <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formOriginal" action="<?= $base; ?>/nova_ocorrencia">
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Equipe Operacional</label>
                 <select class="form-select" aria-label="Default select example" name="equipe" id="equipe">
-                    <option selected></option>
+                    <option selected><?=$ocorrencia->equipe;?></option>
                     <option value="Apoio ao Motorista">Dragão
                     <option value="Armazém da Receita Federal">Falcão</option>
                     <option value="Armazém Geral 1">Leão</option>
@@ -19,7 +20,7 @@
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Forma de conhecimento</label>
                 <select class="form-select" aria-label="Default select example" name="forma_conhecimento" id="forma_conhecimento">
-                    <option selected></option>
+                    <option selected><?=$ocorrencia->forma_conhecimento;?></option>
                     <option value="Denúncia">Denúncia</option>
                     <option value="Flagrante">Flagrante</option>
                     <option value="Prevenção">Prevenção</option>
@@ -30,25 +31,26 @@
             <div class="d-flex row g-3">
                 <div class="col-md-6">
                     <label for="validationServer02" class="form-label">Data da ocorrência</label>
-                    <input type="date" class="form-control " id="validationServer02" value="" required name="data_ocorrencia">
+                    <input type="date" class="form-control " id="validationServer02" value="<?=$ocorrencia->data_ocorrencia;?>" required name="data_ocorrencia">
                 </div>
                 <div class="col-md-6">
                     <label for="validationServerUsername" class="form-label">Hora da ocorrência</label>
                     <div class="input-group has-validation">
                         <input type="time" class="form-control " id="validationServerUsername"
-                            aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required name="hora_ocorrencia">
+                            aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required name="hora_ocorrencia"
+                            value="<?=$ocorrencia->hora_ocorrencia;?>">
                     </div>
                 </div>
             </div>
             <div class="col-md-12">
                 <label for="validationServer01" class="form-label">Título</label>
-                <input type="text" class="form-control  text-break" id="validationServer01" value="" required name="titulo">
+                <input type="text" class="form-control  text-break" id="validationServer01" value="<?=$ocorrencia->titulo;?>" required name="titulo">
             </div>
 
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Informe a Área</label>
                 <select class="form-select" aria-label="Default select example" name="area">
-                    <option selected></option>
+                    <option selected><?=$ocorrencia->area;?></option>
                     <option value="Área 1">Área 1</option>
                     <option value="Área 2">Área 2</option>
                     <option value="Área 3">Área 3</option>
@@ -60,7 +62,7 @@
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Informe o local da ocorrência</label>
                 <select class="form-select" aria-label="Default select example" name="local">
-                    <option selected></option>
+                    <option selected><?=$ocorrencia->local;?></option>
                     <option value="Apoio ao Motorista">Apoio ao Motorista
                     <option value="Armazém da Receita Federal">Armazém da Receita Federal</option>
                     <option value="Armazém Geral 1">Armazém Geral 1</option>
@@ -72,7 +74,7 @@
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Tipo de natureza</label>
                 <select class="form-select" aria-label="Default select example" name="tipo_natureza">
-                    <option selected></option>
+                    <option selected><?=$ocorrencia->tipo_natureza;?></option>
                     <option value="Falhas de tecnologia">Falhas de tecnologia</option>
                     <option value="Container">Container</option>
                     <option value="Interrupção da Operação">Interrupção da Operação</option>
@@ -84,7 +86,7 @@
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Natureza</label>
                 <select class="form-select" aria-label="Default select example" name="natureza">
-                    <option selected></option>
+                    <option selected><?=$ocorrencia->natureza;?></option>
                     <option value="CFTV">CFTV</option>
                     <option value="Controle de acesso">Controle de acesso</option>
                     <option value="Sistema de detecção de intrusão">Sistema de detecção de intrusão</option>
@@ -299,12 +301,12 @@
             </div>
             <div class="form-floating">
                 <textarea class="form-control" style="min-height: 200px;" placeholder="Leave a comment here"
-                    id="floatingTextarea" name="descricao"></textarea>
+                    id="floatingTextarea" name="descricao" ><?=$ocorrencia->descricao?></textarea>
                 <label for="floatingTextarea">Descrição da ocorrência</label>
             </div>
             <div class="form-floating">
                 <textarea class="form-control" style="min-height: 200px;" placeholder="Leave a comment here"
-                    id="floatingTextarea" name="acoes"></textarea>
+                    id="floatingTextarea" name="acoes"><?=$ocorrencia->acoes?></textarea>
                 <label for="floatingTextarea">Ações imediatas</label>
             </div>
 
