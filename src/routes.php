@@ -18,6 +18,7 @@ $router->get('/alterar_senha', 'CadastroController@alterarSenha');
 $router->get('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrencia');
 $router->post('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrenciaAction');
 $router->post('/excluir', 'OcorrenciaController@excluirOcorrenciaAction');
+$router->get('/editar/{id}','OcorrenciaController@editarOcorrencia');
 
 $router->get('/imprimir/{id}','HomeController@imprimirOcorrencia');
 

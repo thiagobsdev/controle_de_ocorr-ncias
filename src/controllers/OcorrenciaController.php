@@ -124,6 +124,18 @@ class OcorrenciaController extends Controller
         
     }
 
+    public function editarOcorrencia($id ) {
+        $idOcorrencia = intval($id['id']);
+
+        $ocorrencia = OcorrenciaHandler::getOcorrenciaById($idOcorrencia);
+
+        $this->render('editarOcorrencia', [
+            'usuariologado' => $this->usuarioLogado,
+            'ocorrencia' => $ocorrencia
+        ]);
+
+    }
+
 
 
     public function getUsuarioLogado()
