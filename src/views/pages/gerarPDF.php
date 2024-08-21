@@ -1,3 +1,18 @@
+<?php
+
+
+
+
+use Dompdf\Dompdf;
+
+$dompdf = new Dompdf(['enable_remote' => true])
+
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -17,22 +32,47 @@
     <script type="text/javascript">
         const BASE = "<?= $base; ?>"
     </script>
+    <style>
+        #pdf-content {
+            width: 210mm;
+            /* Largura de uma página A4 */
+
+            padding: 10mm;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #pdf-images {
+            display: none;
+            /* Ocultar imagens na visualização principal */
+        }
+    </style>
 </head>
 
-<div class="d-flex">
+<div class="d-flex" id="pdf-content">
 
-    <div class="container-xxl my-5">
+    <div class="container-sm my-5">
         <div class="card mb-4 mb-3">
-            <div class="">
-                <div style=" width: 100%; display:flex; justify-content: center; align-content: center; ">
-                    <img src="<?= $base; ?>/assets/fotos/logoDPWPDF.png" alt="" style="margin-left: 30px">
-                    <h3 style="font-size: 24px;width: 100%; margin-top: 10px ; margin-left: 300px"> REGISTRO  DE OCORRÊNCIA <BR>SEGURANÇA PATRIMONIAL</h3>
-                    <div style=" width: 100%; display: flex; align-items: end ;flex-direction:column; margin-right: 10px; margin-top: 10px" >
-                        <div>
-                            <strong>ID:</strong><?= " " . $ocorrencia->id . " "; ?>| <strong>Data:</strong> <?= " " . DateTime::createFromFormat('Y-m-d', $ocorrencia->data_ocorrencia)->format('d/m/Y') . " "; ?> |
-                            <strong>Hora:</strong> <?= " " . $ocorrencia->hora_ocorrencia . " "; ?>
+            <div class="container">
+                <div style=" width: 100%; display:flex; justify-content:center; align-content: center; ">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <img src="<?= $base; ?>/assets/fotos/logoDPWPDF.png" alt="" style="margin-left: 30px">
+                            </div>
+                            <div class="col">
+                                <h3 style="font-size: 24px; text-align:center;width: 100%; margin-top: 10px ;"> REGISTRO DE OCORRÊNCIA SEGURANÇA PATRIMONIAL</h3>
+                            </div>
+                            <div class="col">
+                                <div style=" width: 100%; display: flex; align-items: end ;flex-direction:column; margin-right: 10px; margin-top: 10px">
+                                    <div>
+                                        <strong id="ocorrencia-id" data-id="<?= $ocorrencia->id; ?>">ID:</strong><?= " " . $ocorrencia->id . " "; ?>| <strong>Data:</strong> <?= " " . DateTime::createFromFormat('Y-m-d', $ocorrencia->data_ocorrencia)->format('d/m/Y') . " "; ?> |
+                                        <strong>Hora:</strong> <?= " " . $ocorrencia->hora_ocorrencia . " "; ?>
+                                    </div>
+                                    <strong>Registrado por:</strong> <?= " " . $ocorrencia->usuario->nome . " "; ?>
+                                </div>
+                            </div>
                         </div>
-                        <strong>Registrado por:</strong> <?= " " . $ocorrencia->usuario->nome . " "; ?>
                     </div>
                 </div>
             </div>
@@ -48,7 +88,6 @@
                 <!-- Informações do Ativo -->
 
                 <h6>Ativos:</h6>
-
                 <?php if (!empty($ocorrencia->ativosLista)) : ?>
                     <table class="table table-light table-striped ">
                         <thead>
@@ -110,18 +149,63 @@
 
                 <!-- Fotos -->
                 <h6>Fotos:</h6>
-                <div class="container" style="display: grid; grid-template-columns: auto auto;grid-column-gap: 10px;grid-row-gap: 10px;">
-                    <img style="width:100%" src="https://s2-g1.glbimg.com/HZv14k4yxIpeHe6I9175CP68wNM=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/O/6/7KT8s9SAGsADGtMJQf4g/24824-18-web-ban-foto-destaque-dpw-santos-1400x788px.png" alt="">
-                    <img style="width:100%" src="https://s2-g1.glbimg.com/HZv14k4yxIpeHe6I9175CP68wNM=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/O/6/7KT8s9SAGsADGtMJQf4g/24824-18-web-ban-foto-destaque-dpw-santos-1400x788px.png" alt="">
-                    <img style="width:100%" src="https://s2-g1.glbimg.com/HZv14k4yxIpeHe6I9175CP68wNM=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/O/6/7KT8s9SAGsADGtMJQf4g/24824-18-web-ban-foto-destaque-dpw-santos-1400x788px.png" alt="">
-                    <img style="width:100%" src="https://s2-g1.glbimg.com/HZv14k4yxIpeHe6I9175CP68wNM=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/O/6/7KT8s9SAGsADGtMJQf4g/24824-18-web-ban-foto-destaque-dpw-santos-1400x788px.png" alt="">
-                    <img style="width:100%" src="https://s2-g1.glbimg.com/HZv14k4yxIpeHe6I9175CP68wNM=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/O/6/7KT8s9SAGsADGtMJQf4g/24824-18-web-ban-foto-destaque-dpw-santos-1400x788px.png" alt="">
-                    <img style="width:100%" src="https://s2-g1.glbimg.com/HZv14k4yxIpeHe6I9175CP68wNM=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/O/6/7KT8s9SAGsADGtMJQf4g/24824-18-web-ban-foto-destaque-dpw-santos-1400x788px.png" alt="">
-
-
+                <div class="container" id="pdf-images" style="display: grid; grid-template-columns: auto auto;grid-column-gap: 10px;grid-row-gap: 10px;">
+                    <?php foreach ($ocorrencia->fotosOcorrencias as $foto): ?>
+                        <img style="width:100%" src="<?= $base; ?>/<?= $foto->url; ?>" alt="">
+                    <?php endforeach;; ?>
                 </div>
 
             </div>
         </div>
     </div>
 </div>
+<!-- Inclua as bibliotecas antes de qualquer código JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+    window.addEventListener('load', function() {
+        const element = document.getElementById('pdf-content');
+        const imagesElement = document.getElementById('pdf-images');
+        const ocorrenciaElement = document.getElementById('ocorrencia-id');
+        const ocorrenciaId = ocorrenciaElement.getAttribute('data-id');
+
+        html2canvas(element, {
+            scale: 2, // Aumenta a escala para melhor resolução
+            useCORS: true, // Caso esteja utilizando imagens de domínios externos
+        }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+
+            // Acesso correto ao jsPDF
+            const {
+                jsPDF
+            } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4'); // Orientação retrato, unidade em milímetros, formato A4
+
+            const imgWidth = 210;
+            const pageHeight = 297;
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            let heightLeft = imgHeight;
+
+            let position = 0;
+
+
+
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            const nomeArquivo = `ocorrencia_${ocorrenciaId}.pdf`;
+
+            pdf.save(nomeArquivo);
+        }).catch(error => console.error('Erro ao gerar o PDF:', error));
+    });
+</script>
+</body>
+
+</html>
