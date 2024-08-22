@@ -54,7 +54,8 @@ class OcorrenciaHandler
     {
         $porPagina = 30;
         $ocorrenciasLista = Ocorrencia::select()
-            ->orderBy('data_ocorrencia', 'desc', 'hora_ocorrencia', 'desc')
+            ->orderBy('data_ocorrencia', 'desc')
+            ->orderBy('hora_ocorrencia', 'desc')
             ->page($page, $porPagina)
             ->get();
 
@@ -112,36 +113,40 @@ class OcorrenciaHandler
 
         $ocorrencia = Ocorrencia::select()->where('id', $id_ocorrencia)->one();
 
-        $imprimirOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrencia);
+        if ($ocorrencia) {
+            $imprimirOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrencia);
 
-        $novoUsuario = Usuario::select()->where('id', $ocorrencia['id_usuario'])->one();
-        $imprimirOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            $novoUsuario = Usuario::select()->where('id', $ocorrencia['id_usuario'])->one();
+            $imprimirOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
 
-        $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
-        if (count($envolvidosLista) > 0) {
-            $imprimirOcorrencia->envolvidosLista = [];
-            foreach ($envolvidosLista as $envolvido) {
-                $imprimirOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
+            $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
+            if (count($envolvidosLista) > 0) {
+                $imprimirOcorrencia->envolvidosLista = [];
+                foreach ($envolvidosLista as $envolvido) {
+                    $imprimirOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
+                }
             }
-        }
 
-        $ativosLista = Ativo::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
-        if (count($ativosLista) > 0) {
-            $imprimirOcorrencia->ativosLista = [];
-            foreach ($ativosLista as $ativo) {
-                $imprimirOcorrencia->ativosLista[]  = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
+            $ativosLista = Ativo::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
+            if (count($ativosLista) > 0) {
+                $imprimirOcorrencia->ativosLista = [];
+                foreach ($ativosLista as $ativo) {
+                    $imprimirOcorrencia->ativosLista[]  = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
+                }
             }
-        }
 
-        $fotosLista = Foto::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
-        if (count($fotosLista) > 0) {
-            $imprimirOcorrencia->fotosOcorrencias = [];
-            foreach ($fotosLista as $foto) {
-                $imprimirOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
+            $fotosLista = Foto::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
+            if (count($fotosLista) > 0) {
+                $imprimirOcorrencia->fotosOcorrencias = [];
+                foreach ($fotosLista as $foto) {
+                    $imprimirOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
+                }
             }
-        }
 
-        return $imprimirOcorrencia;
+            return $imprimirOcorrencia;
+        } else {
+            return false;
+        }
     }
 
 
@@ -236,19 +241,19 @@ class OcorrenciaHandler
     ) {
 
         $insertQuery = Ocorrencia::update()
-            ->set('equipe', $equipe )
-            ->set('forma_conhecimento', $forma_conhecimento )
-            ->set('data_ocorrencia', $data_ocorrencia )
+            ->set('equipe', $equipe)
+            ->set('forma_conhecimento', $forma_conhecimento)
+            ->set('data_ocorrencia', $data_ocorrencia)
             ->set('hora_ocorrencia', $hora_ocorrencia)
-            ->set('titulo', $titulo )
+            ->set('titulo', $titulo)
             ->set('area', $area)
             ->set('local', $local)
             ->set('tipo_natureza', $tipo_natureza)
             ->set('natureza', $natureza)
-            ->set('descricao', $descricao )
-            ->set('acoes', $acoes )
+            ->set('descricao', $descricao)
+            ->set('acoes', $acoes)
             ->where('id', $id_ocorrencia)
-        ->execute();
+            ->execute();
 
         return $insertQuery;
     }

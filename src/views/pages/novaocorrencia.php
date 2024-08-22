@@ -280,7 +280,7 @@
                 <!-- Carrossel de fotos (escondido por padrão) -->
                 <div id="fotoCarrosselContainer" class="mt-4" style="display: none;">
                     <h3>Visualizar Fotos</h3>
-                    <div id="fotoCarrossel" class="carousel slide" data-bs-ride="carousel">
+                    <div id="fotoCarrossel" class="carousel slide carousel-fade" data-bs-ride="carousel">
                         <div class="carousel-inner" id="carrosselFotos">
                             <!-- Fotos adicionadas dinamicamente -->
                         </div>
@@ -319,8 +319,7 @@
         </form>
     </div>
 </main>
-<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     function submeterFormulario() {
 
@@ -501,9 +500,12 @@
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imgElement = document.createElement('div');
-                    imgElement.className = 'carousel-item' + (i === 0 ? ' active' : '');
+                    imgElement.className = 'd-flex justify-content-center carousel-item' + (i === 0 ? ' active' : '')
+                    imgElement.style.flexDirection = "column"
+                    imgElement.style.backgroundColor = "rgb(202,198,202)"
+                    imgElement.style.textAlign = "center"
                     imgElement.innerHTML = `
-                    <img src="${event.target.result}" class="d-block w-100" alt="Foto ${i + 1}">
+                    <img src="${event.target.result}" class="d-block  " alt="Foto ${i + 1}" style="max-height: 500px; object-fit: cover;" >
                     <div class="delete-btn-container"  style="text-align:center; margin-top: 10px;">
                         <button type="button" class="btn btn-danger" onclick="removeFoto(this)">Excluir</button>
                     </div>
@@ -550,10 +552,6 @@
         document.getElementById('fileCount').textContent = items.length;
     }
 </script>
-
-
-
-
 
 </body>
 

@@ -98,7 +98,7 @@
                 <div class="carousel-inner">
                     <?php foreach ($dados->fotosOcorrencias as $foto): ?>
                         <div class="carousel-item active d-flex justify-content-center" style="background-color: rgb(202,198,202);">
-                            <img src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->nome; ?>" style="max-height: 500px; object-fit: cover;">
+                            <img src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->nome; ?>" style="max-height: 500px" >
                         </div>
                     <?php endforeach;; ?>
                 </div>

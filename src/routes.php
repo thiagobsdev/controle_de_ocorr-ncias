@@ -24,6 +24,10 @@ $router->post('/excluir', 'OcorrenciaController@excluirOcorrenciaAction');
 $router->get('/editar/{id}','OcorrenciaController@editarOcorrencia');
 $router->post('/editar/{id}','OcorrenciaController@editarOcorrenciaAction');
 
+$router->get('/pesquisaId','PesquisaController@pesquisarPorId');
+
+
+
 $router->get('/imprimir/{id}','HomeController@imprimirOcorrencia');
 
 

@@ -249,8 +249,6 @@ class OcorrenciaController extends Controller
         }
     }
 
-
-
     public function getUsuarioLogado()
     {
         return $this->usuarioLogado;
