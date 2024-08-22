@@ -155,7 +155,7 @@ class OcorrenciaController extends Controller
         $ativosLista = isset($_POST['ativos']) ? $_POST['ativos'] : null;
         $arquivosFotos = isset($_FILES['fotos']) ? $_FILES['fotos'] : null;
    
-
+     
         if (
             $id_ocorrencia &&
             $equipe &&
@@ -192,12 +192,9 @@ class OcorrenciaController extends Controller
             if ($id_ocorrencia && !empty($envolvidos)) {
                 AtivosHandler::atualizarEnvolvidosEdit($id_ocorrencia, $ativosLista);
             }
-
-            $page = intval(filter_input(INPUT_GET, 'page'));
-            $ocorrencias = OcorrenciaHandler::getAllOcorrencias($page);
-
-            $this->redirect('/');
-        }
+           
+            $this->redirect('/'); 
+        } 
     }
 
 
