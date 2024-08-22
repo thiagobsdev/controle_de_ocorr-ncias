@@ -124,6 +124,25 @@ class OcorrenciaController extends Controller
         }
     }
 
+    public function excluirEnvolvidoOcorrenciaAction()
+    {
+        $array = ['error' => ''];
+
+        $id = intval(filter_input(INPUT_POST, 'id'));
+
+        if ($id) {
+            EnvolvidoHandler::excluirEnvolvido($id);
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao excluir a ocorrência']);
+        }
+    }
+
+
+
+
+
+
     public function editarOcorrencia($id)
     {
         $idOcorrencia = intval($id['id']);

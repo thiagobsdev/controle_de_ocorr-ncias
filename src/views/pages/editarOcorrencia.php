@@ -211,7 +211,7 @@
                                         <td><input type="hidden" name="envolvidos[<?= $index; ?>][vinculo]" value="<?= $envolvido->vinculo; ?>"><?= $envolvido->vinculo; ?></td>
                                         <td><input type="hidden" name="envolvidos[<?= $index; ?>][tipo_veiculo]" value="<?= $envolvido->tipo_veiculo; ?>"><?= $envolvido->tipo_veiculo; ?></td>
                                         <td><input type="hidden" name="envolvidos[<?= $index; ?>][placa]" value="<?= $envolvido->placa; ?>"><?= $envolvido->placa; ?></td>
-                                        <td><button type="button" class="btn btn-danger btn-sm" onclick="removerEnvolvido(this)">Remover</button></td>
+                                        <td><button data-id="<?= $envolvido->id; ?>"  type="button" class="btn btn-danger btn-sm btn-excluirEnvolvido">Remover</button></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -309,29 +309,29 @@
                 // Verifica se $ocorrencia->fotos está vazio
                 $temFotos = !empty($ocorrencia->fotosOcorrencias);
                 ?>
-                <div id="fotoCarrosselContainer" class="mt-4" >
+                <div id="fotoCarrosselContainer" class="mt-4">
                     <h3>Visualizar Fotos</h3>
 
-                        <div  id="<?= $ocorrencia->id; ?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                            <div class="carousel-inner" id="carrosselFotos" >
-                                <?php foreach ($ocorrencia->fotosOcorrencias as $foto): ?>
-                                    <div class="carousel-item active d-flex justify-content-center" style="background-color: rgb(202,198,202);flex-direction:column">
-                                        <img src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->nome; ?>" style="max-height: 500px; object-fit: cover;">
-                                        <div class="delete-btn-container" style="text-align:center; margin-top: 10px;">
-                                            <button type="button" class="btn btn-danger" onclick="removeFoto(this)">Excluir</button>
-                                        </div>
+                    <div id="<?= $ocorrencia->id; ?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-inner" id="carrosselFotos">
+                            <?php foreach ($ocorrencia->fotosOcorrencias as $foto): ?>
+                                <div class="carousel-item active d-flex justify-content-center" style="background-color: rgb(202,198,202);flex-direction:column">
+                                    <img src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->nome; ?>" style="max-height: 500px; object-fit: cover;">
+                                    <div class="delete-btn-container" style="text-align:center; margin-top: 10px;">
+                                        <button type="button" class="btn btn-danger" onclick="removeFoto(this)">Excluir</button>
                                     </div>
-                                <?php endforeach;; ?>
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#<?= $ocorrencia->id; ?>" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#<?= $ocorrencia->id; ?>" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
+                                </div>
+                            <?php endforeach;; ?>
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#<?= $ocorrencia->id; ?>" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#<?= $ocorrencia->id; ?>" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
 
                 </div>
             </div>
@@ -359,6 +359,102 @@
 </main>
 <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Modal de exclusao -->
+<div class="modal fade" id="confirmDeleteEnvolvidoModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fechaModalConfirmacaoExclusao()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Você tem certeza de que deseja excluir este envolvido da ocorrencia?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="fechaModalConfirmacaoExclusao()">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteEnvolvidoButton">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal de Confirmação -->
+<div class="modal fade" id="confirmDeleteEnvolvidoMessage" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Envolvido excluído com sucesso.
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function fechaModalConfirmacaoExclusao() {
+        $('#confirmDeleteEnvolvidoModal').modal('hide'); // fecha o modal de confirmação
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let idEnvolvido; // Variável para armazenar o ID da ocorrência
+
+        // Captura o clique no botão de exclusão
+        document.querySelectorAll('.btn-excluirEnvolvido').forEach(button => {
+            button.addEventListener('click', function() {
+                idEnvolvido = this.getAttribute('data-id'); // Captura o ID da ocorrência
+                if( idEnvolvido) {
+                    $('#confirmDeleteEnvolvidoModal').modal('show'); // Exibe o modal de confirmação
+                }
+                
+            });
+        });
+
+        // Confirmação de exclusão
+        document.getElementById('confirmDeleteEnvolvidoButton').addEventListener('click', async function() {
+            if (idEnvolvido) {
+                let data = new FormData();
+                data.append('id', idEnvolvido);
+
+                let req = await fetch(BASE + '/excluir/envolvido', {
+                    method: 'POST',
+                    body: data
+                })
+
+                let json = await req.json()
+                    .then(json => {
+                        if (json && json.status === 'success') { // Verifica se 'data' não é undefined ou null
+                            // Exibe o modal de confirmação
+                            $('#confirmDeleteEnvolvidoModal').modal('hide');
+                            $('#confirmDeleteEnvolvidoMessage').modal('show');
+
+                            // Aguarda 3 segundos e recarrega a página
+                            setTimeout(function() {
+                                $('#confirmDeleteEnvolvidoMessage').modal('hide');
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            alert('Erro ao excluir a ocorrência: ' + (json.message || 'Resposta inválida do servidor'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao excluir a ocorrência:', error);
+                        alert('Ocorreu um erro ao tentar excluir a ocorrência. Por favor, tente novamente.');
+                    });
+
+
+            }
+        });
+    });
+</script>
+
+
 <script>
     function submeterFormulario() {
 
@@ -447,7 +543,7 @@
                 <td><input type="hidden" name="envolvidos[${indexEnvolvido}][vinculo]" value="${vinculo}">${vinculo}</td>
                 <td><input type="hidden" name="envolvidos[${indexEnvolvido}][tipo_veiculo]" value="${tipoVeiculo}">${tipoVeiculo}</td>
                 <td><input type="hidden" name="envolvidos[${indexEnvolvido}][placa]" value="${placa}">${placa}</td>
-                <td><button type="button" class="btn btn-danger btn-sm" onclick="removerEnvolvido(this)">Remover</button></td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeEnvolvido(this)">Remover</button></td>
             `;
 
         envolvidosListEdit.appendChild(row);
@@ -553,7 +649,7 @@
     function previewFotos() {
         const fotos = document.getElementById('fotoInput').files;
         const carrosselFotos = document.getElementById('carrosselFotos');
-        
+
 
         if (fotos.length > 0 || <?= count($ocorrencia->fotosOcorrencias) > 0 ?>) {
             document.getElementById('fotoCarrosselContainer').style.display = 'block';
@@ -611,13 +707,6 @@
         document.getElementById('fileCount').textContent = items.length;
     }
 </script>
-
-
-</script>
-
-
-
-
 
 </body>
 

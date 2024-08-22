@@ -49,4 +49,8 @@ class EnvolvidoHandler
             }
         }
     }
+
+    public static function excluirEnvolvido($id) {
+        Envolvido::delete()->where('id', $id)->execute();
+    }
 }

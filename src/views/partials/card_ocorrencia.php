@@ -117,7 +117,7 @@
     </div>
 </div>
 
-<!-- Modal de excusao -->
+<!-- Modal de exclusao -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -168,8 +168,7 @@
             button.addEventListener('click', function() {
                 occurrenceId = this.getAttribute('data-id'); // Captura o ID da ocorrência
                 $('#confirmDeleteModal').modal('show'); // Exibe o modal de confirmação
-                console.log(occurrenceId)
-
+            
             });
         });
 
