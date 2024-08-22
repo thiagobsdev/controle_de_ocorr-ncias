@@ -110,21 +110,22 @@ class OcorrenciaController extends Controller
         }
     }
 
-    public function excluirOcorrenciaAction() {
-        $array = ['error'=> ''];
+    public function excluirOcorrenciaAction()
+    {
+        $array = ['error' => ''];
 
         $id = intval(filter_input(INPUT_POST, 'id'));
 
-        if( $id) {
+        if ($id) {
             OcorrenciaHandler::excluirOcorrencia($id);
             echo json_encode(['status' => 'success']);
-        }else {
+        } else {
             echo json_encode(['status' => 'error', 'message' => 'Erro ao excluir a ocorrência']);
         }
-        
     }
 
-    public function editarOcorrencia($id ) {
+    public function editarOcorrencia($id)
+    {
         $idOcorrencia = intval($id['id']);
 
         $ocorrencia = OcorrenciaHandler::getOcorrenciaById($idOcorrencia);
@@ -133,15 +134,64 @@ class OcorrenciaController extends Controller
             'usuariologado' => $this->usuarioLogado,
             'ocorrencia' => $ocorrencia
         ]);
-
     }
 
-    public function editarOcorrenciaAction( ) {
+    public function editarOcorrenciaAction($id)
+    {
+        $id_ocorrencia =  intval($id['id']);
+        $equipe =  filter_input(INPUT_POST, 'equipe');
+        $forma_conhecimento =  filter_input(INPUT_POST, 'forma_conhecimento', FILTER_SANITIZE_SPECIAL_CHARS);
+        $data_ocorrencia =  filter_input(INPUT_POST, 'data_ocorrencia');
+        $hora_ocorrencia =  filter_input(INPUT_POST, 'hora_ocorrencia');
+        $titulo =  filter_input(INPUT_POST, 'titulo');
+        $area =  filter_input(INPUT_POST, 'area');
+        $local =  filter_input(INPUT_POST, 'local');
+        $tipo_natureza =  filter_input(INPUT_POST, 'tipo_natureza');
+        $natureza =  filter_input(INPUT_POST, 'natureza');
+        $descricao =  filter_input(INPUT_POST, 'descricao');
+        $acoes =  filter_input(INPUT_POST, 'acoes');
+        $id_usuario = $this->usuarioLogado;
+        $envolvidos = $_POST['envolvidos'];
         $ativos = $_POST['ativos'];
+        $arquivosFotos = $_FILES['fotos'];
 
-        print_r($ativos );
+        if (
+            $id_ocorrencia &&
+            $equipe &&
+            $forma_conhecimento &&
+            $data_ocorrencia &&
+            $hora_ocorrencia &&
+            $titulo &&
+            $area &&
+            $local &&
+            $tipo_natureza &&
+            $natureza &&
+            $descricao
+        ) {
+            $id_ocorrenciaAtualizada = OcorrenciaHandler::atualizarOcorrencia(
+                $id_ocorrencia,
+                $equipe,
+                $forma_conhecimento,
+                $data_ocorrencia,
+                $hora_ocorrencia,
+                $titulo,
+                $area,
+                $local,
+                $tipo_natureza,
+                $natureza,
+                $descricao,
+                $acoes,
+                $id_usuario['id']
+            );
 
+            if ($id_ocorrencia && !empty($envolvidos)) {
+                EnvolvidoHandler::atualizarEnvolvidos($id_ocorrencia, $envolvidos);
+            }
+           
+
+            
     }
+}
 
 
 

@@ -210,11 +210,45 @@ class OcorrenciaHandler
         return  $novoAtivo;
     }
 
-    public static function excluirOcorrencia( $id) {
+    public static function excluirOcorrencia($id)
+    {
         Ocorrencia::delete()->where('id', $id)->execute();
         Envolvido::delete()->where('id_ocorrencia', $id)->execute();
         Ativo::delete()->where('id_ocorrencia', $id)->execute();
         Foto::delete()->where('id_ocorrencia', $id)->execute();
-        
+    }
+
+    public static function atualizarOcorrencia(
+        $id_ocorrencia,
+        $equipe,
+        $forma_conhecimento,
+        $data_ocorrencia,
+        $hora_ocorrencia,
+        $titulo,
+        $area,
+        $local,
+        $tipo_natureza,
+        $natureza,
+        $descricao,
+        $acoes,
+        $id_usuario
+    ) {
+
+        $insertQuery = Ocorrencia::update()
+            ->set('equipe', $equipe )
+            ->set('forma_conhecimento', $forma_conhecimento )
+            ->set('data_ocorrencia', $data_ocorrencia )
+            ->set('hora_ocorrencia', $hora_ocorrencia)
+            ->set('titulo', $titulo )
+            ->set('area', $area)
+            ->set('local', $local)
+            ->set('tipo_natureza', $tipo_natureza)
+            ->set('natureza', $natureza)
+            ->set('descricao', $descricao )
+            ->set('acoes', $acoes )
+            ->where('id', $id_ocorrencia)
+        ->execute();
+
+        return $insertQuery;
     }
 }

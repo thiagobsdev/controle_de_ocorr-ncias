@@ -3,8 +3,8 @@
 <main style="background-color: rgba(211, 204, 204, 1)">
     <div class="container" style="background-color:  white">
         <h1 class="" style="text-align:center;margin-bottom: 40px;padding-top:10px">Edição da Ocorrência Numero: <?= $ocorrencia->id; ?></h1>
-        <input type="hidden" name="id_ocorrencia" value="<?= $ocorrencia->id; ?>">
-        <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formEdit" action="<?= $base; ?>/editar">
+        <input type="hidden" name="idOcorrencia" value="<?= $ocorrencia->id; ?>">
+        <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formEdit" action="<?= $base; ?>/editar/<?= $ocorrencia->id; ?>">
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Equipe Operacional</label>
                 <select class="form-select" aria-label="Default select example" name="equipe" id="equipe">
