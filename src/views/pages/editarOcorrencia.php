@@ -102,11 +102,11 @@
                 <div class="mb-3">
                     <label for="temEnvolvido" class="form-label">Existem pessoas envolvidas na ocorrência?</label>
                     <select class="form-select" id="temEnvolvido" onchange="toggleEnvolvidosFields()">
-                        <option value="não" <?= (count($ocorrencia->envolvidosLista) > 0) ?  '' : 'selected' ?>>Não</option>
-                        <option value="sim" <?= (count($ocorrencia->envolvidosLista) > 0) ?  'selected' : '' ?>>Sim</option>
+                        <option value="não" <?= ($ocorrencia->envolvidosLista > 0) ?  '' : 'selected' ?>>Não</option>
+                        <option value="sim" <?= ($ocorrencia->envolvidosLista > 0) ?  'selected' : '' ?>>Sim</option>
                     </select>
                 </div>
-                <div id="envolvidoContainer" style="<?= (count($ocorrencia->envolvidosLista) > 0) ?  'block' : 'none' ?>">
+                <div id="envolvidoContainer" style="<?= ($ocorrencia->envolvidosLista) > 0 ?  'block' : 'none' ?>">
                     <!-- Formulário para adicionar envolvido -->
                     <div class="mb-3">
                         <div class="row">
@@ -200,7 +200,7 @@
                             </tr>
                         </thead>
                         <tbody id="envolvidosListEdit">
-                            <?php if (count($ocorrencia->envolvidosLista) > 0) : ?>
+                            <?php if ($ocorrencia->envolvidosLista > 0) : ?>
                                 <?php foreach ($ocorrencia->envolvidosLista as $index => $envolvido) : ?>
                                     <td><input type="hidden" name="envolvidos[<?= $index; ?>][nome]" value="<?= $envolvido->nome; ?>"><?= $envolvido->nome; ?></td>
                                     <td><input type="hidden" name="envolvidos[<?= $index; ?>][tipo_documento]" value="<?= $envolvido->tipo_de_documento; ?>"><?= $envolvido->tipo_de_documento; ?></td>
@@ -226,14 +226,14 @@
                     <label for="temAtivo" class="form-label">Existem ativos da DP World envolvidos na
                         ocorrência?</label>
                     <select class="form-select" id="temAtivo" onchange="toggleAtivoFields()">
-                        <option value="não" <?= (count($ocorrencia->ativosLista) > 0) ?  '' : 'selected' ?>>Não</option>
-                        <option value="sim" <?= (count($ocorrencia->ativosLista) > 0) ?  'selected' : '' ?>>Sim</option>
+                        <option value="não" <?= ($ocorrencia->ativosLista) > 0 ?  '' : 'selected' ?>>Não</option>
+                        <option value="sim" <?= ($ocorrencia->ativosLista) > 0 ?  'selected' : '' ?>>Sim</option>
                     </select>
                 </div>
 
 
                 <!-- Formulário e tabela de ativos (escondidos por padrão) -->
-                <div id="ativoContainer" style="<?= (count($ocorrencia->ativosLista) > 0) ?  'block' : 'none' ?>">
+                <div id="ativoContainer" style="<?= ($ocorrencia->ativosLista) > 0 ?  'block' : 'none' ?>">
                     <!-- Formulário para adicionar ativo -->
                     <div class="mb-3">
                         <div class="row">
@@ -268,7 +268,7 @@
                             </tr>
                         </thead>
                         <tbody id="ativosListEdit">
-                            <?php if (count($ocorrencia->ativosLista) > 0) : ?>
+                            <?php if ($ocorrencia->ativosLista > 0) : ?>
                                 <?php foreach ($ocorrencia->ativosLista as $index => $ativo) : ?>
                                     <td><input type="hidden" name="ativos[<?= $index; ?>][tipoAtivo]" value="<?= $ativo->tipo_ativo; ?>"><?= $ativo->tipo_ativo; ?></td>
                                     <td><input type="hidden" name="ativos[<?= $index; ?>][idAtivo]" value="<?= $ativo->id_ativo; ?>"><?= $ativo->id_ativo; ?></td>
@@ -284,13 +284,13 @@
                 </div>
             </div>
             <div class="container mt-5">
-                <h2>Adicionar Fotos</h2>
+                <h2>Editar Fotos</h2>
 
                 <!-- Formulário para upload de fotos -->
                 <div class="mb-3">
                     <label for="fotoInput" class="form-label">Selecione as fotos (JPG, JPEG ou PNG)</label>
                     <input type="file" class="form-control" id="fotoInput" multiple onchange="previewFotos()"
-                        accept=".jpg, .jpeg, .png" placeholder="" name="fotos[]">
+                        accept=".jpg, .jpeg, .png" placeholder="" name="fotos[]" value="">
                 </div>
 
                 <!-- Exibe o número de arquivos selecionados -->
@@ -299,23 +299,32 @@
                 </div>
 
                 <!-- Carrossel de fotos (escondido por padrão) -->
-                <div id="fotoCarrosselContainer" class="mt-4" style="display: none;">
+                <div id="fotoCarrosselContainer" class="mt-4" style="display: <?= ($ocorrencia->fotosOcorrencias > 0) ? 'block' : 'none' ?>;">
                     <h3>Visualizar Fotos</h3>
-                    <div id="fotoCarrossel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner" id="carrosselFotos">
-                            <!-- Fotos adicionadas dinamicamente -->
+                    <?php if (!empty($ocorrencia->fotosOcorrencias)) : ?>
+                        <div id="<?= $ocorrencia->id; ?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <?php foreach ($ocorrencia->fotosOcorrencias as $foto): ?>
+                                    <div class="carousel-item active d-flex justify-content-center" style="background-color: rgb(202,198,202);flex-direction:column">
+                                        <img src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->nome; ?>" style="max-height: 500px; object-fit: cover;">
+                                        <div class="delete-btn-container" style="text-align:center; margin-top: 10px;">
+                                            <button type="button" class="btn btn-danger" onclick="removeFoto(this)">Excluir</button>
+                                        </div>
+                                    </div>
+                                <?php endforeach;; ?>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#<?= $ocorrencia->id; ?>" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#<?= $ocorrencia->id; ?>" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#fotoCarrossel"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Anterior</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#fotoCarrossel"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Próximo</span>
-                        </button>
-                    </div>
+                    <?php else : ?>
+                        <p>A lista de Fotos está vazia.</p>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="form-floating">
@@ -331,7 +340,7 @@
 
             <div class="col-12 d-flex justify-content-center align-items-center mb-5">
                 <div class="col-4 d-flex justify-content-center">
-                    <button class="btn btn-danger w-75 fw-bold" type="submit">Cancelar</button>
+                    <a class="btn btn-danger print-btn"  href="<?=$base?>">Cancelar</a>
                 </div>
                 <div class="col-4 d-flex justify-content-center">
                     <button class="btn btn-success w-75 fw-bold" class="botao-enviar" type="submit" onclick="submeterFormulario()">Gravar</button>
@@ -481,7 +490,7 @@
                 </td>
             `;
 
-            ativosListEdit.appendChild(row);
+        ativosListEdit.appendChild(row);
 
         // Limpa os campos após adicionar
         document.getElementById('tipoAtivo').value = '';
@@ -571,6 +580,9 @@
         // Atualiza o contador de arquivos após remoção
         document.getElementById('fileCount').textContent = items.length;
     }
+</script>
+
+
 </script>
 
 

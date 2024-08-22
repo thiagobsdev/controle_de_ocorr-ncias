@@ -10,6 +10,4 @@ class Foto extends Model {
     public $id_ocorrencia;
     public $id_usuario;
 
-    
-   
 }
