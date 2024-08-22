@@ -236,7 +236,7 @@
 
 
                 <!-- Formulário e tabela de ativos (escondidos por padrão) -->
-                <div id="ativoContainer" style="display:<?= ( !empty($ocorrencia->ativosLista)) ?  'block' : 'none' ?>">
+                <div id="ativoContainer" style="display:<?= (!empty($ocorrencia->ativosLista)) ?  'block' : 'none' ?>">
                     <!-- Formulário para adicionar ativo -->
                     <div class="mb-3">
                         <div class="row">
@@ -305,11 +305,15 @@
                 </div>
 
                 <!-- Carrossel de fotos (escondido por padrão) -->
-                <div id="fotoCarrosselContainer" class="mt-4" style="display: <?= ($ocorrencia->fotosOcorrencias > 0) ? 'block' : 'none' ?>;">
+                <?php
+                // Verifica se $ocorrencia->fotos está vazio
+                $temFotos = !empty($ocorrencia->fotosOcorrencias);
+                ?>
+                <div id="fotoCarrosselContainer" class="mt-4" >
                     <h3>Visualizar Fotos</h3>
-                    <?php if (!empty($ocorrencia->fotosOcorrencias)) : ?>
-                        <div id="<?= $ocorrencia->id; ?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                            <div class="carousel-inner">
+
+                        <div  id="<?= $ocorrencia->id; ?>" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                            <div class="carousel-inner" id="carrosselFotos" >
                                 <?php foreach ($ocorrencia->fotosOcorrencias as $foto): ?>
                                     <div class="carousel-item active d-flex justify-content-center" style="background-color: rgb(202,198,202);flex-direction:column">
                                         <img src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->nome; ?>" style="max-height: 500px; object-fit: cover;">
@@ -328,9 +332,7 @@
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
-                    <?php else : ?>
-                        <p>A lista de Fotos está vazia.</p>
-                    <?php endif; ?>
+
                 </div>
             </div>
             <div class="form-floating">
@@ -526,12 +528,34 @@
     }
 </script>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var fotoInput = document.getElementById('fotoInput');
+        var fotosDiv = document.getElementById('fotoCarrosselContainer');
+
+        // Função para verificar se há arquivos selecionados
+        function verificarFotos() {
+            if (fotoInput.files.length > 0) {
+                fotosDiv.style.display = 'block';
+            } else if (<?= $temFotos ? 'false' : 'true'; ?>) {
+                fotosDiv.style.display = 'none';
+            }
+            console.log($temFotos);
+        }
+
+        // Verifica no carregamento da página
+        verificarFotos();
+
+        // Adiciona um listener ao input para verificar quando ele muda
+        fotoInput.addEventListener('change', verificarFotos);
+    });
+</script>
+<script>
     function previewFotos() {
         const fotos = document.getElementById('fotoInput').files;
         const carrosselFotos = document.getElementById('carrosselFotos');
-        carrosselFotos.innerHTML = ''; // Limpa o carrossel existente
+        
 
-        if (fotos.length > 0) {
+        if (fotos.length > 0 || <?= count($ocorrencia->fotosOcorrencias) > 0 ?>) {
             document.getElementById('fotoCarrosselContainer').style.display = 'block';
 
             for (let i = 0; i < fotos.length; i++) {
@@ -540,7 +564,7 @@
                     const imgElement = document.createElement('div');
                     imgElement.className = 'carousel-item' + (i === 0 ? ' active' : '');
                     imgElement.innerHTML = `
-                    <img src="${event.target.result}" class="d-block w-100" alt="Foto ${i + 1}">
+                    <img src="${event.target.result}" class="d-block w-100" alt="Foto ${i + 1}" style="max-height: 500px; object-fit: cover;">
                     <div class="delete-btn-container"  style="text-align:center; margin-top: 10px;">
                         <button type="button" class="btn btn-danger" onclick="removeFoto(this)">Excluir</button>
                     </div>

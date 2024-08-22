@@ -26,8 +26,9 @@ class FotosHandler
                     'id_ocorrencia'=>$id_ocorrencia,
                     'id_usuario'=>$id_usuario
                 ])->execute();
-            } else {
-            }
+            } 
         }
     }
+
+    
 }

@@ -154,8 +154,8 @@ class OcorrenciaController extends Controller
         $envolvidos = isset($_POST['envolvidos']) ? $_POST['envolvidos'] : null;
         $ativosLista = isset($_POST['ativos']) ? $_POST['ativos'] : null;
         $arquivosFotos = isset($_FILES['fotos']) ? $_FILES['fotos'] : null;
-   
-     
+
+
         if (
             $id_ocorrencia &&
             $equipe &&
@@ -192,9 +192,14 @@ class OcorrenciaController extends Controller
             if ($id_ocorrencia && !empty($envolvidos)) {
                 AtivosHandler::atualizarEnvolvidosEdit($id_ocorrencia, $ativosLista);
             }
-           
-            $this->redirect('/'); 
-        } 
+
+
+            if ($arquivosFotos && $id_ocorrencia) {
+                FotosHandler::addFotos($arquivosFotos,  $data_ocorrencia, $id_ocorrencia, $id_usuario['id']);
+            }
+
+            $this->redirect('/');
+        }
     }
 
 
