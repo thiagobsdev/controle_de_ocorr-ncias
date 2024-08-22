@@ -407,7 +407,7 @@
                 <td><input type="hidden" name="envolvidos[${indexEnvolvido}][vinculo]" value="${vinculo}">${vinculo}</td>
                 <td><input type="hidden" name="envolvidos[${indexEnvolvido}][tipo_veiculo]" value="${tipoVeiculo}">${tipoVeiculo}</td>
                 <td><input type="hidden" name="envolvidos[${indexEnvolvido}][placa]" value="${placa}">${placa}</td>
-                <td><button type="button" class="btn btn-danger btn-sm" onclick="removerEnvolvido(this)">Remover</button></td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeEnvolvido(this)">Remover</button></td>
             `;
 
         envolvidosList.appendChild(row);
@@ -417,6 +417,7 @@
         document.getElementById('tipoDocumento').value = '';
         document.getElementById('numeroDocumento').value = '';
         document.getElementById('vinculo').value = '';
+        document.getElementById('envolvimento').value = '';
         document.getElementById('temVeiculo').value = 'não';
         toggleVeiculoFields();
         document.getElementById('tipoVeiculo').value = '';

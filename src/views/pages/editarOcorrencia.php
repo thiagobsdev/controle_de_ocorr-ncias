@@ -211,7 +211,7 @@
                                         <td><input type="hidden" name="envolvidos[<?= $index; ?>][vinculo]" value="<?= $envolvido->vinculo; ?>"><?= $envolvido->vinculo; ?></td>
                                         <td><input type="hidden" name="envolvidos[<?= $index; ?>][tipo_veiculo]" value="<?= $envolvido->tipo_veiculo; ?>"><?= $envolvido->tipo_veiculo; ?></td>
                                         <td><input type="hidden" name="envolvidos[<?= $index; ?>][placa]" value="<?= $envolvido->placa; ?>"><?= $envolvido->placa; ?></td>
-                                        <td><button data-id="<?= $envolvido->id; ?>"  type="button" class="btn btn-danger btn-sm btn-excluirEnvolvido">Remover</button></td>
+                                        <td><button data-id="<?= $envolvido->id; ?>" type="button" class="btn btn-danger btn-sm btn-excluirEnvolvido">Remover</button></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -278,7 +278,7 @@
                                         <td><input type="hidden" name="ativos[<?= $index; ?>][tipoAtivo]" value="<?= $ativo->tipo_ativo; ?>"><?= $ativo->tipo_ativo; ?></td>
                                         <td><input type="hidden" name="ativos[<?= $index; ?>][idAtivo]" value="<?= $ativo->id_ativo; ?>"><?= $ativo->id_ativo; ?></td>
                                         <td>
-                                            <button type="button" class="btn btn-danger" onclick="removeAtivo(this)">Remover</button>
+                                            <button data-id="<?= $ativo->id; ?>" type="button" class="btn btn-danger btn-excluirAtivo " >Remover</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -318,7 +318,7 @@
                                 <div class="carousel-item active d-flex justify-content-center" style="background-color: rgb(202,198,202);flex-direction:column">
                                     <img src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->nome; ?>" style="max-height: 500px; object-fit: cover;">
                                     <div class="delete-btn-container" style="text-align:center; margin-top: 10px;">
-                                        <button type="button" class="btn btn-danger" onclick="removeFoto(this)">Excluir</button>
+                                        <button data-id="<?= $foto->id; ?>"  type="button" class="btn btn-danger btn-excluirFoto" >Excluir</button>
                                     </div>
                                 </div>
                             <?php endforeach;; ?>
@@ -359,13 +359,211 @@
 </main>
 <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Modal de exclusao -->
+
+<!-- Modal de exclusao de ativo -->
+<div class="modal fade" id="confirmDeleteFotoModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fechaModalConfirmacaoExclusaoFoto()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Você tem certeza de que deseja excluir esta foto da ocorrencia?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="fechaModalConfirmacaoExclusaoFoto()">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteFotoButton">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de exclusao de envolvido -->
+<div class="modal fade" id="confirmDeleteFotoMessage" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ativo excluído com sucesso.
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function fechaModalConfirmacaoExclusaoFoto() {
+        $('#confirmDeleteFotoModal').modal('hide'); // fecha o modal de confirmação
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let idFoto; // Variável para armazenar o ID da ocorrência
+
+        // Captura o clique no botão de exclusão
+        document.querySelectorAll('.btn-excluirFoto').forEach(button => {
+            button.addEventListener('click', function() {
+                idFoto = this.getAttribute('data-id'); // Captura o ID da ocorrência
+                if (idFoto) {
+                    $('#confirmDeleteFotoModal').modal('show'); // Exibe o modal de confirmação
+                }
+
+            });
+        });
+
+        // Confirmação de exclusão
+        document.getElementById('confirmDeleteFotoButton').addEventListener('click', async function() {
+            if (idFoto) {
+                let data = new FormData();
+                data.append('id', idFoto);
+
+                let req = await fetch(BASE + '/excluir/foto', {
+                    method: 'POST',
+                    body: data
+                })
+
+                let json = await req.json()
+                    .then(json => {
+                        if (json && json.status === 'success') { // Verifica se 'data' não é undefined ou null
+                            // Exibe o modal de confirmação
+                            $('#confirmDeleteFotoModal').modal('hide');
+                            $('#confirmDeleteFotoMessage').modal('show');
+
+                            // Aguarda 3 segundos e recarrega a página
+                            setTimeout(function() {
+                                $('#confirmDeleteFotoMessage').modal('hide');
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            alert('Erro ao excluir a ocorrência: ' + (json.message || 'Resposta inválida do servidor'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao excluir a ocorrência:', error);
+                        alert('Ocorreu um erro ao tentar excluir a ocorrência. Por favor, tente novamente.');
+                    });
+
+
+            }
+        });
+    });
+</script>
+
+<!-- Modal de exclusao de ativo -->
+<div class="modal fade" id="confirmDeleteAtivoModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fechaModalConfirmacaoExclusaoAtivo()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Você tem certeza de que deseja excluir este ativo da ocorrencia?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="fechaModalConfirmacaoExclusaoAtivo()">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteAtivoButton">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de exclusao de envolvido -->
+<div class="modal fade" id="confirmDeleteAtivoMessage" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ativo excluído com sucesso.
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function fechaModalConfirmacaoExclusaoAtivo() {
+        $('#confirmDeleteAtivoModal').modal('hide'); // fecha o modal de confirmação
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let idEnvolvido; // Variável para armazenar o ID da ocorrência
+
+        // Captura o clique no botão de exclusão
+        document.querySelectorAll('.btn-excluirAtivo').forEach(button => {
+            button.addEventListener('click', function() {
+                idAtivo = this.getAttribute('data-id'); // Captura o ID da ocorrência
+                if (idAtivo) {
+                    $('#confirmDeleteAtivoModal').modal('show'); // Exibe o modal de confirmação
+                }
+
+            });
+        });
+
+        // Confirmação de exclusão
+        document.getElementById('confirmDeleteAtivoButton').addEventListener('click', async function() {
+            if (idAtivo) {
+                let data = new FormData();
+                data.append('id', idAtivo);
+
+                let req = await fetch(BASE + '/excluir/ativo', {
+                    method: 'POST',
+                    body: data
+                })
+
+                let json = await req.json()
+                    .then(json => {
+                        if (json && json.status === 'success') { // Verifica se 'data' não é undefined ou null
+                            // Exibe o modal de confirmação
+                            $('#confirmDeleteAtivoModal').modal('hide');
+                            $('#confirmDeleteAtivoMessage').modal('show');
+
+                            // Aguarda 3 segundos e recarrega a página
+                            setTimeout(function() {
+                                $('#confirmDeleteAtivoMessage').modal('hide');
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            alert('Erro ao excluir a ocorrência: ' + (json.message || 'Resposta inválida do servidor'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao excluir a ocorrência:', error);
+                        alert('Ocorreu um erro ao tentar excluir a ocorrência. Por favor, tente novamente.');
+                    });
+
+
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+<!-- Modal de exclusao de envolvido -->
 <div class="modal fade" id="confirmDeleteEnvolvidoModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de Exclusão</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fechaModalConfirmacaoExclusao()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fechaModalConfirmacaoExclusaoEnvoldido()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -373,13 +571,14 @@
                 Você tem certeza de que deseja excluir este envolvido da ocorrencia?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="fechaModalConfirmacaoExclusao()">Cancelar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="fechaModalConfirmacaoExclusaoEnvoldido()">Cancelar</button>
                 <button type="button" class="btn btn-danger" id="confirmDeleteEnvolvidoButton">Excluir</button>
             </div>
         </div>
     </div>
 </div>
-<!-- Modal de Confirmação -->
+
+<!-- Modal de Confirmação de exclusao de envolvido -->
 <div class="modal fade" id="confirmDeleteEnvolvidoMessage" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -396,7 +595,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    function fechaModalConfirmacaoExclusao() {
+    function fechaModalConfirmacaoExclusaoEnvoldido() {
         $('#confirmDeleteEnvolvidoModal').modal('hide'); // fecha o modal de confirmação
     }
 </script>
@@ -409,10 +608,10 @@
         document.querySelectorAll('.btn-excluirEnvolvido').forEach(button => {
             button.addEventListener('click', function() {
                 idEnvolvido = this.getAttribute('data-id'); // Captura o ID da ocorrência
-                if( idEnvolvido) {
+                if (idEnvolvido) {
                     $('#confirmDeleteEnvolvidoModal').modal('show'); // Exibe o modal de confirmação
                 }
-                
+
             });
         });
 

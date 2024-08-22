@@ -120,7 +120,10 @@ $dompdf = new Dompdf(['enable_remote' => true])
                                 <th>Nome</th>
                                 <th>Tipo de Documento</th>
                                 <th>Número do Documento</th>
+                                <th>Envolvimento</th>
                                 <th>Vínculo</th>
+                                <th>Tipo de Veículo</th>
+                                <th>Placa</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -129,7 +132,10 @@ $dompdf = new Dompdf(['enable_remote' => true])
                                     <td><?= $envolvido->nome; ?></td>
                                     <td><?= $envolvido->tipo_de_documento; ?></td>
                                     <td><?= $envolvido->numero_documento; ?></td>
+                                    <td><?= $envolvido->envolvimento; ?></td>
                                     <td><?= $envolvido->vinculo; ?></td>
+                                    <td><?= $envolvido->tipo_veiculo; ?></td>
+                                    <td><?= $envolvido->placa; ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

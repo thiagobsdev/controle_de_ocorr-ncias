@@ -40,4 +40,8 @@ class AtivosHandler
             }
         }
     }
+
+    public static function excluirAtivo($id) {
+        Ativo::delete()->where('id', $id)->execute();
+    }
 }

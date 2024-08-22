@@ -18,6 +18,8 @@ $router->get('/alterar_senha', 'CadastroController@alterarSenha');
 $router->get('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrencia');
 $router->post('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrenciaAction');
 $router->post('/excluir/envolvido', 'OcorrenciaController@excluirEnvolvidoOcorrenciaAction');
+$router->post('/excluir/ativo', 'OcorrenciaController@excluirAtivoOcorrenciaAction');
+$router->post('/excluir/foto', 'OcorrenciaController@excluirFotoOcorrenciaAction');
 $router->post('/excluir', 'OcorrenciaController@excluirOcorrenciaAction');
 $router->get('/editar/{id}','OcorrenciaController@editarOcorrencia');
 $router->post('/editar/{id}','OcorrenciaController@editarOcorrenciaAction');

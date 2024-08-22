@@ -30,5 +30,9 @@ class FotosHandler
         }
     }
 
+    public static function excluirFoto($id) {
+        Foto::delete()->where('id', $id)->execute();
+    }
+
     
 }
