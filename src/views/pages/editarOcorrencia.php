@@ -106,7 +106,7 @@
                         <option value="sim" <?= ($ocorrencia->envolvidosLista > 0) ?  'selected' : '' ?>>Sim</option>
                     </select>
                 </div>
-                <div id="envolvidoContainer" style="<?= ($ocorrencia->envolvidosLista) > 0 ?  'block' : 'none' ?>">
+                <div id="envolvidoContainer" style=" display:<?= (!empty($ocorrencia->envolvidosLista)) ?  'block' : 'none' ?>">
                     <!-- Formulário para adicionar envolvido -->
                     <div class="mb-3">
                         <div class="row">
@@ -202,14 +202,17 @@
                         <tbody id="envolvidosListEdit">
                             <?php if ($ocorrencia->envolvidosLista > 0) : ?>
                                 <?php foreach ($ocorrencia->envolvidosLista as $index => $envolvido) : ?>
-                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][nome]" value="<?= $envolvido->nome; ?>"><?= $envolvido->nome; ?></td>
-                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][tipo_documento]" value="<?= $envolvido->tipo_de_documento; ?>"><?= $envolvido->tipo_de_documento; ?></td>
-                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][numero_documento]" value="<?= $envolvido->numero_documento; ?>"><?= $envolvido->numero_documento; ?></td>
-                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][envolvimento]" value="<?= $envolvido->envolvimento; ?>"><?= $envolvido->envolvimento; ?></td>
-                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][vinculo]" value="<?= $envolvido->vinculo; ?>"><?= $envolvido->vinculo; ?></td>
-                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][tipo_veiculo]" value="<?= $envolvido->tipo_veiculo; ?>"><?= $envolvido->tipo_veiculo; ?></td>
-                                    <td><input type="hidden" name="envolvidos[<?= $index; ?>][placa]" value="<?= $envolvido->placa; ?>"><?= $envolvido->placa; ?></td>
-                                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removerEnvolvido(this)">Remover</button></td>
+                                    <tr>
+                                        <input type="hidden" name="envolvidos[<?= $index; ?>][id]" value="<?= $envolvido->id; ?>">
+                                        <td><input type="hidden" name="envolvidos[<?= $index; ?>][nome]" value="<?= $envolvido->nome; ?>"><?= $envolvido->nome; ?></td>
+                                        <td><input type="hidden" name="envolvidos[<?= $index; ?>][tipo_documento]" value="<?= $envolvido->tipo_de_documento; ?>"><?= $envolvido->tipo_de_documento; ?></td>
+                                        <td><input type="hidden" name="envolvidos[<?= $index; ?>][numero_documento]" value="<?= $envolvido->numero_documento; ?>"><?= $envolvido->numero_documento; ?></td>
+                                        <td><input type="hidden" name="envolvidos[<?= $index; ?>][envolvimento]" value="<?= $envolvido->envolvimento; ?>"><?= $envolvido->envolvimento; ?></td>
+                                        <td><input type="hidden" name="envolvidos[<?= $index; ?>][vinculo]" value="<?= $envolvido->vinculo; ?>"><?= $envolvido->vinculo; ?></td>
+                                        <td><input type="hidden" name="envolvidos[<?= $index; ?>][tipo_veiculo]" value="<?= $envolvido->tipo_veiculo; ?>"><?= $envolvido->tipo_veiculo; ?></td>
+                                        <td><input type="hidden" name="envolvidos[<?= $index; ?>][placa]" value="<?= $envolvido->placa; ?>"><?= $envolvido->placa; ?></td>
+                                        <td><button type="button" class="btn btn-danger btn-sm" onclick="removerEnvolvido(this)">Remover</button></td>
+                                    </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tbody>
@@ -233,7 +236,7 @@
 
 
                 <!-- Formulário e tabela de ativos (escondidos por padrão) -->
-                <div id="ativoContainer" style="<?= ($ocorrencia->ativosLista) > 0 ?  'block' : 'none' ?>">
+                <div id="ativoContainer" style="display:<?= ( !empty($ocorrencia->ativosLista)) ?  'block' : 'none' ?>">
                     <!-- Formulário para adicionar ativo -->
                     <div class="mb-3">
                         <div class="row">
@@ -270,11 +273,14 @@
                         <tbody id="ativosListEdit">
                             <?php if ($ocorrencia->ativosLista > 0) : ?>
                                 <?php foreach ($ocorrencia->ativosLista as $index => $ativo) : ?>
-                                    <td><input type="hidden" name="ativos[<?= $index; ?>][tipoAtivo]" value="<?= $ativo->tipo_ativo; ?>"><?= $ativo->tipo_ativo; ?></td>
-                                    <td><input type="hidden" name="ativos[<?= $index; ?>][idAtivo]" value="<?= $ativo->id_ativo; ?>"><?= $ativo->id_ativo; ?></td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" onclick="removeAtivo(this)">Remover</button>
-                                    </td>
+                                    <tr>
+                                        <input type="hidden" name="ativos[<?= $index; ?>][id]" value="<?= $ativo->id; ?>">
+                                        <td><input type="hidden" name="ativos[<?= $index; ?>][tipoAtivo]" value="<?= $ativo->tipo_ativo; ?>"><?= $ativo->tipo_ativo; ?></td>
+                                        <td><input type="hidden" name="ativos[<?= $index; ?>][idAtivo]" value="<?= $ativo->id_ativo; ?>"><?= $ativo->id_ativo; ?></td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" onclick="removeAtivo(this)">Remover</button>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tbody>
@@ -340,7 +346,7 @@
 
             <div class="col-12 d-flex justify-content-center align-items-center mb-5">
                 <div class="col-4 d-flex justify-content-center">
-                    <a class="btn btn-danger print-btn"  href="<?=$base?>">Cancelar</a>
+                    <a class="btn btn-danger print-btn" href="<?= $base ?>">Cancelar</a>
                 </div>
                 <div class="col-4 d-flex justify-content-center">
                     <button class="btn btn-success w-75 fw-bold" class="botao-enviar" type="submit" onclick="submeterFormulario()">Gravar</button>

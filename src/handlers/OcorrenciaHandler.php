@@ -190,6 +190,7 @@ class OcorrenciaHandler
     {
 
         $novoEnvolvido = new Envolvido();
+        $novoEnvolvido->id = $arrayEnvolvido['id'];
         $novoEnvolvido->nome = $arrayEnvolvido['nome'];
         $novoEnvolvido->tipo_de_documento = $arrayEnvolvido['tipo_de_documento'];
         $novoEnvolvido->numero_documento = $arrayEnvolvido['numero_documento'];

@@ -151,9 +151,10 @@ class OcorrenciaController extends Controller
         $descricao =  filter_input(INPUT_POST, 'descricao');
         $acoes =  filter_input(INPUT_POST, 'acoes');
         $id_usuario = $this->usuarioLogado;
-        $envolvidos = $_POST['envolvidos'];
-        $ativos = $_POST['ativos'];
-        $arquivosFotos = $_FILES['fotos'];
+        $envolvidos = isset($_POST['envolvidos']) ? $_POST['envolvidos'] : null;
+        $ativosLista = isset($_POST['ativos']) ? $_POST['ativos'] : null;
+        $arquivosFotos = isset($_FILES['fotos']) ? $_FILES['fotos'] : null;
+   
 
         if (
             $id_ocorrencia &&
@@ -185,13 +186,19 @@ class OcorrenciaController extends Controller
             );
 
             if ($id_ocorrencia && !empty($envolvidos)) {
-                EnvolvidoHandler::atualizarEnvolvidos($id_ocorrencia, $envolvidos);
+                EnvolvidoHandler::atualizarEnvolvidosEdit($id_ocorrencia, $envolvidos);
             }
-           
 
-            
+            if ($id_ocorrencia && !empty($envolvidos)) {
+                AtivosHandler::atualizarEnvolvidosEdit($id_ocorrencia, $ativosLista);
+            }
+
+            $page = intval(filter_input(INPUT_GET, 'page'));
+            $ocorrencias = OcorrenciaHandler::getAllOcorrencias($page);
+
+            $this->redirect('/');
+        }
     }
-}
 
 
 
