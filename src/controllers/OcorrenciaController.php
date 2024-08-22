@@ -137,9 +137,9 @@ class OcorrenciaController extends Controller
     }
 
     public function editarOcorrenciaAction( ) {
-        $envolvidos = $_POST['envolvidos'];
+        $ativos = $_POST['ativos'];
 
-        print_r($envolvidos );
+        print_r($ativos );
 
     }
 

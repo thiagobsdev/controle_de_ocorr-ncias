@@ -226,14 +226,14 @@
                     <label for="temAtivo" class="form-label">Existem ativos da DP World envolvidos na
                         ocorrência?</label>
                     <select class="form-select" id="temAtivo" onchange="toggleAtivoFields()">
-                        <option value="não" selected>Não</option>
-                        <option value="sim">Sim</option>
+                        <option value="não" <?= (count($ocorrencia->ativosLista) > 0) ?  '' : 'selected' ?>>Não</option>
+                        <option value="sim" <?= (count($ocorrencia->ativosLista) > 0) ?  'selected' : '' ?>>Sim</option>
                     </select>
                 </div>
 
 
                 <!-- Formulário e tabela de ativos (escondidos por padrão) -->
-                <div id="ativoContainer" style="display: none;">
+                <div id="ativoContainer" style="<?= (count($ocorrencia->ativosLista) > 0) ?  'block' : 'none' ?>">
                     <!-- Formulário para adicionar ativo -->
                     <div class="mb-3">
                         <div class="row">
@@ -267,8 +267,16 @@
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="ativosList">
-                            <!-- Linhas adicionadas dinamicamente -->
+                        <tbody id="ativosListEdit">
+                            <?php if (count($ocorrencia->ativosLista) > 0) : ?>
+                                <?php foreach ($ocorrencia->ativosLista as $index => $ativo) : ?>
+                                    <td><input type="hidden" name="ativos[<?= $index; ?>][tipoAtivo]" value="<?= $ativo->tipo_ativo; ?>"><?= $ativo->tipo_ativo; ?></td>
+                                    <td><input type="hidden" name="ativos[<?= $index; ?>][idAtivo]" value="<?= $ativo->id_ativo; ?>"><?= $ativo->id_ativo; ?></td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" onclick="removeAtivo(this)">Remover</button>
+                                    </td>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                     <!-- Campos ocultos para os dados da tabela -->
@@ -362,8 +370,8 @@
             adicionarHiddenInput(formEdit, `envolvidos[${i}][placa]`, cells[6].textContent);
         }
 
-        for (let i = 0; i < ativosList.rows.length; i++) {
-            const cells = ativosList.rows[i].cells;
+        for (let i = 0; i < ativosListEdit.rows.length; i++) {
+            const cells = ativosListEdit.rows[i].cells;
 
             adicionarHiddenInput(formEdit, `ativos[${i}][tipoAtivo]`, cells[0].textContent);
             adicionarHiddenInput(formEdit, `ativos[${i}][idAtivo]`, cells[1].textContent);
@@ -451,7 +459,7 @@
 </script>
 
 <script>
-    let indexAtivo = 0;
+    let indexAtivo = ativosListEdit.rows.length;
 
     function addAtivo() {
         const tipoAtivo = document.getElementById('tipoAtivo').value;
@@ -462,7 +470,7 @@
             return;
         }
 
-        const ativosList = document.getElementById('ativosList');
+        const ativosListEdit = document.getElementById('ativosListEdit');
         const row = document.createElement('tr');
 
         row.innerHTML = `
@@ -473,7 +481,7 @@
                 </td>
             `;
 
-        ativosList.appendChild(row);
+            ativosListEdit.appendChild(row);
 
         // Limpa os campos após adicionar
         document.getElementById('tipoAtivo').value = '';
