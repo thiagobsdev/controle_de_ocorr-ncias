@@ -36,7 +36,7 @@ class CadastroController extends Controller
         $usuarios = LoginHandler::getAllUsuarios();
 
 
-       $this->render(
+        $this->render(
             'cadastro',
             [
                 'flash' => $flash,
@@ -73,7 +73,7 @@ class CadastroController extends Controller
         $this->render('alterarsenha', ['usuariologado' => $this->usuarioLogado]);
     }
 
-    
+
     public function alterarStatusAction()
     {
         $array = ['error' => ''];
@@ -84,7 +84,21 @@ class CadastroController extends Controller
             LoginHandler::alterarStatus($id);
             echo json_encode(['status' => 'success']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Erro ao excluir a ocorrência']);
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao alterar status']);
+        }
+    }
+
+    public function alterarSenhaUsuarioAction()
+    {
+        $array = ['error' => ''];
+
+        $id = intval(filter_input(INPUT_POST, 'id'));
+
+        if ($id) {
+            LoginHandler::resetarSenhaUsuario($id);
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao resetar a senha']);
         }
     }
 

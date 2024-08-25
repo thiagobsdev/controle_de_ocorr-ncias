@@ -23,11 +23,11 @@ class LoginController extends Controller {
 
         if($email && $senha) {
             $token = LoginHandler::verificaLogin($email, $senha);
-            if($token) {
+           if($token) {
                 $_SESSION['token']=$token;
                 $this->redirect('/');
             }else{
-                $_SESSION['flash']="email e/ou senha invalidos!";
+                $_SESSION['flash']="email e/ou senha invalidos ou inativo!";
                 $this->redirect('/login');
             }
 

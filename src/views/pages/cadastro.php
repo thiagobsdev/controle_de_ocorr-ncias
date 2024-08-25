@@ -61,7 +61,7 @@
                                 <td><?= $usuario['nivel'] ?></td>
                                 <td>
                                     <button id="mudancaStatus" data-id=<?= $usuario['id'] ?> class="btn <?= ($usuario['status'] === 'Ativo') ? 'btn-success' : 'btn-danger'; ?> btn-sm" onclick="toggleUserStatus(this, <?= ($usuario['status'] === 'Ativo') ? true : false; ?>)"><?= $usuario['status'] ?></button>
-                                    <button data-id=<?= $usuario['id'] ?> class="btn btn-warning btn-sm" onclick="resetPassword('joao@example.com')">Resetar Senha</button>
+                                    <button  id="resetarSenha" data-id=<?= $usuario['id'] ?> class="btn btn-warning btn-sm" onclick="resetPassword('joao@example.com')">Resetar Senha</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -72,6 +72,105 @@
     </div>
 
 </body>
+<!-- Modal de exclusao de ativo -->
+<div class="modal fade" id="confirmReseTSenha" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de alteração de senha</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fechaModalMudancaDeSenha()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Você tem certeza de que deseja a senha do usuário?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="fechaModalMudancaDeSenha()">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmResetSenhaAction">Alterar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal de Confirmação de exclusao de envolvido -->
+<div class="modal fade" id="confirmResetSenhaMessage" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteLabel">Mudança de senha</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               Senha do usuário alterada com sucesso!
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function fechaModalMudancaDeSenha() {
+        $('#confirmReseTSenha').modal('hide'); // fecha o modal de confirmação
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let idUsuario; // Variável para armazenar o ID da ocorrência
+
+        // Captura o clique no botão de exclusão
+        document.querySelectorAll('#resetarSenha').forEach(button => {
+            button.addEventListener('click', function() {
+                idUsuario = this.getAttribute('data-id'); // Captura o ID da ocorrência
+                if (idUsuario) {
+                    $('#confirmReseTSenha').modal('show'); // Exibe o modal de confirmação
+                }
+
+            });
+        });
+
+        // Confirmação de exclusão
+        document.getElementById('confirmResetSenhaAction').addEventListener('click', async function() {
+            if (idUsuario) {
+                let data = new FormData();
+                data.append('id', idUsuario);
+
+                let req = await fetch(BASE + '/resetar/senha', {
+                    method: 'POST',
+                    body: data
+                })
+
+                let json = await req.json()
+                    .then(json => {
+                        if (json && json.status === 'success') { // Verifica se 'data' não é undefined ou null
+                            // Exibe o modal de confirmação
+                            $('#confirmReseTSenha').modal('hide');
+                            $('#confirmResetSenhaMessage').modal('show');
+
+                            // Aguarda 3 segundos e recarrega a página
+                            setTimeout(function() {
+                                $('#confirmResetSenhaMessage').modal('hide');
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            alert('Erro ao alterar alterar a senha: ' + (json.message || 'Resposta inválida do servidor'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao alterar a senha:', error);
+                        alert('Ocorreu um erro ao tentar ao alterar a senha:. Por favor, tente novamente.');
+                    });
+
+
+            }
+        });
+    });
+</script>
+
+
+
+
+
 <!-- Modal de exclusao de ativo -->
 <div class="modal fade" id="confirmMudaStatus" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -165,17 +264,6 @@
             }
         });
     });
-</script>
-
-
-<script>
-
-    function resetPassword(email) {
-        if (confirm(`Deseja realmente resetar a senha de ${email}?`)) {
-            alert(`A senha de ${email} foi resetada com sucesso!`);
-            // Aqui você pode fazer uma chamada AJAX para resetar a senha no servidor
-        }
-    }
 </script>
 
 </html>

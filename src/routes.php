@@ -13,6 +13,7 @@ $router->get('/cadastro', 'CadastroController@cadastro');
 $router->post('/cadastro', 'CadastroController@cadastroAction');
 $router->get('/alterar_senha', 'CadastroController@alterarSenha');
 $router->post('/alterar/usuario', 'CadastroController@alterarStatusAction');
+$router->post('/resetar/senha', 'CadastroController@alterarSenhaUsuarioAction');
 
 
 

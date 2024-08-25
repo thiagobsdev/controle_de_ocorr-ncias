@@ -34,8 +34,12 @@ class LoginHandler
     public static function verificaLogin($email, $senha)
     {
 
-        $usuario = Usuario::select()->where('email', $email)->one();
+        $usuario = Usuario::select()
+            ->where('email', $email)
+            ->where('status', 'Ativo')
+            ->one();
         if ($usuario) {
+
             if (password_verify($senha, $usuario['senha'])) {
                 $token = md5(time() . rand(0, 9999) . time());
                 Usuario::update()
@@ -62,7 +66,7 @@ class LoginHandler
         $usuario = Usuario::select()->where('id', $id)->one();
 
         if ($usuario) {
-            
+
             if ($usuario['status'] === 'Ativo') {
                 $usuarioAlterado =  Usuario::update()
                     ->set('status', 'Inativo')
@@ -74,6 +78,27 @@ class LoginHandler
                     ->where('id', $id)
                     ->execute();
             }
+
+            return  $usuarioAlterado;
+        }
+
+        return false;
+    }
+
+
+    public static function resetarSenhaUsuario($id)
+    {
+        $usuarioAlterado = [];
+        $usuario = Usuario::select()->where('id', $id)->one();
+        $novaSenha = '123';
+
+        if ($usuario) {
+
+            $hash = password_hash($novaSenha, PASSWORD_DEFAULT);
+            $usuarioAlterado =  Usuario::update()
+                ->set('senha', $hash)
+                ->where('id', $id)
+                ->execute();
 
             return  $usuarioAlterado;
         }
