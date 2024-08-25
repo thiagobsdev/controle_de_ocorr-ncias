@@ -94,7 +94,7 @@ class OcorrenciaController extends Controller
             );
             if ($id_ocorrencia && !empty($envolvidos)) {
                 $lista =  EnvolvidoHandler::addEnvolvidos($id_ocorrencia, $envolvidos);
-                print_r($lista);
+                
             }
             
            if ($id_ocorrencia && !empty($ativos)) {
@@ -247,7 +247,7 @@ class OcorrenciaController extends Controller
             if ($arquivosFotos && $id_ocorrencia) {
                 FotosHandler::addFotos($arquivosFotos,  $data_ocorrencia, $id_ocorrencia, $id_usuario['id']);
             }
-
+            $_SESSION['flash'] = "Ocorrencia editada com sucesso!";
             $this->redirect('/');
         }
     }

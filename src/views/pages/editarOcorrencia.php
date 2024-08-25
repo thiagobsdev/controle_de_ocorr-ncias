@@ -3,6 +3,7 @@
 <main style="background-color: rgba(211, 204, 204, 1)">
     <div class="container" style="background-color:  white">
         <h1 class="" style="text-align:center;margin-bottom: 40px;padding-top:10px">Edição da Ocorrência Numero: <?= $ocorrencia->id; ?></h1>
+       
         <input type="hidden" name="idOcorrencia" value="<?= $ocorrencia->id; ?>">
         <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formEdit" action="<?= $base; ?>/editar/<?= $ocorrencia->id; ?>">
             <div class="col-md-6">
@@ -278,7 +279,7 @@
                                         <td><input type="hidden" name="ativos[<?= $index; ?>][tipoAtivo]" value="<?= $ativo->tipo_ativo; ?>"><?= $ativo->tipo_ativo; ?></td>
                                         <td><input type="hidden" name="ativos[<?= $index; ?>][idAtivo]" value="<?= $ativo->id_ativo; ?>"><?= $ativo->id_ativo; ?></td>
                                         <td>
-                                            <button data-id="<?= $ativo->id; ?>" type="button" class="btn btn-danger btn-excluirAtivo " >Remover</button>
+                                            <button data-id="<?= $ativo->id; ?>" type="button" class="btn btn-danger btn-excluirAtivo ">Remover</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -318,7 +319,7 @@
                                 <div class="carousel-item active d-flex justify-content-center" style="background-color: rgb(202,198,202);flex-direction:column">
                                     <img src="<?= $base; ?>/<?= $foto->url; ?>" class="d-block " alt="<?= $foto->nome; ?>" style="max-height: 500px; object-fit: cover;">
                                     <div class="delete-btn-container" style="text-align:center; margin-top: 10px;">
-                                        <button data-id="<?= $foto->id; ?>"  type="button" class="btn btn-danger btn-excluirFoto" >Excluir</button>
+                                        <button data-id="<?= $foto->id; ?>" type="button" class="btn btn-danger btn-excluirFoto">Excluir</button>
                                     </div>
                                 </div>
                             <?php endforeach;; ?>
@@ -356,7 +357,9 @@
             </div>
         </form>
     </div>
+
 </main>
+
 <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -402,6 +405,7 @@
         $('#confirmDeleteFotoModal').modal('hide'); // fecha o modal de confirmação
     }
 </script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

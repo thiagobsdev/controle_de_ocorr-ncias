@@ -61,7 +61,7 @@ $dompdf = new Dompdf(['enable_remote' => true])
                                 <img src="<?= $base; ?>/assets/fotos/logoDPWPDF.png" alt="" style="margin-left: 30px">
                             </div>
                             <div class="col">
-                                <h3 style="font-size: 24px; text-align:center;width: 100%; margin-top: 10px ;"> REGISTRO DE OCORRÊNCIA SEGURANÇA PATRIMONIAL</h3>
+                                <h3 style="font-size: 16px; text-align:center;width: 100%; margin-top: 10px ;"> REGISTRO DE OCORRÊNCIA SEGURANÇA PATRIMONIAL</h3>
                             </div>
                             <div class="col">
                                 <div style=" width: 100%; display: flex; align-items: end ;flex-direction:column; margin-right: 10px; margin-top: 10px">

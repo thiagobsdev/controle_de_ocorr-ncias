@@ -14,6 +14,7 @@ $router->post('/cadastro', 'CadastroController@cadastroAction');
 $router->get('/alterar_senha', 'CadastroController@alterarSenha');
 $router->post('/alterar/usuario', 'CadastroController@alterarStatusAction');
 $router->post('/resetar/senha', 'CadastroController@alterarSenhaUsuarioAction');
+$router->post('/alterar_nivel', 'CadastroController@alterarNivelUsuarioAction');
 
 
 

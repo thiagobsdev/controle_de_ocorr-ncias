@@ -2,7 +2,13 @@
 
 <main style="background-color: rgba(211, 204, 204, 1)">
     <div class="container" style="background-color:  white">
+
         <h1 class="" style="text-align:center;margin-bottom: 30px;padding-top:10px">Registros de Ocorrências</h1>
+        <?php if (!empty($flash) && $flash == 'Ocorrencia cadastrada com sucesso!'): ?>
+            <div id="flashMessage"
+                style="text-align: center; color: green; font-size: 34px; font-weight: bold; margin-bottom: 30px; margin-top: 30px"
+                class="flash"><?php echo $flash; ?></div>
+        <?php endif; ?>
         <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formOriginal" action="<?= $base; ?>/nova_ocorrencia">
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Equipe Operacional</label>
@@ -27,10 +33,11 @@
                 </select>
             </div>
 
+
             <div class="d-flex row g-3">
                 <div class="col-md-6">
                     <label for="validationServer02" class="form-label">Data da ocorrência</label>
-                    <input type="date" class="form-control " id="validationServer02" value="" required name="data_ocorrencia">
+                    <input id="data_ocorrencia" type="date" class="form-control " id="validationServer02" value="" required name="data_ocorrencia">
                 </div>
                 <div class="col-md-6">
                     <label for="validationServerUsername" class="form-label">Hora da ocorrência</label>
@@ -319,6 +326,37 @@
         </form>
     </div>
 </main>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const flashMessage = document.getElementById('flashMessage');
+        if (flashMessage) {
+            setTimeout(function() {
+                flashMessage.style.display = 'none';
+            }, 2000);
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        modal.show();
+    });
+</script>
+<script>
+    function setMaxDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const maxDate = `${year}-${month}-${day}`;
+
+        const dateInput = document.getElementById('data_ocorrencia');
+        dateInput.setAttribute('max', maxDate);
+    }
+
+    // Chama a função para definir o valor máximo
+    setMaxDate();
+</script>
 
 <script>
     function submeterFormulario() {
