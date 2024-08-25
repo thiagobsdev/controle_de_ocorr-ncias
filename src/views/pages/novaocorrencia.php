@@ -30,7 +30,7 @@
             <div class="d-flex row g-3">
                 <div class="col-md-6">
                     <label for="validationServer02" class="form-label">Data da ocorrência</label>
-                    <input type="date" class="form-control " id="validationServer02" value="" required name="data_ocorrencia">
+                    <input id="data_ocorrencia" type="date" class="form-control " id="validationServer02" value="" required name="data_ocorrencia">
                 </div>
                 <div class="col-md-6">
                     <label for="validationServerUsername" class="form-label">Hora da ocorrência</label>
@@ -319,6 +319,22 @@
         </form>
     </div>
 </main>
+<script>
+  
+    function setMaxDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); 
+        const day = String(today.getDate()).padStart(2, '0');
+        const maxDate = `${year}-${month}-${day}`;
+
+        const dateInput = document.getElementById('data_ocorrencia');
+        dateInput.setAttribute('max', maxDate);
+    }
+
+    // Chama a função para definir o valor máximo
+    setMaxDate();
+</script>
 
 <script>
     function submeterFormulario() {

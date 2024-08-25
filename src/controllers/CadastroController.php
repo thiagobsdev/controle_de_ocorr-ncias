@@ -102,6 +102,20 @@ class CadastroController extends Controller
         }
     }
 
+    public function alterarNivelUsuarioAction()
+    {
+        $array = ['error' => ''];
+
+        $id = intval(filter_input(INPUT_POST, 'id'));
+
+        if ($id) {
+            LoginHandler::alterarNivelUsuario($id);
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao resetar a senha']);
+        }
+    }
+
 
     public function getUsuarioLogado()
     {

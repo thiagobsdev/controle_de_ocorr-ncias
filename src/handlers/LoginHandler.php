@@ -85,6 +85,31 @@ class LoginHandler
         return false;
     }
 
+    public static function alterarNivelUsuario($id)
+    {
+        $usuarioAlterado = [];
+        $usuario = Usuario::select()->where('id', $id)->one();
+
+        if ($usuario) {
+
+            if ($usuario['nivel'] === 'Administrador') {
+                $usuarioAlterado =  Usuario::update()
+                    ->set('nivel', 'Usuário')
+                    ->where('id', $id)
+                    ->execute();
+            } else {
+                $usuarioAlterado =  Usuario::update()
+                    ->set('nivel', 'Administrador')
+                    ->where('id', $id)
+                    ->execute();
+            }
+
+            return  $usuarioAlterado;
+        }
+
+        return false;
+    }
+
 
     public static function resetarSenhaUsuario($id)
     {
