@@ -78,31 +78,32 @@ class PesquisaController extends Controller
     public function pesquisarPorEnvolvidoAction()
     {
         $nomeEnvolvido = filter_input(INPUT_POST, 'nomeEnvolvido');
-        $tipoDocumentoEnvolvido = filter_input(INPUT_POST, 'tipoDocumentoEnvolvido');
         $numeroDocumentoEnvolvido = filter_input(INPUT_POST, 'numeroDocumentoEnvolvido');
         $envolvimentoEnvolvido = filter_input(INPUT_POST, 'envolvimentoEnvolvido');
-        $vinculoEnvolvido = filter_input(INPUT_POST, 'vinculoEnvolvido');
-        $tipoVeiculoEnvolvido = filter_input(INPUT_POST, 'tipoVeiculoEnvolvido');
-        $placaEnvolvido = filter_input(INPUT_POST, 'placaEnvolvido');
+        $dataInicio = filter_input(INPUT_POST, 'dataInicio');
+        $dataFim = filter_input(INPUT_POST, 'dataFim');
 
-        ($nomeEnvolvido !== "") ? $nomeEnvolvido : $nomeEnvolvido ='*';
-        ($tipoDocumentoEnvolvido !== "") ? $tipoDocumentoEnvolvido : $tipoDocumentoEnvolvido =  '*';
+        ($dataInicio === "") ? $dataInicio = '1990-01-01' : $dataInicio;
+        ($dataFim === '') ?  $dataFim = '2100-12-31' : $dataFim;
+
+
+        ($nomeEnvolvido !== "") ? $nomeEnvolvido : $nomeEnvolvido = '*';
         ($numeroDocumentoEnvolvido !== "") ?  $numeroDocumentoEnvolvido : $numeroDocumentoEnvolvido = '*';
         ($envolvimentoEnvolvido !== "") ? $envolvimentoEnvolvido :  $envolvimentoEnvolvido = '*';
-        ($vinculoEnvolvido !== "" ) ? $vinculoEnvolvido : $vinculoEnvolvido = '*';
-        ($tipoVeiculoEnvolvido !== "") ? $tipoVeiculoEnvolvido : $tipoVeiculoEnvolvido = '*';
-        ($placaEnvolvido !== "") ? $placaEnvolvido : $placaEnvolvido = '*';
+
 
         $ocorrencias = OcorrenciaHandler::getBYDocumentoEnvolvimentoOuNome(
             $nomeEnvolvido,
             $numeroDocumentoEnvolvido,
             $envolvimentoEnvolvido,
+            $dataInicio,
+            $dataFim
         );
 
-       $this->render('pesquisa_envolvido', [
+        $this->render('pesquisa_envolvido', [
             'usuariologado' => $this->usuarioLogado,
             'ocorrencias' => $ocorrencias
-       ]);
+        ]);
     }
 
 

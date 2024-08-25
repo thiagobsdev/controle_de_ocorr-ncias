@@ -104,12 +104,21 @@ class OcorrenciaHandler
         ];
     }
 
-    public static function getOcorrenciaById($id_ocorrencia)
-    {
+    public static function getOcorrenciaById(
+        $id_ocorrencia,
+        $dataInicio,
+        $dataFim
+    ) {
 
-        $ocorrencia = Ocorrencia::select()->where('id', $id_ocorrencia)->one();
+        $ocorrencia = Ocorrencia::select()
+            ->where('id', $id_ocorrencia)
+            ->where('data_ocorrencia', '>=', $dataInicio)
+            ->where('data_ocorrencia', '<=', $dataFim)
+            ->orderBy('data_ocorrencia', 'desc')
+            ->orderBy('hora_ocorrencia', 'desc')
+            ->one();
 
-        if ($ocorrencia) {
+        if (!empty($ocorrencia)) {
             $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrencia);
 
             $novoUsuario = Usuario::select()->where('id', $ocorrencia['id_usuario'])->orderBy('id', 'desc')->one();
@@ -138,7 +147,7 @@ class OcorrenciaHandler
                     $novaOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
                 }
             }
-            return $novaOcorrencia;
+            return ($novaOcorrencia) ? $novaOcorrencia : false;;
         }
     }
 
@@ -276,26 +285,33 @@ class OcorrenciaHandler
         $nomeEnvolvido,
         $numeroDocumentoEnvolvido,
         $envolvimentoEnvolvido,
+        $dataInicio,
+        $dataFim
     ) {
         $envolvildosEncontrados = EnvolvidoHandler::getBYDocumentoEnvolvimentoOuNome(
             $nomeEnvolvido,
             $numeroDocumentoEnvolvido,
             $envolvimentoEnvolvido,
+
         );
 
         $ocorrencias = [];
         if ($envolvildosEncontrados) {
             foreach ($envolvildosEncontrados as $envolvido) {
-                $novaOcorrencia = self::getOcorrenciaById($envolvido['id_ocorrencia']);
+                $novaOcorrencia = self::getOcorrenciaById($envolvido['id_ocorrencia'], $dataInicio, $dataFim);
                 $ocorrencias[] = $novaOcorrencia;
             }
         }
+
+        $ocorrencias = array_filter($ocorrencias, function ($item) {
+            return !empty($item);
+        });
 
         usort($ocorrencias, function ($a, $b) {
             return $b->data_ocorrencia <=> $a->data_ocorrencia;
         });
 
-         return  $ocorrencias;
+        return  $ocorrencias;
     }
 
 

@@ -27,16 +27,6 @@
                             <option value="Vitima">Vitima</option>
                         </select>
                     </div>
-                    <div class="row mb-3 d-flex justify-content-center align-content-center">
-                        <div class="col-md-6">
-                            <label for="data" class="form-label">Data inicio</label>
-                            <input type="date" class="form-control" id="data" name="dataInicio">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="data" class="form-label">Data fim</label>
-                            <input type="date" class="form-control" id="data" name="dataFim">
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row mb-3 d-flex justify-content-center align-content-center">
