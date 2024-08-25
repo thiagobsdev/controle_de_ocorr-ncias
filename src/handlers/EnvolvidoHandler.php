@@ -76,7 +76,6 @@ class EnvolvidoHandler
             ->where('envolvimento', $envolvimentoEnvolvido)
             ->orWhere('nome', 'like', $nomeEnvolvido . '%')
             ->get();
-
         return ($envolvidosEncontrados) ? $envolvidosEncontrados : false;
     }
 }

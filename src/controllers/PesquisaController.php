@@ -106,11 +106,31 @@ class PesquisaController extends Controller
         ]);
     }
 
+    public function pesquisarPorTipoNatureza()
+    {
+        $this->render('pesquisa_tipo_natureza card', [
+            'usuariologado' => $this->usuarioLogado,
+        ]);
+    }
+
+    public function pesquisarPorTipoNaturezaAction()
+    {
+        $tipo = filter_input(INPUT_POST, 'tipo_natureza');
+        $natureza = filter_input(INPUT_POST, 'natureza');
+
+        $dataInicio = filter_input(INPUT_POST, 'dataInicio');
+        $dataFim = filter_input(INPUT_POST, 'dataFim');
+
+        ($dataInicio === "") ? $dataInicio = '1990-01-01' : $dataInicio;
+        ($dataFim === '') ?  $dataFim = '2100-12-31' : $dataFim;
 
 
-
-
-
+        $ocorrencias = OcorrenciaHandler::getOcorrenciaByTipoNatureza($tipo, $natureza, $dataInicio, $dataFim);
+       $this->render('pesquisa_tipo_natureza', [
+            'usuariologado' => $this->usuarioLogado,
+            'ocorrencias' => $ocorrencias
+        ]); 
+    }
 
 
     public function getUsuarioLogado()

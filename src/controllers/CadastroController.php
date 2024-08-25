@@ -13,30 +13,36 @@ class CadastroController extends Controller
     private $usuarioLogado;
 
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->setUsuarioLogado(LoginHandler::checkLogin());
-        if($this->usuarioLogado=== false) {
+        if ($this->usuarioLogado === false) {
             $this->redirect('/login');
-        }else{
+        } else {
             $this->usuarioLogado = Usuario::select()->where('token', $_SESSION['token'])->one();
         }
-        
     }
 
 
     public function cadastro()
-    {   
-        
+    {
+
         $flash = "";
         if (!empty($_SESSION['flash'])) {
             $flash = $_SESSION['flash'];
             $_SESSION['flash'] = "";
         }
 
-        $this->render(
+        $usuarios = LoginHandler::getAllUsuarios();
+
+
+       $this->render(
             'cadastro',
-            ['flash' => $flash ,
-            'usuariologado'=> $this->usuarioLogado]
+            [
+                'flash' => $flash,
+                'usuariologado' => $this->usuarioLogado,
+                'usuarios' => $usuarios
+            ]
         );
     }
 
@@ -62,16 +68,34 @@ class CadastroController extends Controller
         }
     }
 
-    public function alterarSenha() {
-        $this->render('alterarsenha',['usuariologado'=> $this->usuarioLogado]);
+    public function alterarSenha()
+    {
+        $this->render('alterarsenha', ['usuariologado' => $this->usuarioLogado]);
+    }
+
+    
+    public function alterarStatusAction()
+    {
+        $array = ['error' => ''];
+
+        $id = intval(filter_input(INPUT_POST, 'id'));
+
+        if ($id) {
+            LoginHandler::alterarStatus($id);
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao excluir a ocorrência']);
+        }
     }
 
 
-    public function getUsuarioLogado(){
+    public function getUsuarioLogado()
+    {
         return $this->usuarioLogado;
     }
 
-    public function setUsuarioLogado( $usuario){
+    public function setUsuarioLogado($usuario)
+    {
         $this->usuarioLogado = $usuario;
     }
 }

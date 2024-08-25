@@ -8,12 +8,12 @@
 
         <h1 class="text-center mt-xxl-5 mt-xl-5 mt-md-5 mt-lg-5 mt-md-4 mt-5 mb-5">OCORRÊNCIAS SEGURANÇA PATRIMONIAL</h1>
         <!-- Toggle para o Card de Filtros -->
-        <?= $render('card_filtro_envolvidos'); ?>
+        <?= $render('pesquisa_tipo_natureza card'); ?>
         <div class="row">
             <div class="col">
-                <?php if (!empty($ocorrencias)) : ?>
-                    <h1 style="text-align:center; margin-bottom: 30px"><?= (count($ocorrencias) < 10) ? "0" . count($ocorrencias) . " ocorrências encontradas"  : count($ocorrencias) . " ocorrencias encontradas" ?></h1>
-                    <?php foreach ($ocorrencias as $ocorrencia): ?>
+                <?php if (!empty($ocorrencias['ocorrencias'])) : ?>
+                    <h1 style="text-align:center; margin-bottom: 30px"><?= (count($ocorrencias['ocorrencias']) < 10) ? "0" . count($ocorrencias['ocorrencias']) . " ocorrências encontradas"  : count($ocorrencias['ocorrencias']) . " ocorrencias encontradas" ?></h1>
+                    <?php foreach ($ocorrencias['ocorrencias'] as $ocorrencia): ?>
 
                         <!-- Card Ocorrências -->
                         <?= $render('card_ocorrencia', [

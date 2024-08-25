@@ -106,8 +106,8 @@ class OcorrenciaHandler
 
     public static function getOcorrenciaById(
         $id_ocorrencia,
-        $dataInicio,
-        $dataFim
+        $dataInicio = '1990-01-01',
+        $dataFim = '2100-12-31'
     ) {
 
         $ocorrencia = Ocorrencia::select()
@@ -295,7 +295,7 @@ class OcorrenciaHandler
 
         );
 
-        $ocorrencias = [];
+ $ocorrencias = [];
         if ($envolvildosEncontrados) {
             foreach ($envolvildosEncontrados as $envolvido) {
                 $novaOcorrencia = self::getOcorrenciaById($envolvido['id_ocorrencia'], $dataInicio, $dataFim);
@@ -313,6 +313,60 @@ class OcorrenciaHandler
 
         return  $ocorrencias;
     }
+
+    public static function getOcorrenciaByTipoNatureza($tipo, $natureza, $data_inicio, $data_fim)
+    {
+
+        $ocorrenciasLista = Ocorrencia::select()
+            ->where('tipo_natureza', $tipo)
+            ->where('natureza', $natureza)
+            ->where('data_ocorrencia', '>=', $data_inicio)
+            ->where('data_ocorrencia', '<=', $data_fim)
+            ->orderBy('data_ocorrencia', 'desc')
+            ->orderBy('hora_ocorrencia', 'desc')
+            ->get();
+
+        $ocorrenciasLista = array_filter($ocorrenciasLista, function ($item) {
+            return !empty($item);
+        });
+
+        $ocorrencias = [];
+        foreach ($ocorrenciasLista as $ocorrenciaItem) {
+            $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrenciaItem);
+
+            $novoUsuario = Usuario::select()->where('id', $ocorrenciaItem['id_usuario'])->one();
+            $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+
+            $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
+            if (count($envolvidosLista) > 0) {
+                $novaOcorrencia->envolvidosLista = [];
+                foreach ($envolvidosLista as $envolvido) {
+                    $novaOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
+                }
+            }
+
+            $ativosLista = Ativo::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
+            if (count($ativosLista) > 0) {
+                $novaOcorrencia->ativosLista = [];
+                foreach ($ativosLista as $ativo) {
+                    $novaOcorrencia->ativosLista[] = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
+                }
+            }
+
+            $fotosLista = Foto::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
+            if (count($fotosLista) > 0) {
+                $novaOcorrencia->fotosOcorrencias = [];
+                foreach ($fotosLista as $foto) {
+                    $novaOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
+                }
+            }
+
+            $ocorrencias[] = $novaOcorrencia;
+        }
+        return ['ocorrencias' => $ocorrencias];
+    }
+
+
 
 
     public static function arrayFotosparaObjetoFotos($arrayFotos)

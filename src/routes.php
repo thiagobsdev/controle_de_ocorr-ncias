@@ -12,6 +12,7 @@ $router->get('/sair', 'LoginController@sair');
 $router->get('/cadastro', 'CadastroController@cadastro');
 $router->post('/cadastro', 'CadastroController@cadastroAction');
 $router->get('/alterar_senha', 'CadastroController@alterarSenha');
+$router->post('/alterar/usuario', 'CadastroController@alterarStatusAction');
 
 
 
@@ -33,6 +34,9 @@ $router->get('/pesquisa_id','PesquisaController@pesquisarPorId');
 
 $router->post('/pesquisa_envolvido','PesquisaController@pesquisarPorEnvolvidoAction');
 $router->get('/pesquisa_envolvido','PesquisaController@pesquisarPorEnvolvido');
+
+$router->post('/pesquisa_tipo_natureza','PesquisaController@pesquisarPorTipoNaturezaAction');
+$router->get('/pesquisa_tipo_natureza','PesquisaController@pesquisarPorTipoNatureza');
 
 
 

@@ -1,17 +1,20 @@
 <?php
+
 namespace src\handlers;
 
 use \src\models\Usuario;
 
 
-class LoginHandler  {
+class LoginHandler
+{
 
-    public static function checkLogin() {
+    public static function checkLogin()
+    {
 
-        if(!empty($_SESSION['token'])) {
+        if (!empty($_SESSION['token'])) {
             $token = $_SESSION['token'];
             $data = Usuario::select()->where('token', $token)->one();
-            if(count($data) > 0) {
+            if (count($data) > 0) {
 
                 $usuarioLogado = new Usuario();
                 $usuarioLogado->id = $data['id'];
@@ -22,29 +25,59 @@ class LoginHandler  {
                 $usuarioLogado->token = $data['token'];
                 $usuarioLogado->status = $data['status'];
 
-                return $usuarioLogado; 
+                return $usuarioLogado;
             }
         }
         return false;
     }
 
-    public static function verificaLogin($email, $senha) {
+    public static function verificaLogin($email, $senha)
+    {
 
         $usuario = Usuario::select()->where('email', $email)->one();
-        if($usuario) {
-            if(password_verify($senha, $usuario['senha'])) {
-                $token = md5(time().rand(0,9999).time());
+        if ($usuario) {
+            if (password_verify($senha, $usuario['senha'])) {
+                $token = md5(time() . rand(0, 9999) . time());
                 Usuario::update()
-                        ->set('token', $token)
-                        ->where('email',$email)
+                    ->set('token', $token)
+                    ->where('email', $email)
                     ->execute();
                 return $token;
-
             }
         }
 
         return false;
-
     }
 
+    public static function getAllUsuarios()
+    {
+        $listaUsuarios = Usuario::select()->get();
+
+        return $listaUsuarios;
+    }
+
+    public static function alterarStatus($id)
+    {
+        $usuarioAlterado = [];
+        $usuario = Usuario::select()->where('id', $id)->one();
+
+        if ($usuario) {
+            
+            if ($usuario['status'] === 'Ativo') {
+                $usuarioAlterado =  Usuario::update()
+                    ->set('status', 'Inativo')
+                    ->where('id', $id)
+                    ->execute();
+            } else {
+                $usuarioAlterado =  Usuario::update()
+                    ->set('status', 'Ativo')
+                    ->where('id', $id)
+                    ->execute();
+            }
+
+            return  $usuarioAlterado;
+        }
+
+        return false;
+    }
 }
