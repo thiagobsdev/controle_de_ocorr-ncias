@@ -24,7 +24,15 @@ $router->post('/excluir', 'OcorrenciaController@excluirOcorrenciaAction');
 $router->get('/editar/{id}','OcorrenciaController@editarOcorrencia');
 $router->post('/editar/{id}','OcorrenciaController@editarOcorrenciaAction');
 
-$router->get('/pesquisaId','PesquisaController@pesquisarPorId');
+$router->get('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrencia');
+
+$router->get('/pesquisa_datas','PesquisaController@pesquisarDatas');
+
+$router->post('/pesquisa_id','PesquisaController@pesquisarPorIdAction');
+$router->get('/pesquisa_id','PesquisaController@pesquisarPorId');
+
+$router->post('/pesquisa_envolvido','PesquisaController@pesquisarPorEnvolvidoAction');
+$router->get('/pesquisa_envolvido','PesquisaController@pesquisarPorEnvolvido');
 
 
 

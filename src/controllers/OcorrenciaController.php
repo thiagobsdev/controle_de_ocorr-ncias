@@ -93,9 +93,11 @@ class OcorrenciaController extends Controller
 
             );
             if ($id_ocorrencia && !empty($envolvidos)) {
-                EnvolvidoHandler::addEnvolvidos($id_ocorrencia, $envolvidos);
+                $lista =  EnvolvidoHandler::addEnvolvidos($id_ocorrencia, $envolvidos);
+                print_r($lista);
             }
-            if ($id_ocorrencia && !empty($ativos)) {
+            
+           if ($id_ocorrencia && !empty($ativos)) {
                 AtivosHandler::addAtivos($id_ocorrencia, $ativos);
             }
             if (count($arquivosFotos['name']) > 0 && $id_ocorrencia) {
@@ -109,6 +111,7 @@ class OcorrenciaController extends Controller
             $this->redirect('/nova_ocorrencia');
         }
     }
+
 
     public function excluirOcorrenciaAction()
     {

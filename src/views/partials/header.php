@@ -45,7 +45,7 @@
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item active">
-                                <a class="nav-link" href="<?= $base;?>/" style="text-align:center">Ocorrências Registradas <span class="sr-only"></span></a>
+                                <a class="nav-link" href="<?= $base; ?>/" style="text-align:center">Ocorrências Registradas <span class="sr-only"></span></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?= $base; ?>/nova_ocorrencia" style="text-align:center">Novo Registro de Ocorrência</a>
@@ -55,7 +55,8 @@
                                     Pesquisas
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="<?= $base; ?>/cadastro">Pesquisa por envolvido</a>
+                                    <a class="dropdown-item" href="<?= $base; ?>/pesquisa_id">Pesquisa por ID</a>
+                                    <a class="dropdown-item" href="<?= $base; ?>/pesquisa_envolvido">Pesquisa por envolvido</a>
                                     <a class="dropdown-item" href="<?= $base; ?>/cadastro">Pesquisa por tipo e natureza</a>
                                     <a class="dropdown-item" href="<?= $base; ?>/cadastro">Pesquisa por área e local</a>
                                 </div>

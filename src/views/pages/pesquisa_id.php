@@ -6,19 +6,43 @@
     <div class="container-xxl my-5">
 
 
-        <h1 class="text-center mt-xxl-5 mt-xl-5 mt-md-5 mt-lg-5 mt-md-4 mt-5">OCORRÊNCIAS SEGURANÇA PATRIMONIAL</h1>
+        <h1 class="text-center mt-xxl-5 mt-xl-5 mt-md-5 mt-lg-5 mt-md-4 mt-5 mb-5">OCORRÊNCIAS SEGURANÇA PATRIMONIAL</h1>
         <!-- Toggle para o Card de Filtros -->
-        <?= $render('card_filtro_datas'); ?>
+        <?= $render('card_filtro_id'); ?>
 
         <div class="row">
             <div class="col">
-                    <!-- Card Ocorrências -->
+                <!-- Card Ocorrências -->
+                <?php if ($ocorrencia): ?>
                     <?= $render('card_ocorrencia', [
                         'dados' => $ocorrencia,
                         'usuarioLogado' => $usuariologado
                     ]) ?>
+                <?php else : ?>
+                    <p>Nenhuma ocorrência encontrada com este ID.</p>
+                <?php endif; ?>
+
             </div>
 
+        </div>
+
+        <!-- Modal de Visualização PDF -->
+        <div class="modal fade" id="printModal" tabindex="-1" aria-labelledby="printModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="printModalLabel">Visualização da Ocorrência em PDF</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="pdfViewer" style="width: 100%; height: 600px;" frameborder="0"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" id="downloadPdf">Baixar PDF</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
 

@@ -5,16 +5,17 @@ namespace src\handlers;
 use PDO;
 
 use \src\models\Envolvido;
-
+use src\models\OcorrenciaEnvolvido;
 
 class EnvolvidoHandler
 {
 
     public static function addEnvolvidos($id_ocorrencia, $envolvidos)
     {
+        $envolvidosAdicionadoslista = [];
 
         foreach ($envolvidos as $envolvido) {
-            Envolvido::insert([
+            $envolvidoInserido = Envolvido::insert([
                 'id_ocorrencia' => $id_ocorrencia,
                 'nome' => $envolvido['nome'],
                 'tipo_de_documento' => $envolvido['tipo_documento'],
@@ -24,7 +25,17 @@ class EnvolvidoHandler
                 'tipo_veiculo' => $envolvido['tipo_veiculo'],
                 'placa' => $envolvido['placa'],
             ])->execute();
+
+
+            $envolvidosAdicionadoslista[] = $envolvidoInserido;
+
+            OcorrenciaEnvolvido::insert([
+                'id_ocorrencia' => $id_ocorrencia,
+                'id_envolvido' => $envolvidoInserido
+            ])->execute();
         }
+
+        return $envolvidosAdicionadoslista;
     }
 
     public static function atualizarEnvolvidosEdit($id_ocorrencia, $envolvidos)
@@ -50,7 +61,22 @@ class EnvolvidoHandler
         }
     }
 
-    public static function excluirEnvolvido($id) {
+    public static function excluirEnvolvido($id)
+    {
         Envolvido::delete()->where('id', $id)->execute();
+    }
+
+    public static function getBYDocumentoEnvolvimentoOuNome(
+        $nomeEnvolvido,
+        $numeroDocumentoEnvolvido,
+        $envolvimentoEnvolvido,
+    ) {
+        $envolvidosEncontrados = Envolvido::select()
+            ->where('numero_documento', $numeroDocumentoEnvolvido)
+            ->where('envolvimento', $envolvimentoEnvolvido)
+            ->orWhere('nome', 'like', $nomeEnvolvido . '%')
+            ->get();
+
+        return ($envolvidosEncontrados) ? $envolvidosEncontrados : false;
     }
 }
