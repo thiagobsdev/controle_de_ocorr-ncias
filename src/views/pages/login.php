@@ -46,6 +46,7 @@
                                     <small id="emailHelp" class="form-text text-muted">Não compartilhe a sua senha com ninguem.</small>
                                     <?php if (!empty($flash)): ?>
                                         <div class="flash"><?php echo $flash; ?></div>
+                                        <?php $flash = "";?>
                                     <?php endif; ?>
                                 </div>
                                 <button type="submit" class="btn btn-primary button-login">Enviar</button>

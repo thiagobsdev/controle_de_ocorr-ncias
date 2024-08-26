@@ -4,7 +4,7 @@
     <div class="container" style="background-color:  white">
 
         <h1 class="" style="text-align:center;margin-bottom: 30px;padding-top:10px">Registros de Ocorrências</h1>
-        <?php if (!empty($flash) && $flash == 'Ocorrencia cadastrada com sucesso!'): ?>
+        <?php if (!empty($flash) && $flash == 'Senha Alterada com sucesso!'): ?>
             <div id="flashMessage"
                 style="text-align: center; color: green; font-size: 34px; font-weight: bold; margin-bottom: 30px; margin-top: 30px"
                 class="flash"><?php echo $flash; ?></div>
@@ -78,26 +78,14 @@
             </div>
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Tipo de natureza</label>
-                <select class="form-select" aria-label="Default select example" name="tipo_natureza">
-                    <option selected></option>
-                    <option value="Falhas de tecnologia">Falhas de tecnologia</option>
-                    <option value="Container">Container</option>
-                    <option value="Interrupção da Operação">Interrupção da Operação</option>
-                    <option value="Clandestinos">Clandestinos</option>
-                    <option value="Contrabando">Contrabando</option>
-                    <option value="Roubo/Furto">Roubo/Furto</option>
+                <select class="form-select" aria-label="Default select example" name="tipo_natureza" id="tipo_natureza">
+                    <option value="" selected>Selecione o tipo de natureza da ocorrência </option>
                 </select>
             </div>
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Natureza</label>
-                <select class="form-select" aria-label="Default select example" name="natureza">
-                    <option selected></option>
-                    <option value="CFTV">CFTV</option>
-                    <option value="Controle de acesso">Controle de acesso</option>
-                    <option value="Sistema de detecção de intrusão">Sistema de detecção de intrusão</option>
-                    <option value="Servidores">Servidores</option>
-                    <option value="Scanner">Scanner</option>
-                    <option value="Violação">Violação</option>
+                <select class="form-select" aria-label="Default select example" name="natureza" id="natureza" >
+                    <option value="" selected>Selecione a natureza da ocorrência</option>
                 </select>
             </div>
             <div class="container mt-5">
@@ -327,7 +315,75 @@
     </div>
 </main>
 <script>
+    const categoriasSubcategorias = {
+        "Falhas de tecnologia": ["CFTV", "Controle de acesso", "Sistema de detecção de intrusão", "Servidores", "Scanner"],
+        "Container": ["Violação", "Roubo", "Furto", "Liberação incorreta", "Lacre violado","Carregamento incorreto", "Lacre Divergente","Transit Time Excedido","Lacre Divergente"  ],
+        "Interrupção da Operação": ["Conflito armado", "Terrorismo", "Greve / Protesto", "Ameaça", "Sabotagem"],
+        "Clandestinos": ["Passageiros clandestinos chegando", "Passageiros clandestinos partindo", "Suspeita de passageiros clandestinos"],
 
+        "Contrabando": ["Drogas", "Material radioativo", "Outros bens ilegais", "Armas", "Animais selvagens"],
+        "Roubo / Furto": ["Ativos Terminais", "Itens pessoais"],
+        "Acesso não autorizado": ["Gate", "Cerca", "Prédio", "Pátio"],
+        "Tentativa de invasão": ["Gate", "Cerca", "Prédio", "Pátio"],
+
+        "Unidade de Segurança": ["Falta de Efetivo de Segurança", "Descumprimento de procedimento", "Ato de indisciplina ou insubordinação", "Uso indevido do crachá", "Sonolência no posto", "Atitude proativa", "Uso de celular no posto", "Desatenção no posto", "Uso de celular durante condução de veiculo" ],
+        "Cyber Security": ["Violação Física", "Interferência de Sistemas", "Phishing"],
+        "Violação de requisitos legais ou procedimentos": ["Embarque sem escaneamento", "armazenagem sem escaneamento", "Acesso ao terminal sem registro em sistema", "Saída do terminal sem registro em sistema"],
+        "Acidente de trabalho": ["Fatalidade", "Ferimento", "Acidente de trânsito", "Incêndio"],
+
+        "Fraude": ["Falsificação de documentos", "Suborno / Corrupção"],
+        "Invasão do terminal": ["Gate", "Cerca", "Prédio", "Pátio"],
+        "Avarias / Perdas dos ativos do Terminal": ["Dano", "Extravio", "Colisão"],
+        "Avarias / Perdas dos ativos de terceiros": ["Dano", "Extravio", "Colisão"],
+        "Outros": [""]
+    };
+
+    const categorySelect = document.getElementById('tipo_natureza');
+    const subcategorySelect = document.getElementById('natureza');
+
+    function populateCategories() {
+        // Cria uma opção para cada categoria
+        for (let category in categoriasSubcategorias) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        }
+    }
+
+    function populateSubcategories(selectedCategory) {
+        // Limpa as subcategorias anteriores
+        subcategorySelect.innerHTML = '<option value="" disabled selected>Selecione uma subcategoria</option>';
+
+        // Verifica se a categoria selecionada existe nos dados
+        if (categoriasSubcategorias[selectedCategory]) {
+            // Habilita o select de subcategorias
+            subcategorySelect.disabled = false;
+
+            // Cria uma opção para cada subcategoria
+            categoriasSubcategorias[selectedCategory].forEach(subcategory => {
+                const option = document.createElement('option');
+                option.value = subcategory;
+                option.textContent = subcategory;
+                subcategorySelect.appendChild(option);
+            });
+        } else {
+            // Se não houver subcategorias, desabilita o select
+            subcategorySelect.disabled = true;
+        }
+    }
+
+    // Evento que detecta mudança na categoria selecionada
+    categorySelect.addEventListener('change', function() {
+        const selectedCategory = this.value;
+        populateSubcategories(selectedCategory);
+    });
+
+    // Inicialização
+    populateCategories();
+</script>
+
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         const flashMessage = document.getElementById('flashMessage');
         if (flashMessage) {
@@ -347,8 +403,8 @@
     function setMaxDate() {
         const today = new Date();
         const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0'); 
-    
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+
         const day = String(today.getDate()).padStart(2, '0');
         const maxDate = `${year}-${month}-${day}`;
         const dateInput = document.getElementById('data_ocorrencia');

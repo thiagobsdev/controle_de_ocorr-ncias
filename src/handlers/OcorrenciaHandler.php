@@ -62,10 +62,15 @@ class OcorrenciaHandler
 
         $ocorrencias = [];
         foreach ($ocorrenciasLista as $ocorrenciaItem) {
-            $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrenciaItem);
+            if ($ocorrenciaItem) {
+                $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrenciaItem);
+            }
 
             $novoUsuario = Usuario::select()->where('id', $ocorrenciaItem['id_usuario'])->one();
-            $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+
+            if ($novoUsuario) {
+                $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            }
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
             if (count($envolvidosLista) > 0) {
@@ -122,7 +127,9 @@ class OcorrenciaHandler
             $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrencia);
 
             $novoUsuario = Usuario::select()->where('id', $ocorrencia['id_usuario'])->orderBy('id', 'desc')->one();
-            $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            if ($novoUsuario) {
+                $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            }
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
             if (count($envolvidosLista) > 0) {
@@ -161,7 +168,9 @@ class OcorrenciaHandler
             $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrenciaItem);
 
             $novoUsuario = Usuario::select()->where('id', $ocorrenciaItem['id_usuario'])->one();
-            $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            if ($novoUsuario) {
+                $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            }
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
             if (count($envolvidosLista) > 0) {
@@ -252,7 +261,9 @@ class OcorrenciaHandler
             $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrencia);
 
             $novoUsuario = Usuario::select()->where('id', $ocorrencia['id_usuario'])->one();
-            $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            if ($novoUsuario) {
+                $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            }
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
             if (count($envolvidosLista) > 0) {
@@ -295,7 +306,7 @@ class OcorrenciaHandler
 
         );
 
- $ocorrencias = [];
+        $ocorrencias = [];
         if ($envolvildosEncontrados) {
             foreach ($envolvildosEncontrados as $envolvido) {
                 $novaOcorrencia = self::getOcorrenciaById($envolvido['id_ocorrencia'], $dataInicio, $dataFim);
@@ -335,7 +346,10 @@ class OcorrenciaHandler
             $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrenciaItem);
 
             $novoUsuario = Usuario::select()->where('id', $ocorrenciaItem['id_usuario'])->one();
-            $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            if($novoUsuario){
+                $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
+            }
+           
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
             if (count($envolvidosLista) > 0) {

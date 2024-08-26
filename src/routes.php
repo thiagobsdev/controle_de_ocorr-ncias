@@ -11,12 +11,14 @@ $router->get('/sair', 'LoginController@sair');
 
 $router->get('/cadastro', 'CadastroController@cadastro');
 $router->post('/cadastro', 'CadastroController@cadastroAction');
+
 $router->get('/alterar_senha', 'CadastroController@alterarSenha');
+$router->post('/alterar_senha_usuario_logado', 'CadastroController@alterarSenhaUsuarioLogadoAction');
+
+
 $router->post('/alterar/usuario', 'CadastroController@alterarStatusAction');
 $router->post('/resetar/senha', 'CadastroController@alterarSenhaUsuarioAction');
 $router->post('/alterar_nivel', 'CadastroController@alterarNivelUsuarioAction');
-
-
 
 $router->get('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrencia');
 $router->post('/nova_ocorrencia', 'OcorrenciaController@cadastrarOcorrenciaAction');

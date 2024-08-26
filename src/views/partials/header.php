@@ -66,7 +66,7 @@
                                         Administrador
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a style="text-align:center" class="dropdown-item" href="<?= $base; ?>/cadastro">Adicionar usuário</a>
+                                        <a style="text-align:center" class="dropdown-item" href="<?= $base; ?>/cadastro">Gerenciar usuários</a>
                                     </div>
                                 </li>
                             <?php endif; ?>

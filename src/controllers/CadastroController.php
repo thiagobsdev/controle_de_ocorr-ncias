@@ -73,6 +73,28 @@ class CadastroController extends Controller
         $this->render('alterarsenha', ['usuariologado' => $this->usuarioLogado]);
     }
 
+    public function alterarSenhaUsuarioLogadoAction()
+    {
+        $senhaAtual = filter_input(INPUT_POST, 'senhaAtual');
+        $novaSenha = filter_input(INPUT_POST, 'novaSenha');
+        $confirmaSenha = filter_input(INPUT_POST, 'confirmNovaSenha');
+        $id_usuario = $this->usuarioLogado['id'];
+
+        if ($senhaAtual && $novaSenha &&  $confirmaSenha && $id_usuario) {
+            if ($novaSenha ===  $confirmaSenha) {
+                $confirmUsuario = CadastroHandler::alteraSenhaUsuarioLogado($senhaAtual, $novaSenha, $id_usuario);
+
+                $this->render('alterarsenha', [
+                    'usuariologado' => $this->usuarioLogado,
+                    'confirmUsuario' => $confirmUsuario
+                ]);
+            } else {
+                $_SESSION['flash'] = "Ocorreu um erro ao tentar alterar a senha. Verifique os campos digitados!";
+                $this->redirect('/alterar_senha');
+            }
+        }
+    }
+
 
     public function alterarStatusAction()
     {
