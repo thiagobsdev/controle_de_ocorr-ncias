@@ -61,7 +61,7 @@
                                 <td>
                                     <button id="mudancaStatus" data-id=<?= $usuario['id'] ?> class="btn <?= ($usuario['status'] === 'Ativo') ? 'btn-success' : 'btn-danger'; ?> btn-sm" onclick="toggleUserStatus(this, <?= ($usuario['status'] === 'Ativo') ? true : false; ?>)"><?= $usuario['status'] ?></button>
                                     <button id="resetarSenha" data-id=<?= $usuario['id'] ?> class="btn btn-warning btn-sm" onclick="resetPassword('joao@example.com')">Resetar Senha</button>
-                                    <button id="alterarStatus" data-id=<?= $usuario['id'] ?> class="btn btn-info btn-sm " >Alterar nivel de acesso</button>
+                                    <button id="alterarNivel" data-id=<?= $usuario['id'] ?> class="btn btn-info btn-sm " >Alterar nivel de acesso</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -73,7 +73,7 @@
 
 </body>
 
-<div class="modal fade" id="confirmAlteraStatus" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+<div class="modal fade" id="confirmAlteraNivel" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -87,13 +87,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="fechaModalAlteraNivel()">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmAlteraStatusAction">Alterar</button>
+                <button type="button" class="btn btn-danger" id="confirmAlteraNivelAction">Alterar</button>
             </div>
         </div>
     </div>
 </div>
 <!-- Modal de Confirmação de alteração de reset de senha -->
-<div class="modal fade" id="confirmAlteraStatusMessage" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+<div class="modal fade" id="confirmAlteraNivelMessage" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -119,18 +119,18 @@
         let idUsuario; // Variável para armazenar o ID da ocorrência
 
         // Captura o clique no botão de exclusão
-        document.querySelectorAll('#alterarStatus').forEach(button => {
+        document.querySelectorAll('#alterarNivel').forEach(button => {
             button.addEventListener('click', function() {
                 idUsuario = this.getAttribute('data-id'); // Captura o ID da ocorrência
                 if (idUsuario) {
-                    $('#confirmAlteraStatus').modal('show'); // Exibe o modal de confirmação
+                    $('#confirmAlteraNivel').modal('show'); // Exibe o modal de confirmação
                 }
 
             });
         });
 
         // Confirmação de exclusão
-        document.getElementById('confirmAlteraStatusAction').addEventListener('click', async function() {
+        document.getElementById('confirmAlteraNivelAction').addEventListener('click', async function() {
             if (idUsuario) {
                 let data = new FormData();
                 data.append('id', idUsuario);
@@ -144,12 +144,12 @@
                     .then(json => {
                         if (json && json.status === 'success') { // Verifica se 'data' não é undefined ou null
                             // Exibe o modal de confirmação
-                            $('#confirmAlteraStatus').modal('hide');
-                            $('#confirmAlteraStatusMessage').modal('show');
+                            $('#confirmAlteraNivel').modal('hide');
+                            $('#confirmAlteraNivelMessage').modal('show');
 
                             // Aguarda 3 segundos e recarrega a página
                             setTimeout(function() {
-                                $('#confirmAlteraStatusMessage').modal('hide');
+                                $('#confirmAlteraNivelMessage').modal('hide');
                                 location.reload();
                             }, 2000);
                         } else {
