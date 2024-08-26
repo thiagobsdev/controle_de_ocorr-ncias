@@ -4,9 +4,23 @@
     <div class="container" style="background-color:  white">
 
         <h1 class="" style="text-align:center;margin-bottom: 30px;padding-top:10px">Registros de ocorrências</h1>
-        <?php if (!empty($flash) && $flash == 'Senha Alterada com sucesso!'): ?>
+        <?php if (!empty($flash) && $flash == 'Ocorrencia cadastrada com sucesso!'): ?>
             <div id="flashMessage"
-                style="text-align: center; color: green; font-size: 34px; font-weight: bold; margin-bottom: 30px; margin-top: 30px"
+                style="text-align: center;
+                    color: green;
+                    font-size: 34px;
+                    font-weight: bold; 
+                    position: fixed;
+                    top: 20%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: 9999; 
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    width: 80%;
+                    max-width: 500px;"
                 class="flash"><?php echo $flash; ?></div>
         <?php endif; ?>
         <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formOriginal" action="<?= $base; ?>/nova_ocorrencia">
