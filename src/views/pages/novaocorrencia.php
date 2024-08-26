@@ -3,7 +3,7 @@
 <main style="background-color: rgba(211, 204, 204, 1)">
     <div class="container" style="background-color:  white">
 
-        <h1 class="" style="text-align:center;margin-bottom: 30px;padding-top:10px">Registros de Ocorrências</h1>
+        <h1 class="" style="text-align:center;margin-bottom: 30px;padding-top:10px">Registros de ocorrências</h1>
         <?php if (!empty($flash) && $flash == 'Senha Alterada com sucesso!'): ?>
             <div id="flashMessage"
                 style="text-align: center; color: green; font-size: 34px; font-weight: bold; margin-bottom: 30px; margin-top: 30px"
@@ -154,7 +154,7 @@
                             </div>
                             <div class="col-4 md-4 mt-2" id="veiculoPlaca" style="display: none;">
                                 <label for="placa" class="form-label">Placa</label>
-                                <input type="text" class="form-control" id="placa" placeholder="Placa">
+                                <input type="text" class="form-control" id="placa" placeholder="Placa" maxlength="8" pattern="[A-Za-z]{3}-\d{4}" title="A placa deve estar no formato XXX-XXXX">
                             </div>
                         </div>
                         <div class="d-flex justify-content-center mt-5">
@@ -302,6 +302,17 @@
         </form>
     </div>
 </main>
+<script>
+    document.getElementById('placa').addEventListener('input', function(e) {
+        let input = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+        if (input.length > 3) {
+            input = input.slice(0, 3) + '-' + input.slice(3);
+        }
+
+        e.target.value = input;
+    });
+</script>
 <script>
     const locaisSublocais = {
         "Área 1": ["Apoio ao Motorista", "Armazém da Receita Federal", "Armazém Geral 1", "Armazém Geral 2", "Armazém Geral 3",

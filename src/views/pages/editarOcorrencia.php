@@ -162,7 +162,7 @@
                             </div>
                             <div class="col-4 md-4 mt-2" id="veiculoPlaca" style="display: none;">
                                 <label for="placa" class="form-label">Placa</label>
-                                <input type="text" class="form-control" id="placa" placeholder="Placa">
+                                <input type="text" class="form-control" id="placaEdit" placeholder="Placa" placeholder="Placa" maxlength="8" pattern="[A-Za-z]{3}-\d{4}" title="A placa deve estar no formato XXX-XXXX">
                             </div>
                         </div>
                         <div class="d-flex justify-content-center mt-5">
@@ -337,10 +337,10 @@
 
             <div class="col-12 d-flex justify-content-center align-items-center mb-5">
                 <div class="col-4 d-flex justify-content-center">
-                    <a class="btn btn-danger print-btn" href="<?= $base ?>">Cancelar</a>
+                    <button class="btn btn-danger w-75 h-50 fw-bold"><a class="btn btn-danger print-btn" href="<?= $base ?>">Cancelar</a></button>
                 </div>
                 <div class="col-4 d-flex justify-content-center">
-                    <button class="btn btn-success w-75 fw-bold" class="botao-enviar" type="submit" onclick="submeterFormulario()">Gravar</button>
+                    <button style="height: 52px" class="btn btn-success w-100     fw-bold" class="botao-enviar" type="submit" onclick="submeterFormulario()">Gravar</button>
                 </div>
             </div>
         </form>
@@ -350,6 +350,17 @@
 
 <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('placaEdit').addEventListener('input', function(e) {
+        let input = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+        if (input.length > 3) {
+            input = input.slice(0, 3) + '-' + input.slice(3);
+        }
+
+        e.target.value = input;
+    });
+</script>
 
 <script>
     const categoriasSubcategoriasEdit = {
