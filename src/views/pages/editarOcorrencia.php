@@ -62,7 +62,7 @@
             </div>
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Tipo de natureza</label>
-                <select class="form-select" aria-label="Default select example" name="tipo_natureza">
+                <select class="form-select" aria-label="Default select example" name="tipo_natureza" id="tipo_natureza_edit">
                     <option selected><?= $ocorrencia->tipo_natureza; ?></option>
                     <option value="Falhas de tecnologia">Falhas de tecnologia</option>
                     <option value="Container">Container</option>
@@ -74,7 +74,7 @@
             </div>
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Natureza</label>
-                <select class="form-select" aria-label="Default select example" name="natureza">
+                <select class="form-select" aria-label="Default select example" name="natureza" id="natureza_edit">
                     <option selected><?= $ocorrencia->natureza; ?></option>
                     <option value="CFTV">CFTV</option>
                     <option value="Controle de acesso">Controle de acesso</option>
@@ -350,6 +350,86 @@
 
 <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const categoriasSubcategoriasEdit = {
+        "Falhas de tecnologia": ["CFTV", "Controle de acesso", "Sistema de detecção de intrusão", "Servidores", "Scanner"],
+        "Container": ["Violação", "Roubo", "Furto", "Liberação incorreta", "Lacre violado", "Carregamento incorreto", "Lacre Divergente", "Transit Time Excedido", "Lacre Divergente"],
+        "Interrupção da Operação": ["Conflito armado", "Terrorismo", "Greve / Protesto", "Ameaça", "Sabotagem"],
+        "Clandestinos": ["Passageiros clandestinos chegando", "Passageiros clandestinos partindo", "Suspeita de passageiros clandestinos"],
+
+        "Contrabando": ["Drogas", "Material radioativo", "Outros bens ilegais", "Armas", "Animais selvagens"],
+        "Roubo / Furto": ["Ativos Terminais", "Itens pessoais"],
+        "Acesso não autorizado": ["Gate", "Cerca", "Prédio", "Pátio"],
+        "Tentativa de invasão": ["Gate", "Cerca", "Prédio", "Pátio"],
+
+        "Unidade de Segurança": ["Falta de Efetivo de Segurança", "Descumprimento de procedimento", "Ato de indisciplina ou insubordinação", "Uso indevido do crachá", "Sonolência no posto", "Atitude proativa", "Uso de celular no posto", "Desatenção no posto", "Uso de celular durante condução de veiculo"],
+        "Cyber Security": ["Violação Física", "Interferência de Sistemas", "Phishing"],
+        "Violação de requisitos legais ou procedimentos": ["Embarque sem escaneamento", "armazenagem sem escaneamento", "Acesso ao terminal sem registro em sistema", "Saída do terminal sem registro em sistema"],
+        "Acidente de trabalho": ["Fatalidade", "Ferimento", "Acidente de trânsito", "Incêndio"],
+
+        "Fraude": ["Falsificação de documentos", "Suborno / Corrupção"],
+        "Invasão do terminal": ["Gate", "Cerca", "Prédio", "Pátio"],
+        "Avarias / Perdas dos ativos do Terminal": ["Dano", "Extravio", "Colisão"],
+        "Avarias / Perdas dos ativos de terceiros": ["Dano", "Extravio", "Colisão"],
+        "Outros": [""]
+    };
+
+    const categorySelectEdit = document.getElementById('tipo_natureza_edit');
+    const subcategorySelectEdit = document.getElementById('natureza_edit');
+    const tipoNaurezaSelecionadaEdit = "<?= $ocorrencia->tipo_natureza; ?>";
+    const categoriaSelecionadoEdit = "<?= $ocorrencia->natureza; ?>";
+
+    function populateCategoriesEdit() {
+        // Cria uma opção para cada categoria
+        for (let category in categoriasSubcategoriasEdit) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+
+            if (category === tipoNaurezaSelecionadaEdit) {
+                option.selected = true; // Define a opção como selecionada
+            }
+            categorySelectEdit.appendChild(option);
+        }
+    }
+
+    function populateSubcategoriesEdit(selectedCategoryEdit) {
+        // Limpa as subcategorias anteriores
+        subcategorySelectEdit.innerHTML = '<option value="" disabled selected>Selecione uma subcategoria</option>';
+
+        // Verifica se a categoria selecionada existe nos dados
+        if (categoriasSubcategoriasEdit[selectedCategoryEdit]) {
+            // Habilita o select de subcategorias
+            subcategorySelectEdit.disabled = false;
+
+            // Cria uma opção para cada subcategoria
+            categoriasSubcategoriasEdit[selectedCategoryEdit].forEach(subcategoryedit => {
+                const option = document.createElement('option');
+                option.value = subcategoryedit;
+                option.textContent = subcategoryedit;
+                if (subcategoryedit === categoriaSelecionadoEdit) {
+                    option.selected = true; // Define a opção como selecionada
+                }
+
+                subcategorySelectEdit.appendChild(option);
+            });
+        } else {
+            // Se não houver subcategorias, desabilita o select
+            subcategorySelectEdit.disabled = true;
+        }
+    }
+
+    // Evento que detecta mudança na categoria selecionada
+    categorySelectEdit.addEventListener('change', function() {
+        const selectedCategoryEdit = this.value;
+        populateSubcategoriesEdit(selectedCategoryEdit);
+    });
+
+    // Inicialização
+    populateCategoriesEdit();
+</script>
+
 
 <script>
     const locaisSublocaisEdit = {
