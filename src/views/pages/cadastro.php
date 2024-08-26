@@ -60,8 +60,7 @@
                                 <td><?= $usuario['nivel'] ?></td>
                                 <td>
                                     <button id="mudancaStatus" data-id=<?= $usuario['id'] ?> class="btn <?= ($usuario['status'] === 'Ativo') ? 'btn-success' : 'btn-danger'; ?> btn-sm" onclick="toggleUserStatus(this, <?= ($usuario['status'] === 'Ativo') ? true : false; ?>)"><?= $usuario['status'] ?></button>
-                                    <button id="resetarSenha" data-id=<?= $usuario['id'] ?> class="btn btn-warning btn-sm" onclick="resetPassword('joao@example.com')">Resetar Senha</button>
-                                    <button id="alteraNivel" data-id=<?= $usuario['id'] ?> type="button" class="btn btn-info"><?= ($usuario['nivel'] === 'Administrador') ? 'Tornar usuário' : 'Tornar Administrador' ?></button>
+                                    <button  id="resetarSenha" data-id=<?= $usuario['id'] ?> class="btn btn-warning btn-sm" onclick="resetPassword('joao@example.com')">Resetar Senha</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -72,105 +71,7 @@
     </div>
 
 </body>
-<!-- Modal de alteração de nivel do usuario -->
-<div class="modal fade" id="confirmAlteracaoDeNivel" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header d-flex justify-content-lg-around">
-                <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de alteração de nivel de usuario</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fechaModalAlteracaoDeNivel()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Você tem certeza de que deseja alterar o nivel do usuario?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="fechaModalAlteracaoDeNivel()">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmAlteracaoNivelAction">Alterar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal de Confirmação de alteração  nivel do usuario -->
-<div class="modal fade" id="confirmAlteracaoDeNivelMessage" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteLabel">Mudança de nivel</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Nivel do usuário alterado com sucesso!
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    function fechaModalAlteracaoDeNivel() {
-        $('#confirmAlteracaoDeNivel').modal('hide'); // fecha o modal de confirmação
-    }
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let idUsuario; // Variável para armazenar o ID da ocorrência
-
-        // Captura o clique no botão de exclusão
-        document.querySelectorAll('#alteraNivel').forEach(button => {
-            button.addEventListener('click', function() {
-                idUsuario = this.getAttribute('data-id'); // Captura o ID da ocorrência
-                if (idUsuario) {
-                    $('#confirmAlteracaoDeNivel').modal('show'); // Exibe o modal de confirmação
-                }
-
-            });
-        });
-
-        // Confirmação de exclusão
-        document.getElementById('confirmAlteracaoNivelAction').addEventListener('click', async function() {
-            if (idUsuario) {
-                let data = new FormData();
-                data.append('id', idUsuario);
-
-                let req = await fetch(BASE + '/alterar_nivel', {
-                    method: 'POST',
-                    body: data
-                })
-
-                let json = await req.json()
-                    .then(json => {
-                        if (json && json.status === 'success') { // Verifica se 'data' não é undefined ou null
-                            // Exibe o modal de confirmação
-                            $('#confirmAlteracaoDeNivel').modal('hide');
-                            $('#confirmAlteracaoDeNivelMessage').modal('show');
-
-                            // Aguarda 3 segundos e recarrega a página
-                            setTimeout(function() {
-                                $('#confirmAlteracaoDeNivelMessage').modal('hide');
-                                location.reload();
-                            }, 2000);
-                        } else {
-                            alert('Erro ao alterar o nivel do usuario: ' + (json.message || 'Resposta inválida do servidor'));
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro ao alterar o nivel do usuario:', error);
-                        alert('Ocorreu um erro ao tentar ao alterar o nivel do usuario:. Por favor, tente novamente.');
-                    });
-
-
-            }
-        });
-    });
-</script>
-
-
-
-
-<!-- Modal de alteração de reset de senha -->
+<!-- Modal de exclusao de ativo -->
 <div class="modal fade" id="confirmReseTSenha" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
