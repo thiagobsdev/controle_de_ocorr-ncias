@@ -3,7 +3,7 @@
 <main style="background-color: rgba(211, 204, 204, 1)">
     <div class="container" style="background-color:  white">
         <h1 class="" style="text-align:center;margin-bottom: 40px;padding-top:10px">Edição da Ocorrência Numero: <?= $ocorrencia->id; ?></h1>
-       
+
         <input type="hidden" name="idOcorrencia" value="<?= $ocorrencia->id; ?>">
         <form class="row g-3" class="formOcorrencia" enctype="multipart/form-data" method="POST" id="formEdit" action="<?= $base; ?>/editar/<?= $ocorrencia->id; ?>">
             <div class="col-md-6">
@@ -50,26 +50,14 @@
 
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Informe a Área</label>
-                <select class="form-select" aria-label="Default select example" name="area">
-                    <option selected><?= $ocorrencia->area; ?></option>
-                    <option value="Área 1">Área 1</option>
-                    <option value="Área 2">Área 2</option>
-                    <option value="Área 3">Área 3</option>
-                    <option value="Área Externa">Área Externa</option>
-                    <option value="Outras Localizações">Outras Localizações</option>
-                    <option value="Pontes e Viadutos">Pontes e Viadutos</option>
+                <select class="form-select" aria-label="Default select example" name="area" id="areaSelectEdit">
+
                 </select>
             </div>
             <div class="col-md-6">
                 <label for="validationServer04" class="form-label">Informe o local da ocorrência</label>
-                <select class="form-select" aria-label="Default select example" name="local">
+                <select class="form-select" aria-label="Default select example" name="local" id="localSelectEdit">
                     <option selected><?= $ocorrencia->local; ?></option>
-                    <option value="Apoio ao Motorista">Apoio ao Motorista
-                    <option value="Armazém da Receita Federal">Armazém da Receita Federal</option>
-                    <option value="Armazém Geral 1">Armazém Geral 1</option>
-                    <option value="Armazém Geral 2">Armazém Geral 2</option>
-                    <option value="Armazém Geral 3">Armazém Geral 3</option>
-                    <option value="Bolsão">Bolsão</option>
                 </select>
             </div>
             <div class="col-md-6">
@@ -362,6 +350,94 @@
 
 <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const locaisSublocaisEdit = {
+        "Área 1": ["Apoio ao Motorista", "Armazém da Receita Federal", "Armazém Geral 1", "Armazém Geral 2", "Armazém Geral 3",
+            "Bolsão", "Castelo D'Agua - Marítima", "Castelo D'Agua - Portaria Principal", "CCOS", "Communication Room - 1 Andar",
+            "Communication Room - 2º Andar", "Communication Room - Térreo", "Data Center", "Depot", "Eletrocentro Nº 006 - Gate",
+            "Eletrocentro Nº 006.1 - Depot", "Escritório do Armazém RFB", "Gate Operacional", "OCR In", "OCR Out", "Pátio do Armazém Geral",
+            "Portaria Marítima", "Portaria Principal", "Prédio Administrativo", "Refeitório Administrativo", "Sala da Unidade de Segurança",
+            "Scanner P60", "Vestiário - Administrativo", "Posto P10", "Vistoria 17 pontos"
+        ],
+
+        "Área 2": ["Armazém Vertere", "Canteiro de Obras Suzano", "Castelo D'Agua - Vertere", "Central de Contra-Incêndio",
+            "Communication Room - Térreo", "Eletrocentro Nº 005 - Vertere", "Escritório Vertere", "Gate Ferroviário Vertere",
+            "Linha Férrea", "Pera Ferroviária", "Portaria Vertere", "Vestiário Vertere"
+        ],
+
+        "Área 3": ["Almoxarifado", "Ambulatório", "Área de Expansão", "Armazém Logístico (AZ Log)", "Berço 1", "Berço 2", "Berço 3", "Berço 4",
+            "Castelo D'Agua - Workshop", "Central de Contra-Incêndio", "Central de Resíduos", "Centro de Condicionamento Físico", "Communication Room - 1º Andar",
+            "Data Center", "Dique de Contenção", "Eletrocentro Az Log", "Eletrocentro Nº 001 - Reefer", "Eletrocentro Nº 003 - QC 1 a 3", "Eletrocentro Nº 004 - QC 4 a 6",
+            "Eletrocentro Nº 008 - Workshop", "Gate Ferroviário", "Lavador de Equipamentos", "Linha Férrea", "Oficina da Manutenção",
+            "Pátio de Contêineres - Bloco 1", "Pátio de Contêineres - Bloco 2", "Pátio de Contêineres - Bloco 3", "Pátio Ferroviário", "Posto de Combustível",
+            "Refeitório Operacional", "Scanner EBCO", "Scanner T60", "Subestação Principal", "Vestiário Operacional", "Workshop"
+        ],
+
+        "Pontes e Viadutos": ["Ponte Área 1 - 3", "Ponte Área 1 - 2", "Viaduto Área 2 - 3 (Vertere)"],
+
+        "Área Externa": ["Base Área de Santos", "Canal de Navegação", "Estada Particular da CODESP", "Ilha Barnabé",
+            "Linha de Alta Tensão 138kVA", "Linha Férrea", "Margem Direita", "Navio", "Píer Santos", "Rio Diana", "Rio Sandi", "Rodovia Conego Domenico Rangoni"
+        ],
+        "Outras Localizações": ["Outros"],
+
+    };
+
+    const areaSelectEdit = document.getElementById('areaSelectEdit');
+    const subLocalSelectEdit = document.getElementById('localSelectEdit');
+
+    const areaSelecionada = "<?= $ocorrencia->area; ?>";
+    const localSelecionado = "<?= $ocorrencia->local; ?>";
+
+    function populateAreasEdit() {
+        // Cria uma opção para cada categoria
+        for (let area in locaisSublocaisEdit) {
+            const option = document.createElement('option');
+            option.value = area;
+            option.textContent = area;
+
+            if (area === areaSelecionada) {
+                option.selected = true; // Define a opção como selecionada
+            }
+            areaSelectEdit.appendChild(option);
+        }
+    }
+
+    function populateSubLocaisEdit(selectedAreaEdit) {
+        // Limpa as subcategorias anteriores
+        subLocalSelectEdit.innerHTML = '<option value="" disabled selected>Selecione o local da ocorrencia</option>';
+
+        // Verifica se a categoria selecionada existe nos dados
+        if (locaisSublocaisEdit[selectedAreaEdit]) {
+            // Habilita o select de subcategorias
+            subLocalSelectEdit.disabled = false;
+
+            // Cria uma opção para cada subcategoria
+            locaisSublocaisEdit[selectedAreaEdit].forEach(subLocalEdit => {
+                const option = document.createElement('option');
+                option.value = subLocalEdit;
+                option.textContent = subLocalEdit;
+                if (subLocalEdit === localSelecionado) {
+                    option.selected = true; // Define a opção como selecionada
+                }
+                subLocalSelectEdit.appendChild(option);
+            });
+        } else {
+            // Se não houver subcategorias, desabilita o select
+            subLocalSelectEdit.disabled = true;
+        }
+    }
+
+    // Evento que detecta mudança na categoria selecionada
+    areaSelectEdit.addEventListener('change', function() {
+        const selectedAreaEdit = this.value;
+        populateSubLocaisEdit(selectedAreaEdit);
+    });
+
+    // Inicialização
+    populateAreasEdit();
+</script>
+
 
 <!-- Modal de exclusao de ativo -->
 <div class="modal fade" id="confirmDeleteFotoModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
