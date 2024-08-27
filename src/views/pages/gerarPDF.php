@@ -156,9 +156,11 @@ $dompdf = new Dompdf(['enable_remote' => true])
                 <!-- Fotos -->
                 <h6>Fotos:</h6>
                 <div class="container" id="pdf-images" style="display: grid; grid-template-columns: auto auto;grid-column-gap: 10px;grid-row-gap: 10px;">
-                    <?php foreach ($ocorrencia->fotosOcorrencias as $foto): ?>
-                        <img style="width:100%" src="<?= $base; ?>/<?= $foto->url; ?>" alt="">
-                    <?php endforeach;; ?>
+                    <?php if( !empty($ocorrencia->fotosOcorrencias)):?>
+                        <?php foreach ($ocorrencia->fotosOcorrencias as $foto): ?>
+                            <img style="width:100%" src="<?= $base; ?>/<?= $foto->url; ?>" alt="">
+                        <?php endforeach; ?>
+                    <?php endif;?>
                 </div>
 
             </div>

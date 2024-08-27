@@ -127,12 +127,13 @@ class OcorrenciaHandler
             $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrencia);
 
             $novoUsuario = Usuario::select()->where('id', $ocorrencia['id_usuario'])->orderBy('id', 'desc')->one();
-            if ($novoUsuario) {
+            if (!empty($novoUsuario)) {
                 $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
             }
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
-            if (count($envolvidosLista) > 0) {
+        
+            if (!empty($envolvidosLista) && count($envolvidosLista) > 0) {
                 $novaOcorrencia->envolvidosLista = [];
                 foreach ($envolvidosLista as $envolvido) {
                     $novaOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
@@ -140,7 +141,7 @@ class OcorrenciaHandler
             }
 
             $ativosLista = Ativo::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
-            if (count($ativosLista) > 0) {
+            if ( !empty($ativosLista) && count($ativosLista) > 0) {
                 $novaOcorrencia->ativosLista = [];
                 foreach ($ativosLista as $ativo) {
                     $novaOcorrencia->ativosLista[]  = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
@@ -148,7 +149,7 @@ class OcorrenciaHandler
             }
 
             $fotosLista = Foto::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
-            if (count($fotosLista) > 0) {
+            if ( !empty($fotosLista) && count($fotosLista) > 0) {
                 $novaOcorrencia->fotosOcorrencias = [];
                 foreach ($fotosLista as $foto) {
                     $novaOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
@@ -168,12 +169,12 @@ class OcorrenciaHandler
             $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrenciaItem);
 
             $novoUsuario = Usuario::select()->where('id', $ocorrenciaItem['id_usuario'])->one();
-            if ($novoUsuario) {
+            if (!empty($novoUsuario)) {
                 $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
             }
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
-            if (count($envolvidosLista) > 0) {
+            if ( !empty($envolvidosLista) && count($envolvidosLista) > 0) {
                 $novaOcorrencia->envolvidosLista = [];
                 foreach ($envolvidosLista as $envolvido) {
                     $novaOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
@@ -181,7 +182,7 @@ class OcorrenciaHandler
             }
 
             $ativosLista = Ativo::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
-            if (count($ativosLista) > 0) {
+            if ( !empty($ativosLista) && count($ativosLista) > 0) {
                 $novaOcorrencia->ativosLista = [];
                 foreach ($ativosLista as $ativo) {
                     $novaOcorrencia->ativosLista[] = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
@@ -220,7 +221,7 @@ class OcorrenciaHandler
             $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
-            if (count($envolvidosLista) > 0) {
+            if ( !empty($envolvidosLista) && count($envolvidosLista) > 0) {
                 $novaOcorrencia->envolvidosLista = [];
                 foreach ($envolvidosLista as $envolvido) {
                     $novaOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
@@ -228,7 +229,7 @@ class OcorrenciaHandler
             }
 
             $ativosLista = Ativo::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
-            if (count($ativosLista) > 0) {
+            if ( !empty($ativosLista) && count($ativosLista) > 0) {
                 $novaOcorrencia->ativosLista = [];
                 foreach ($ativosLista as $ativo) {
                     $novaOcorrencia->ativosLista[] = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
@@ -236,7 +237,7 @@ class OcorrenciaHandler
             }
 
             $fotosLista = Foto::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
-            if (count($fotosLista) > 0) {
+            if ( !empty($fotosLista) && count($fotosLista) > 0) {
                 $novaOcorrencia->fotosOcorrencias = [];
                 foreach ($fotosLista as $foto) {
                     $novaOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
@@ -266,7 +267,7 @@ class OcorrenciaHandler
             }
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
-            if (count($envolvidosLista) > 0) {
+            if ( !empty($envolvidosLista) && count($envolvidosLista) > 0) {
                 $novaOcorrencia->envolvidosLista = [];
                 foreach ($envolvidosLista as $envolvido) {
                     $novaOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
@@ -274,7 +275,7 @@ class OcorrenciaHandler
             }
 
             $ativosLista = Ativo::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
-            if (count($ativosLista) > 0) {
+            if ( !empty($ativosLista) && count($ativosLista) > 0) {
                 $novaOcorrencia->ativosLista = [];
                 foreach ($ativosLista as $ativo) {
                     $novaOcorrencia->ativosLista[]  = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
@@ -282,7 +283,7 @@ class OcorrenciaHandler
             }
 
             $fotosLista = Foto::select()->where('id_ocorrencia', $ocorrencia['id'])->get();
-            if (count($fotosLista) > 0) {
+            if (!empty($fotosLista) && count($fotosLista) > 0) {
                 $novaOcorrencia->fotosOcorrencias = [];
                 foreach ($fotosLista as $foto) {
                     $novaOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
@@ -346,13 +347,13 @@ class OcorrenciaHandler
             $novaOcorrencia = OcorrenciaHandler::arrayOcorrenciaParaObjetoOcorrencia($ocorrenciaItem);
 
             $novoUsuario = Usuario::select()->where('id', $ocorrenciaItem['id_usuario'])->one();
-            if($novoUsuario){
+            if(!empty($novoUsuario) && $novoUsuario){
                 $novaOcorrencia->usuario = OcorrenciaHandler::arrayUsuarioParaObjetoUsuario($novoUsuario);
             }
            
 
             $envolvidosLista = Envolvido::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
-            if (count($envolvidosLista) > 0) {
+            if ( !empty($envolvidosLista) && count($envolvidosLista) > 0) {
                 $novaOcorrencia->envolvidosLista = [];
                 foreach ($envolvidosLista as $envolvido) {
                     $novaOcorrencia->envolvidosLista[] = OcorrenciaHandler::arrayEnvolvidoparaObjetoEnvolvido($envolvido);
@@ -360,7 +361,7 @@ class OcorrenciaHandler
             }
 
             $ativosLista = Ativo::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
-            if (count($ativosLista) > 0) {
+            if ( !empty($ativosLista) && count($ativosLista) > 0) {
                 $novaOcorrencia->ativosLista = [];
                 foreach ($ativosLista as $ativo) {
                     $novaOcorrencia->ativosLista[] = OcorrenciaHandler::arrayAtivoParaObjetoAtivo($ativo);
@@ -368,7 +369,7 @@ class OcorrenciaHandler
             }
 
             $fotosLista = Foto::select()->where('id_ocorrencia', $ocorrenciaItem['id'])->get();
-            if (count($fotosLista) > 0) {
+            if ( !empty($fotosLista) && count($fotosLista) > 0) {
                 $novaOcorrencia->fotosOcorrencias = [];
                 foreach ($fotosLista as $foto) {
                     $novaOcorrencia->fotosOcorrencias[] = OcorrenciaHandler::arrayFotosparaObjetoFotos($foto);
